@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Posts on Mao's Blog</description><generator>Hugo -- 0.149.1</generator><language>zh-cn</language><lastBuildDate>Fri, 05 Sep 2025 15:55:23 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>My First Post</title><link>https://Mist2233.github.io/posts/my-first-post/</link><pubDate>Fri, 05 Sep 2025 15:55:23 +0800</pubDate><guid>https://Mist2233.github.io/posts/my-first-post/</guid><description>&lt;h1 id="vector的内部实现和优化"&gt;vector的内部实现和优化&lt;/h1&gt;
+&lt;h2 id="vector-在内存中如何存储数据和-array-的区别"&gt;&lt;code&gt;vector&lt;/code&gt; 在内存中如何存储数据？和 &lt;code&gt;array&lt;/code&gt; 的区别？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我看你写的代码里经常使用 &lt;code&gt;std::vector&lt;/code&gt;。你能简单描述一下 &lt;code&gt;std::vector&lt;/code&gt; 在内存中是如何存储数据的吗？它和普通的 C 风格数组（比如 &lt;code&gt;int arr[10]&lt;/code&gt;）有什么主要的区别？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于这个问题，我并不太了解，我谈一谈我粗浅的看法。&lt;/li&gt;
+&lt;li&gt;首先，vector 应该是基于数组 array 实现的，其底层就是一块动态分配的、连续的内存数组。这是 vector 能够支持快速随机访问的根本原因。但是，vector 肯定有它自身的优化在。&lt;/li&gt;
+&lt;li&gt;边界检查：
+&lt;ul&gt;
+&lt;li&gt;array 只管给你分配一段连续的内存，其他的管理你都要自己来，也不会管你数组 idx 是否越界；&lt;/li&gt;
+&lt;li&gt;在 vector 中，如果用 &lt;code&gt;[]&lt;/code&gt; 操作符，那么行为和 array 一样，不会管你越界与否；&lt;/li&gt;
+&lt;li&gt;但是，vector 提供了 &lt;code&gt;at()&lt;/code&gt; 这个成员函数，&lt;code&gt;vec.at(i)&lt;/code&gt; 会进行边界检查。如果 &lt;code&gt;i&lt;/code&gt; 越界，vector 会抛出 &lt;code&gt;std::out_of_range&lt;/code&gt; 异常。这说明 vector 的安全性更好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自动初始化：
+&lt;ul&gt;
+&lt;li&gt;再比如，定义 array 时，程序不会帮我们自动初始化，array 中可能有一些奇怪的原始数据（随机值）；&lt;/li&gt;
+&lt;li&gt;但是，定义 vector 时，程序会帮我们自动初始化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不过，我没有提到 vector 和 array 最重要的区别：（根据 Gemini 的解释补充）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Vector 的大小是动态可变的，可以不断地 &lt;code&gt;push_back&lt;/code&gt; 新的元素，而 array 的大小是固定的。&lt;/li&gt;
+&lt;li&gt;这就是 vector 的动态扩容机制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="vector-的扩容机制-reallocation"&gt;&lt;code&gt;vector&lt;/code&gt; 的扩容机制 (Reallocation)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与追问):&lt;/strong&gt; 你说得很好。vector 最大的特点就是它的大小是&lt;strong&gt;动态可变&lt;/strong&gt;的。我们可以不断地对它 &lt;code&gt;push_back&lt;/code&gt; 新的元素。&lt;/p&gt;</description></item></channel></rss>
