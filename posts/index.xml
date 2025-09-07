@@ -22,7 +22,40 @@
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (补充与解释):&lt;/strong&gt; 你说的很对。我们来把这个问题分析得更透彻一些。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;为什么能编译通过？&lt;/strong&gt;
-因为编译器看到 &lt;code&gt;Derived::doSomething(long)&lt;/code&gt; 时，它并不认为你是在“重写”。由于参数列表不同 (&lt;code&gt;long&lt;/code&gt; vs &lt;code&gt;int&lt;/code&gt;)，编译器会认为你是在 &lt;code&gt;Derived&lt;/code&gt; 类里定义了一个全新的、和基类函数&lt;strong&gt;重载 (overload)&lt;/strong&gt; 的虚函数。&lt;/p&gt;</description></item><item><title>Const关键字</title><link>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sat, 06 Sep 2025 09:30:15 +0800</pubDate><guid>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="const-的基本作用"&gt;&lt;code&gt;const&lt;/code&gt; 的基本作用&lt;/h2&gt;
+因为编译器看到 &lt;code&gt;Derived::doSomething(long)&lt;/code&gt; 时，它并不认为你是在“重写”。由于参数列表不同 (&lt;code&gt;long&lt;/code&gt; vs &lt;code&gt;int&lt;/code&gt;)，编译器会认为你是在 &lt;code&gt;Derived&lt;/code&gt; 类里定义了一个全新的、和基类函数&lt;strong&gt;重载 (overload)&lt;/strong&gt; 的虚函数。&lt;/p&gt;</description></item><item><title>是谁偷走了我的Gas？</title><link>https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/</link><pubDate>Sat, 06 Sep 2025 10:21:41 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/</guid><description>&lt;p&gt;原文地址：&lt;a href="https://www.usenix.org/conference/fast25/presentation/he"&gt;Maat: Analyzing and Optimizing Overcharge on Blockchain Storage | USENIX&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="第一遍阅读后-5-10-分钟"&gt;第一遍阅读后 (5-10 分钟)&lt;/h2&gt;
+&lt;p&gt;%%
+只读标题、摘要、引言、小标题、结论
+读完之后，关闭论文，凭自己的记忆概括，回答下面的问题
+%%&lt;/p&gt;
+&lt;h3 id="这篇文章大概是关于什么的"&gt;这篇文章，大概是关于什么的？&lt;/h3&gt;
+&lt;p&gt;这篇文章主要讲的是作者团队开发了一个叫做 Maat 的工具，用来解决 Ethereum 中存储过度收费的问题。&lt;/p&gt;
+&lt;p&gt;这个 Maat 有三大好处：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;能在更精细的颗粒度上识别存储收费情况。(fine-grained)&lt;/li&gt;
+&lt;li&gt;基于共识开发，具有节点之间的连续性。(consensus-oriented)&lt;/li&gt;
+&lt;li&gt;实现资源的预分配。(resource pre-allocation)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以及，使用 Maat 的额外开销很小，且具有扩展性。&lt;/p&gt;
+&lt;h2 id="第二遍阅读后-约-1-小时"&gt;第二遍阅读后 (约 1 小时)&lt;/h2&gt;
+&lt;p&gt;%%
+搞懂文章的核心论点、主要贡献和证据，但忽略复杂的数学证明和实现细节：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;仔细阅读引言和结论。&lt;/li&gt;
+&lt;li&gt;仔细看懂所有的&lt;strong&gt;图表 (Figures &amp;amp; Tables)&lt;/strong&gt;。图表通常是文章信息的精华。&lt;/li&gt;
+&lt;li&gt;快速浏览正文，在旁边标记出你不懂的术语和关键的参考文献。&lt;/li&gt;
+&lt;li&gt;在读完后，用你自己的话，&lt;strong&gt;写下一句话总结&lt;/strong&gt;：“这篇文章，通过 XX 方法，解决了 XX 问题，得出了 XX 结论。”
+%%&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="论文核心问题-这篇文章想要解决的核心问题是"&gt;【论文核心问题】： 这篇文章想要解决的核心问题是？&lt;/h3&gt;
+&lt;p&gt;Three overcharge issues:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Continuous access to the same object within a block&lt;/li&gt;
+&lt;li&gt;Conitnuous access to the same object across a limited number of blocks&lt;/li&gt;
+&lt;li&gt;The deployment of duplicate contracts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="它的解决方案-作者提出的核心方法模型是"&gt;【它的解决方案】： 作者提出的核心方法/模型是？&lt;/h3&gt;
+&lt;p&gt;作者构建了一个工具：&lt;a href="https://github.com/hzysvilla/Maat"&gt;hzysvilla/Maat&lt;/a&gt;。它主要采用下面三种作用：&lt;/p&gt;</description></item><item><title>Const关键字</title><link>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sat, 06 Sep 2025 09:30:15 +0800</pubDate><guid>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="const-的基本作用"&gt;&lt;code&gt;const&lt;/code&gt; 的基本作用&lt;/h2&gt;
 &lt;p&gt;我能想起来的 &lt;code&gt;const&lt;/code&gt; 作用：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;标记常量。&lt;/li&gt;
