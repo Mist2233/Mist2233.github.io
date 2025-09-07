@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mao's Blog</title><link>https://Mist2233.github.io/</link><description>Recent content on Mao's Blog</description><generator>Hugo -- 0.149.1</generator><language>zh-cn</language><lastBuildDate>Sat, 06 Sep 2025 09:30:15 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Const关键字</title><link>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sat, 06 Sep 2025 09:30:15 +0800</pubDate><guid>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="const-的基本作用"&gt;&lt;code&gt;const&lt;/code&gt; 的基本作用&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mao's Blog</title><link>https://Mist2233.github.io/</link><description>Recent content on Mao's Blog</description><generator>Hugo -- 0.149.1</generator><language>zh-cn</language><lastBuildDate>Sun, 07 Sep 2025 08:53:49 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>final和override关键字</title><link>https://Mist2233.github.io/posts/final%E5%92%8Coverride%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sun, 07 Sep 2025 08:53:49 +0800</pubDate><guid>https://Mist2233.github.io/posts/final%E5%92%8Coverride%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="关键字-override"&gt;关键字 &lt;code&gt;override&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id="没有-override-时存在的风险"&gt;没有 &lt;code&gt;override&lt;/code&gt; 时存在的风险&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++11 之后，我们在处理类的继承和虚函数时，多了 &lt;code&gt;override&lt;/code&gt; 和 &lt;code&gt;final&lt;/code&gt; 这两个说明符。我们先来聊聊 &lt;strong&gt;&lt;code&gt;override&lt;/code&gt;&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;请看下面这段代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Base&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;virtual&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; doSomething(&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; param) { &lt;span style="color:#75715e"&gt;/* ... */&lt;/span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Derived&lt;/span&gt; &lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; Base {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 这里有一个小小的笔误，程序员将int写成了long
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;virtual&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; doSomething(&lt;span style="color:#66d9ef"&gt;long&lt;/span&gt; param) { &lt;span style="color:#75715e"&gt;/* ... */&lt;/span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在 &lt;code&gt;Derived&lt;/code&gt; 类中，程序员的&lt;strong&gt;意图&lt;/strong&gt;是&lt;strong&gt;重写 (override)&lt;/strong&gt; 基类的 &lt;code&gt;doSomething&lt;/code&gt; 函数。但由于笔误，他把参数类型从 &lt;code&gt;int&lt;/code&gt; 写成了 &lt;code&gt;long&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;请问，在没有 &lt;code&gt;override&lt;/code&gt; 关键字的情况下，这段代码能编译通过吗？如果能，它在多态调用时，可能会产生什么样的问题？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我认为编译能够通过。由于参数列表不同（这里是参数类型不同），编译器会认为程序员在 &lt;code&gt;Derived&lt;/code&gt; 类中重载了一个虚函数。&lt;/li&gt;
+&lt;li&gt;可能的问题：在多态调用时，会出现函数参数实际类型不一致的情况，可能导致冲突。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与解释):&lt;/strong&gt; 你说的很对。我们来把这个问题分析得更透彻一些。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么能编译通过？&lt;/strong&gt;
+因为编译器看到 &lt;code&gt;Derived::doSomething(long)&lt;/code&gt; 时，它并不认为你是在“重写”。由于参数列表不同 (&lt;code&gt;long&lt;/code&gt; vs &lt;code&gt;int&lt;/code&gt;)，编译器会认为你是在 &lt;code&gt;Derived&lt;/code&gt; 类里定义了一个全新的、和基类函数&lt;strong&gt;重载 (overload)&lt;/strong&gt; 的虚函数。&lt;/p&gt;</description></item><item><title>Const关键字</title><link>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sat, 06 Sep 2025 09:30:15 +0800</pubDate><guid>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="const-的基本作用"&gt;&lt;code&gt;const&lt;/code&gt; 的基本作用&lt;/h2&gt;
 &lt;p&gt;我能想起来的 &lt;code&gt;const&lt;/code&gt; 作用：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;标记常量。&lt;/li&gt;
