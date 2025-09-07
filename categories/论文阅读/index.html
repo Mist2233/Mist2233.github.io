@@ -2,13 +2,12 @@
 <svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
 <svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://Mist2233.github.io/categories/ title="🗂️ 分类"><span>🗂️ 分类</span></a></li><li><a href=https://Mist2233.github.io/tags/ title="🏷️ 标签"><span>🏷️ 标签</span></a></li><li><a href=https://github.com/Mist2233 title="🐙 GitHub"><span>🐙 GitHub</span>&nbsp;
 <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li></ul></nav></header><main class=main><header class=page-header><h1>论文阅读</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>是谁偷走了我的Gas？</h2></header><div class=entry-content><p>原文地址：Maat: Analyzing and Optimizing Overcharge on Blockchain Storage | USENIX
-第一遍阅读后 (5-10 分钟) %% 只读标题、摘要、引言、小标题、结论 读完之后，关闭论文，凭自己的记忆概括，回答下面的问题 %%
-这篇文章，大概是关于什么的？ 这篇文章主要讲的是作者团队开发了一个叫做 Maat 的工具，用来解决 Ethereum 中存储过度收费的问题。
+第一遍阅读后 (5-10 分钟) 这篇文章，大概是关于什么的？ 这篇文章主要讲的是作者团队开发了一个叫做 Maat 的工具，用来解决 Ethereum 中存储过度收费的问题。
 这个 Maat 有三大好处：
 能在更精细的颗粒度上识别存储收费情况。(fine-grained) 基于共识开发，具有节点之间的连续性。(consensus-oriented) 实现资源的预分配。(resource pre-allocation) 以及，使用 Maat 的额外开销很小，且具有扩展性。
-第二遍阅读后 (约 1 小时) %% 搞懂文章的核心论点、主要贡献和证据，但忽略复杂的数学证明和实现细节：
-仔细阅读引言和结论。 仔细看懂所有的图表 (Figures & Tables)。图表通常是文章信息的精华。 快速浏览正文，在旁边标记出你不懂的术语和关键的参考文献。 在读完后，用你自己的话，写下一句话总结：“这篇文章，通过 XX 方法，解决了 XX 问题，得出了 XX 结论。” %% 【论文核心问题】： 这篇文章想要解决的核心问题是？ Three overcharge issues:
+第二遍阅读后 (约 1 小时) 【论文核心问题】： 这篇文章想要解决的核心问题是？ Three overcharge issues:
 Continuous access to the same object within a block Conitnuous access to the same object across a limited number of blocks The deployment of duplicate contracts 【它的解决方案】： 作者提出的核心方法/模型是？ 作者构建了一个工具：hzysvilla/Maat。它主要采用下面三种作用：
+能在更精细的颗粒度上识别存储收费情况。(fine-grained) 基于共识开发，具有节点之间的连续性。(consensus-oriented) 实现资源的预分配。(resource pre-allocation) 【我最大的疑问/不理解的地方】： 我目前最不明白的是？ “收到过高的交易费困扰，因此需要解决这个交易费过高的问题。”对交易者来说，tx fee 是经济损失，但是对于区块的发布者而言，tx fee 应该是赚的钱吧。那为什么只说是损失呢？还是说，这里有一部分的 tx fee 实际上被销毁了，这部分钱就没了？
 ...</p></div><footer class=entry-footer><span title='2025-09-06 10:21:41 +0800 +0800'>September 6, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to 是谁偷走了我的Gas？" href=https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &

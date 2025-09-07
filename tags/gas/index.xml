@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Gas on Mao's Blog</title><link>https://Mist2233.github.io/tags/gas/</link><description>Recent content in Gas on Mao's Blog</description><generator>Hugo -- 0.149.1</generator><language>zh-cn</language><lastBuildDate>Sat, 06 Sep 2025 10:21:41 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/gas/index.xml" rel="self" type="application/rss+xml"/><item><title>是谁偷走了我的Gas？</title><link>https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/</link><pubDate>Sat, 06 Sep 2025 10:21:41 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/</guid><description>&lt;p&gt;原文地址：&lt;a href="https://www.usenix.org/conference/fast25/presentation/he"&gt;Maat: Analyzing and Optimizing Overcharge on Blockchain Storage | USENIX&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id="第一遍阅读后-5-10-分钟"&gt;第一遍阅读后 (5-10 分钟)&lt;/h2&gt;
-&lt;p&gt;%%
-只读标题、摘要、引言、小标题、结论
-读完之后，关闭论文，凭自己的记忆概括，回答下面的问题
-%%&lt;/p&gt;
 &lt;h3 id="这篇文章大概是关于什么的"&gt;这篇文章，大概是关于什么的？&lt;/h3&gt;
 &lt;p&gt;这篇文章主要讲的是作者团队开发了一个叫做 Maat 的工具，用来解决 Ethereum 中存储过度收费的问题。&lt;/p&gt;
 &lt;p&gt;这个 Maat 有三大好处：&lt;/p&gt;
@@ -14,15 +10,6 @@
 &lt;/ol&gt;
 &lt;p&gt;以及，使用 Maat 的额外开销很小，且具有扩展性。&lt;/p&gt;
 &lt;h2 id="第二遍阅读后-约-1-小时"&gt;第二遍阅读后 (约 1 小时)&lt;/h2&gt;
-&lt;p&gt;%%
-搞懂文章的核心论点、主要贡献和证据，但忽略复杂的数学证明和实现细节：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;仔细阅读引言和结论。&lt;/li&gt;
-&lt;li&gt;仔细看懂所有的&lt;strong&gt;图表 (Figures &amp;amp; Tables)&lt;/strong&gt;。图表通常是文章信息的精华。&lt;/li&gt;
-&lt;li&gt;快速浏览正文，在旁边标记出你不懂的术语和关键的参考文献。&lt;/li&gt;
-&lt;li&gt;在读完后，用你自己的话，&lt;strong&gt;写下一句话总结&lt;/strong&gt;：“这篇文章，通过 XX 方法，解决了 XX 问题，得出了 XX 结论。”
-%%&lt;/li&gt;
-&lt;/ol&gt;
 &lt;h3 id="论文核心问题-这篇文章想要解决的核心问题是"&gt;【论文核心问题】： 这篇文章想要解决的核心问题是？&lt;/h3&gt;
 &lt;p&gt;Three overcharge issues:&lt;/p&gt;
 &lt;ul&gt;
@@ -31,4 +18,11 @@
 &lt;li&gt;The deployment of duplicate contracts&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="它的解决方案-作者提出的核心方法模型是"&gt;【它的解决方案】： 作者提出的核心方法/模型是？&lt;/h3&gt;
-&lt;p&gt;作者构建了一个工具：&lt;a href="https://github.com/hzysvilla/Maat"&gt;hzysvilla/Maat&lt;/a&gt;。它主要采用下面三种作用：&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;作者构建了一个工具：&lt;a href="https://github.com/hzysvilla/Maat"&gt;hzysvilla/Maat&lt;/a&gt;。它主要采用下面三种作用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;能在更精细的颗粒度上识别存储收费情况。(fine-grained)&lt;/li&gt;
+&lt;li&gt;基于共识开发，具有节点之间的连续性。(consensus-oriented)&lt;/li&gt;
+&lt;li&gt;实现资源的预分配。(resource pre-allocation)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="我最大的疑问不理解的地方-我目前最不明白的是"&gt;【我最大的疑问/不理解的地方】： 我目前最不明白的是？&lt;/h3&gt;
+&lt;p&gt;“收到过高的交易费困扰，因此需要解决这个交易费过高的问题。”对交易者来说，tx fee 是经济损失，但是对于区块的发布者而言，tx fee 应该是赚的钱吧。那为什么只说是损失呢？还是说，这里有一部分的 tx fee 实际上被销毁了，这部分钱就没了？&lt;/p&gt;</description></item></channel></rss>
