@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mao's Blog</title><link>https://Mist2233.github.io/</link><description>Recent content on Mao's Blog</description><generator>Hugo -- 0.149.1</generator><language>zh-cn</language><lastBuildDate>Mon, 08 Sep 2025 22:27:55 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>什么是Geth？</title><link>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</link><pubDate>Mon, 08 Sep 2025 22:27:55 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</guid><description>&lt;h2 id="什么是-geth"&gt;什么是 Geth？&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mao's Blog</title><link>https://Mist2233.github.io/</link><description>Recent content on Mao's Blog</description><generator>Hugo -- 0.150.0</generator><language>zh-cn</language><lastBuildDate>Tue, 09 Sep 2025 10:09:30 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>左值与右值</title><link>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</link><pubDate>Tue, 09 Sep 2025 10:09:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</guid><description>&lt;h2 id="什么是左值什么是右值如何区分它们"&gt;什么是左值？什么是右值？如何区分它们？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们经常听到“左值”和“右值”这两个术语。你能用自己的话，简单地解释一下，什么是左值，什么是右值吗？最简单的区分它们的方法是什么？&lt;/p&gt;
+&lt;p&gt;回答：我在一年多前的程序设计课上学过这两个概念，但现在我的记忆已经模糊，凭感觉回答一下。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;左值是被持久保存而不是临时保存的值，它通常就是我们定义的变量的值。因为出现在赋值式子的左边，所以叫做“左值”。&lt;/li&gt;
+&lt;li&gt;右值是通过某些代数计算式得到的临时值，它通常出现在赋值式子的右边，因此被称为“右值”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与深化):&lt;/strong&gt; 你说的“能否放在赋值运算符左边”是一个非常好的启发式判断方法。一个更根本的、适用于现代 C++ 的区分标准是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;左值 (lvalue)&lt;/strong&gt;：是一个&lt;strong&gt;表达式&lt;/strong&gt;，它指向了一个&lt;strong&gt;具名的、有持久状态的&lt;/strong&gt;对象或函数。我们可以&lt;strong&gt;对它取地址&lt;/strong&gt; (&lt;code&gt;&amp;amp;&lt;/code&gt;)。它在表达式结束后，依然存在。
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：变量名 &lt;code&gt;int x;&lt;/code&gt; &lt;code&gt;x&lt;/code&gt; 是一个左值，我们可以 &lt;code&gt;&amp;amp;x&lt;/code&gt;。&lt;code&gt;std::string s;&lt;/code&gt; &lt;code&gt;s&lt;/code&gt; 是一个左值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;右值 (rvalue)&lt;/strong&gt;：是一个&lt;strong&gt;表达式&lt;/strong&gt;，它通常代表一个&lt;strong&gt;匿名的、即将被销毁的临时值&lt;/strong&gt;。我们&lt;strong&gt;无法对它取地址&lt;/strong&gt;。它在表达式结束后，就不复存在了。
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：字面量 &lt;code&gt;10&lt;/code&gt; 是一个右值，你不能 &lt;code&gt;&amp;amp;10&lt;/code&gt;。函数返回值 &lt;code&gt;get_string()&lt;/code&gt;（如果返回的是一个值而非引用）是一个右值。&lt;code&gt;x + y&lt;/code&gt; 这个表达式的结果也是一个右值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;总结一下：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;左值&lt;/strong&gt;：有家（内存地址），能活得久。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;右值&lt;/strong&gt;：没家（没法取地址），是“过客”（马上就消失）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="右值引用"&gt;右值引用&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (引入新概念):&lt;/strong&gt; 好的，既然我们知道了左值和右值的区别。C++11 为了配合移动语义，引入了一种新的引用类型，叫做&lt;strong&gt;右值引用 (rvalue reference)&lt;/strong&gt;，用 &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; 表示。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; x &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;; &lt;span style="color:#75715e"&gt;// x 是一个左值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;amp;&lt;/span&gt; l_ref &lt;span style="color:#f92672"&gt;=&lt;/span&gt; x; &lt;span style="color:#75715e"&gt;// 左值引用 l_ref 绑定到左值 x (OK)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; r_ref &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;; &lt;span style="color:#75715e"&gt;// 右值引用 r_ref 绑定到右值 20 (OK)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// int&amp;amp;&amp;amp; r_ref2 = x; // 错误！右值引用不能直接绑定到左值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;请问，&lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; 这个右值引用的主要设计目的是什么？它和我们之前讨论的&lt;strong&gt;移动语义 (Move Semantics)&lt;/strong&gt; 是如何关联起来的？&lt;/p&gt;</description></item><item><title>什么是Geth？</title><link>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</link><pubDate>Mon, 08 Sep 2025 22:27:55 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</guid><description>&lt;h2 id="什么是-geth"&gt;什么是 Geth？&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Geth&lt;/strong&gt; 是 “&lt;strong&gt;Go Ethereum&lt;/strong&gt;” 的缩写。&lt;/p&gt;
 &lt;p&gt;简单来说，&lt;strong&gt;Geth 是一个你可以下载并运行的软件程序，它能将你的计算机变成一个以太坊网络中的“节点”（一个参与者）。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;它是以太坊基金会官方开发的、用 Go 语言编写的，也是目前最流行、使用最广泛的以太坊客户端。&lt;/p&gt;
