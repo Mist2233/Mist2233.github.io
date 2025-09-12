@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>类 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E7%B1%BB/</link><description>Recent content in 类 on Mao's Blog</description><generator>Hugo -- 0.150.0</generator><language>zh-cn</language><lastBuildDate>Fri, 12 Sep 2025 08:50:48 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E7%B1%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>Cpp的三五零法则</title><link>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E4%BA%94%E9%9B%B6%E6%B3%95%E5%88%99/</link><pubDate>Fri, 12 Sep 2025 08:50:48 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E4%BA%94%E9%9B%B6%E6%B3%95%E5%88%99/</guid><description>&lt;h2 id="三法则-the-rule-of-three"&gt;三法则 The Rule Of Three&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 编程中，我们经常听到一个叫做 &lt;strong&gt;“三法则 (The Rule of Three)”&lt;/strong&gt; 的设计原则。你能用自己的话解释一下，这个“三法则”指的是什么吗？它规定了如果一个类定义了哪三个特殊的成员函数之一，那么它可能也需要定义另外两个？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“三法则”指的是，C++编程中，如果一个类中定义了下面三个成员函数之一，那么另外两个成员函数也需要程序员手动定义：
+&lt;ul&gt;
+&lt;li&gt;析构函数&lt;/li&gt;
+&lt;li&gt;拷贝构造函数&lt;/li&gt;
+&lt;li&gt;拷贝赋值运算符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这三者是一个紧密相关的整体，要么同时提供，要么同时不提供。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (追问):&lt;/strong&gt; 很好，你知道是哪三个函数。那你能进一步解释一下，这个法则背后的&lt;strong&gt;根本原因&lt;/strong&gt;是什么吗？&lt;/p&gt;
+&lt;p&gt;换句话说，为什么一个类只要自己定义了析构函数（比如，为了 &lt;code&gt;delete&lt;/code&gt; 一个裸指针成员），就&lt;strong&gt;很可能&lt;/strong&gt;也需要自己定义拷贝构造函数和拷贝赋值运算符？编译器自动生成的版本，在这种情况下会有什么问题？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当我们只定义这三个成员函数中的某一个时，剩下两个函数由编译器自动生成，而编译器生成的版本和程序员定义的版本可能存在冲突，导致一些 tricky 的错误。&lt;/li&gt;
+&lt;li&gt;不过，具体的错误和原因我也说不上来，请你补充。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与解释):&lt;/strong&gt; 这个问题的根本原因在于，一个类需要&lt;strong&gt;手动定义析构函数&lt;/strong&gt;，几乎总是出于同一个目的：&lt;strong&gt;这个类在手动管理某种资源&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;最典型的资源就是&lt;strong&gt;裸指针&lt;/strong&gt;指向的堆内存。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyString&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;private&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;char&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; data_; &lt;span style="color:#75715e"&gt;// 手动管理的裸指针
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; size_t size_;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 构造函数，分配资源
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; MyString(&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;char&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; s &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; size_ &lt;span style="color:#f92672"&gt;=&lt;/span&gt; strlen(s);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data_ &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;char&lt;/span&gt;[size_ &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; strcpy(data_, s);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 1. 我们必须手动定义析构函数，来释放资源
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#f92672"&gt;~&lt;/span&gt;MyString() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;delete&lt;/span&gt;[] data_;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 2. 但是，我们忘记定义拷贝构造函数...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#75715e"&gt;// 3. 也忘记定义拷贝赋值运算符...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;现在，我们来看看编译器自动生成的拷贝函数会有什么问题：&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>
