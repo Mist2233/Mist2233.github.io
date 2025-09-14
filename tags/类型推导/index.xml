@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>类型推导 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/</link><description>Recent content in 类型推导 on Mao's Blog</description><generator>Hugo -- 0.150.0</generator><language>zh-cn</language><lastBuildDate>Sun, 14 Sep 2025 09:33:26 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/index.xml" rel="self" type="application/rss+xml"/><item><title>Cpp的三种类型推导关键字</title><link>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sun, 14 Sep 2025 09:33:26 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="auto-关键字"&gt;&lt;code&gt;auto&lt;/code&gt; 关键字&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; C++11 引入了 &lt;code&gt;auto&lt;/code&gt; 关键字，它极大地改变了我们编写 C++ 代码的方式。&lt;/p&gt;
+&lt;p&gt;你能简单解释一下，&lt;code&gt;auto&lt;/code&gt; 关键字的作用是什么吗？使用它有什么好处？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;auto&lt;/code&gt; 关键字的作用是，省略具体的变量类型，而是根据实际变量的类型推导出其类型。&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;auto&lt;/code&gt; 关键字，就不必写复杂的类型名（比如常用的 STL 迭代器），让代码看上去更简洁。&lt;/li&gt;
+&lt;li&gt;同时，&lt;code&gt;auto&lt;/code&gt; 关键字还能实现类似“多态”的效果（这里说“多态”不太准确，应该说，是泛型编程），使得同一份代码可以被许多不同的类型复用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与澄清):&lt;/strong&gt; 你说的很对。我们来把你的回答再精确化和补充一下。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;auto&lt;/code&gt; 的作用：&lt;/strong&gt;
+它是一个&lt;strong&gt;类型占位符&lt;/strong&gt;。编译器会在&lt;strong&gt;编译时&lt;/strong&gt;，根据变量的&lt;strong&gt;初始化表达式&lt;/strong&gt;，自动推导出变量应该具有的正确类型。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;auto&lt;/code&gt; 的好处：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;简洁性 (Brevity)&lt;/strong&gt;：正如你所说，它可以避免写冗长、复杂的类型名。这一点在处理 STL 的&lt;strong&gt;迭代器&lt;/strong&gt;和&lt;strong&gt;模板&lt;/strong&gt;时尤其明显。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// C++03
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;vector&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;string&lt;span style="color:#f92672"&gt;&amp;gt;::&lt;/span&gt;iterator it &lt;span style="color:#f92672"&gt;=&lt;/span&gt; my_vec.begin();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// C++11 with auto
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;auto&lt;/span&gt; it &lt;span style="color:#f92672"&gt;=&lt;/span&gt; my_vec.begin(); &lt;span style="color:#75715e"&gt;// 简洁、易读、不易出错
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;正确性 (Correctness)&lt;/strong&gt;：&lt;code&gt;auto&lt;/code&gt; 保证了变量的类型与初始化表达式的类型&lt;strong&gt;完全匹配&lt;/strong&gt;，避免了因手写类型错误或发生意外的类型转换而导致的 bug。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;可维护性 (Maintainability)&lt;/strong&gt;：如果初始化表达式的类型未来发生了变化（比如一个函数的返回值从 &lt;code&gt;int&lt;/code&gt; 变成了 &lt;code&gt;long long&lt;/code&gt;），使用了 &lt;code&gt;auto&lt;/code&gt; 的代码&lt;strong&gt;不需要任何修改&lt;/strong&gt;，会自动适应新的类型。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;关于你提到的“多态效果”：&lt;/strong&gt;
+这个描述非常有趣！&lt;code&gt;auto&lt;/code&gt; 本身是在编译期进行类型推导，不直接产生运行时的多态（那需要虚函数）。但你说的“使得同一份代码可以被许多不同的类型复用”，这个思想非常接近&lt;strong&gt;泛型编程 (Generic Programming)&lt;/strong&gt;。
+&lt;code&gt;auto&lt;/code&gt; 在 C++14 的&lt;strong&gt;泛型 Lambda&lt;/strong&gt; 中 &lt;code&gt;[](auto x){ ... }&lt;/code&gt; 和 C++20 的&lt;strong&gt;函数参数&lt;/strong&gt;中 &lt;code&gt;void func(auto param)&lt;/code&gt;，确实扮演了类似模板参数的角色，让一段代码能适用于多种类型。你的直觉是非常准的。&lt;/p&gt;</description></item></channel></rss>

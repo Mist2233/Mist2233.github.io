@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Lambda表达式 on Mao's Blog</title><link>https://Mist2233.github.io/tags/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</link><description>Recent content in Lambda表达式 on Mao's Blog</description><generator>Hugo -- 0.150.0</generator><language>zh-cn</language><lastBuildDate>Sat, 13 Sep 2025 18:22:44 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>Lambda表达式</title><link>https://Mist2233.github.io/posts/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</link><pubDate>Sat, 13 Sep 2025 18:22:44 +0800</pubDate><guid>https://Mist2233.github.io/posts/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</guid><description>&lt;h2 id="什么是-lambda-表达式"&gt;什么是 Lambda 表达式？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 好的，我们来聊聊 C++11 引入的一个非常强大的特性——&lt;strong&gt;Lambda 表达式&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;你能用自己的话简单解释一下，Lambda 表达式是什么吗？它主要解决了什么问题，或者说，它为我们编写 C++ 代码带来了什么样的便利？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我的理解是，lambda 表达式就是“匿名函数”，即省略名字的函数。&lt;/li&gt;
+&lt;li&gt;它定义了一个函数，这个函数有函数的所有功能，但不需要名字。&lt;/li&gt;
+&lt;li&gt;这让我们在需要写一些小巧的工具性一次性函数时，省去了从头定义函数的麻烦，让代码看上去更加简洁。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与肯定):&lt;/strong&gt; 你说的完全正确。Lambda 表达式的出现，极大地改变了 C++ 的编程风格，特别是与标准库算法（STL Algorithms）结合使用时。&lt;/p&gt;
+&lt;p&gt;在 C++11 之前，如果我们需要给 &lt;code&gt;std::sort&lt;/code&gt;, &lt;code&gt;std::find_if&lt;/code&gt; 这样的算法传递一个自定义的比较或判断逻辑，我们通常需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在别处定义一个完整的具名函数。&lt;/li&gt;
+&lt;li&gt;或者定义一个函数对象（一个重载了 &lt;code&gt;operator()&lt;/code&gt; 的 &lt;code&gt;struct&lt;/code&gt; 或 &lt;code&gt;class&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这两种方式都比较繁琐，并且会导致&lt;strong&gt;逻辑和使用点的分离&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;而 Lambda 表达式，正如你所说，允许我们在&lt;strong&gt;需要的地方，就地定义&lt;/strong&gt;一个匿名的、小巧的函数，让代码更紧凑、可读性也更强。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="lambda-表达式的捕获列表"&gt;Lambda 表达式的捕获列表&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (深入提问):&lt;/strong&gt; 好的，你对 Lambda 的基本概念很清楚。我们来看一下 Lambda 表达式的语法结构。&lt;/p&gt;
+&lt;p&gt;一个完整的 Lambda 表达式看起来像这样：
+&lt;code&gt;[ captures ] ( params ) -&amp;gt; return_type { body }&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;其中，&lt;code&gt;[ captures ]&lt;/code&gt; 这个部分，我们称之为&lt;strong&gt;捕获列表 (Capture List)&lt;/strong&gt;，这是 Lambda 表达式最强大、也最核心的部分。&lt;/p&gt;</description></item></channel></rss>
