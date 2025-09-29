@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Typename on Mao's Blog</title><link>https://Mist2233.github.io/tags/typename/</link><description>Recent content in Typename on Mao's Blog</description><generator>Hugo -- 0.150.1</generator><language>zh-cn</language><lastBuildDate>Mon, 29 Sep 2025 09:33:17 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/typename/index.xml" rel="self" type="application/rss+xml"/><item><title>模板：template和typename</title><link>https://Mist2233.github.io/posts/%E6%A8%A1%E6%9D%BFtemplate%E5%92%8Ctypename/</link><pubDate>Mon, 29 Sep 2025 09:33:17 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A8%A1%E6%9D%BFtemplate%E5%92%8Ctypename/</guid><description>&lt;h2 id="模板的作用与分类"&gt;模板的作用与分类&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，&lt;strong&gt;模板 (template)&lt;/strong&gt; 是实现泛型编程的核心机制。&lt;/p&gt;
+&lt;p&gt;你能用自己的话，简单解释一下什么是模板吗？它主要解决了什么问题？C++ 中主要有哪几种类型的模板？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模板是 Cpp 的一种机制，它允许我们编写&lt;strong&gt;与类型无关&lt;/strong&gt;的代码（&lt;strong&gt;泛型&lt;/strong&gt;），即：使用同一段代码能覆盖许多的类型。这种机制让编译器能根据识别到的具体类型，执行不同的操作。&lt;/li&gt;
+&lt;li&gt;模板主要解决的是&lt;strong&gt;代码复用&lt;/strong&gt;的问题，尤其是在函数或者类的逻辑一致、但处理数据类型不同的情况下，避免重复写同样的代码，极大地提高了代码的简洁性和可读性。&lt;/li&gt;
+&lt;li&gt;C++中主要的模板，我认为有
+&lt;ul&gt;
+&lt;li&gt;函数模板：处理任意类型参数的模板&lt;/li&gt;
+&lt;li&gt;类模板：处理任意类型成员的模板。&lt;/li&gt;
+&lt;li&gt;模板特化：某一个具体类型需要特殊实现，提供一个特化类型的模板。&lt;/li&gt;
+&lt;li&gt;模板偏特化：允许对模板参数的一部分特化，不过较为复杂，使用较少。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="模板实例化-template-instantiation"&gt;模板实例化 Template Instantiation&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (追问):&lt;/strong&gt; 好的，你提到了函数模板和类模板。我们知道，模板本身并不是可以直接执行的代码，它更像是一个“蓝图”。&lt;/p&gt;
+&lt;p&gt;请问，从“模板蓝图”到“可执行代码”这个过程，是在什么时候发生的？这个过程通常被称为什么？&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;template&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;typename&lt;/span&gt; T&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T add(T a, T b) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; a &lt;span style="color:#f92672"&gt;+&lt;/span&gt; b;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; x &lt;span style="color:#f92672"&gt;=&lt;/span&gt; add(&lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;); &lt;span style="color:#75715e"&gt;// 发生了什么？
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;double&lt;/span&gt; y &lt;span style="color:#f92672"&gt;=&lt;/span&gt; add(&lt;span style="color:#ae81ff"&gt;3.14&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;2.71&lt;/span&gt;); &lt;span style="color:#75715e"&gt;// 这里又发生了什么？
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从“模板蓝图”到“可执行代码”这个过程，是在调用函数时，编译器识别到参数的具体类型时发生的。&lt;/li&gt;
+&lt;li&gt;在上面的例子中，第一个 &lt;code&gt;add&lt;/code&gt; 函数识别到输入的参数为 &lt;code&gt;int&lt;/code&gt; 类型，因此执行 &lt;code&gt;int&lt;/code&gt; 类型的加法；而第二个 &lt;code&gt;add&lt;/code&gt; 函数识别到输入的参数为 &lt;code&gt;double&lt;/code&gt; 类型，因此执行 &lt;code&gt;double&lt;/code&gt; 类型的加法。&lt;/li&gt;
+&lt;li&gt;这个过程被称为&lt;strong&gt;模板实例化&lt;/strong&gt;。
+&lt;ul&gt;
+&lt;li&gt;在上面的例子中，模板实例化由编译器自动完成，而不是程序员手动指定，这样的实例化过程被称为隐式实例化 (Implicit Instantiation)。&lt;/li&gt;
+&lt;li&gt;而程序员手动指定类型并提前生成代码的实例化，被称为显式实例化 (Explicit Instantiation)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面是一个基于 &lt;code&gt;add&lt;/code&gt; 函数的显式实例化的例子：&lt;/p&gt;</description></item></channel></rss>
