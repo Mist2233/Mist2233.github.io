@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>左值和右值 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</link><description>Recent content in 左值和右值 on Mao's Blog</description><generator>Hugo -- 0.151.0</generator><language>zh-cn</language><lastBuildDate>Tue, 09 Sep 2025 10:09:30 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/index.xml" rel="self" type="application/rss+xml"/><item><title>左值与右值</title><link>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</link><pubDate>Tue, 09 Sep 2025 10:09:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</guid><description>&lt;h2 id="什么是左值什么是右值如何区分它们"&gt;什么是左值？什么是右值？如何区分它们？&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>左值和右值 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</link><description>Recent content in 左值和右值 on Mao's Blog</description><generator>Hugo -- 0.151.2</generator><language>zh-cn</language><lastBuildDate>Tue, 09 Sep 2025 10:09:30 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/index.xml" rel="self" type="application/rss+xml"/><item><title>左值与右值</title><link>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</link><pubDate>Tue, 09 Sep 2025 10:09:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</guid><description>&lt;h2 id="什么是左值什么是右值如何区分它们"&gt;什么是左值？什么是右值？如何区分它们？&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们经常听到“左值”和“右值”这两个术语。你能用自己的话，简单地解释一下，什么是左值，什么是右值吗？最简单的区分它们的方法是什么？&lt;/p&gt;
 &lt;p&gt;回答：我在一年多前的程序设计课上学过这两个概念，但现在我的记忆已经模糊，凭感觉回答一下。&lt;/p&gt;
 &lt;ul&gt;
@@ -7,7 +7,8 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (补充与深化):&lt;/strong&gt; 你说的“能否放在赋值运算符左边”是一个非常好的启发式判断方法。一个更根本的、适用于现代 C++ 的区分标准是：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;左值 (lvalue)&lt;/strong&gt;：是一个&lt;strong&gt;表达式&lt;/strong&gt;，它指向了一个&lt;strong&gt;具名的、有持久状态的&lt;/strong&gt;对象或函数。我们可以&lt;strong&gt;对它取地址&lt;/strong&gt; (&lt;code&gt;&amp;amp;&lt;/code&gt;)。它在表达式结束后，依然存在。
 &lt;ul&gt;

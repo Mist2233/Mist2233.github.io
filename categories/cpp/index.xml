@@ -1,4 +1,174 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cpp on Mao's Blog</title><link>https://Mist2233.github.io/categories/cpp/</link><description>Recent content in Cpp on Mao's Blog</description><generator>Hugo -- 0.151.0</generator><language>zh-cn</language><lastBuildDate>Fri, 03 Oct 2025 14:32:45 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/categories/cpp/index.xml" rel="self" type="application/rss+xml"/><item><title>栈、堆与栈溢出</title><link>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</link><pubDate>Fri, 03 Oct 2025 14:32:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</guid><description>&lt;h2 id="栈和堆的比较-stack-and-heap"&gt;栈和堆的比较 Stack and Heap&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cpp on Mao's Blog</title><link>https://Mist2233.github.io/categories/cpp/</link><description>Recent content in Cpp on Mao's Blog</description><generator>Hugo -- 0.151.2</generator><language>zh-cn</language><lastBuildDate>Tue, 21 Oct 2025 08:28:49 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/categories/cpp/index.xml" rel="self" type="application/rss+xml"/><item><title>C++类型转换符</title><link>https://Mist2233.github.io/posts/c++%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%AC%A6/</link><pubDate>Tue, 21 Oct 2025 08:28:49 +0800</pubDate><guid>https://Mist2233.github.io/posts/c++%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%AC%A6/</guid><description>&lt;p&gt;&lt;strong&gt;我们开始今天的 C++ 八股环节！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;今天，我们来聊一个在面试中经常被用来考察你对 C++ 基础和面向对象理解的话题：&lt;strong&gt;&lt;code&gt;static_cast&lt;/code&gt;, &lt;code&gt;dynamic_cast&lt;/code&gt;, &lt;code&gt;const_cast&lt;/code&gt;, &lt;code&gt;reinterpret_cast&lt;/code&gt;&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这四个是 C++ 的标准类型转换操作符。相比于 C 风格的强制转换（如 &lt;code&gt;(int)x&lt;/code&gt;），它们更安全、意图也更明确。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="static_cast-转换符"&gt;&lt;code&gt;static_cast&lt;/code&gt; 转换符&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们有四种“具名”的类型转换符，统称为 &lt;code&gt;static_cast&lt;/code&gt; 系列。我们先来聊聊最常用的一个：&lt;strong&gt;&lt;code&gt;static_cast&lt;/code&gt;&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;请问，&lt;code&gt;static_cast&lt;/code&gt; 主要用于什么样的转换场景？它和 C 风格的强制转换 &lt;code&gt;(new_type)expression&lt;/code&gt; 相比，有什么主要的&lt;strong&gt;优势&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;static_cast&lt;/code&gt; 是 C++ 中最基础和最简单的类型转换，主要有以下的应用场景：
+&lt;ul&gt;
+&lt;li&gt;相关类型之间的转换，如数值类型之间、枚举类型和整数之间、&lt;code&gt;void*&lt;/code&gt; 类型和其他指针类型之间。&lt;/li&gt;
+&lt;li&gt;有继承关系的类指针/引用转换（不涉及多态的情况）。这里，将派生类指针或引用，转为基类的指针或引用（也就是上行转换）是安全的；反之，将基类的指针或者引用，转为派生类的指针或者引用（也就是下行转换）是不安全的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;和 &lt;code&gt;(new_type)expression&lt;/code&gt; 相比，&lt;code&gt;static_cast&lt;/code&gt; 的转换意图更明确（从命名就可以看出），以及转换过程更安全（会检查变量类型之间是否可以安全转换）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与补充):&lt;/strong&gt; 你说的完全正确。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;static_cast&lt;/code&gt; 是 C++ 中最基础、最常用的“良性”转换。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;主要应用场景：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;相关类型之间的转换&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;数值类型转换&lt;/strong&gt;：在各种数值类型之间进行转换，比如 &lt;code&gt;int&lt;/code&gt; -&amp;gt; &lt;code&gt;double&lt;/code&gt;, &lt;code&gt;double&lt;/code&gt; -&amp;gt; &lt;code&gt;int&lt;/code&gt;。
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;double&lt;/span&gt; d &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;3.14&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; i &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static_cast&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt;(d); &lt;span style="color:#75715e"&gt;// i = 3
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;枚举与整数转换&lt;/strong&gt;：在枚举类型和整数类型之间进行转换。
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;enum&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Color&lt;/span&gt; { RED };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; c_val &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static_cast&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt;(RED);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Color c &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static_cast&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;Color&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;em&gt;void&lt;/em&gt; 指针转换&lt;/em&gt;*：将 &lt;code&gt;void*&lt;/code&gt; 指针转换为具体的类型指针。
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; p &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;amp;&lt;/span&gt;i;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; pi &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static_cast&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&amp;gt;&lt;/span&gt;(p);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;有继承关系的类指针/引用转换 (不涉及多态)&lt;/strong&gt;：&lt;/p&gt;</description></item><item><title>default和delete</title><link>https://Mist2233.github.io/posts/default%E5%92%8Cdelete/</link><pubDate>Thu, 16 Oct 2025 09:05:16 +0800</pubDate><guid>https://Mist2233.github.io/posts/default%E5%92%8Cdelete/</guid><description>&lt;h2 id="default-关键字强制生成默认构造函数"&gt;&lt;code&gt;default&lt;/code&gt; 关键字强制生成默认构造函数&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，如果一个类我们不给它定义任何构造函数，编译器会自动为我们生成一个&lt;strong&gt;默认构造函数&lt;/strong&gt;。类似的，编译器也可能会为我们生成拷贝构造函数、拷贝赋值运算符等。&lt;/p&gt;
+&lt;p&gt;在 C++11 之后，如果我们想&lt;strong&gt;显式地&lt;/strong&gt;告诉编译器：“请为我生成一个默认的、最普通的版本”，我们可以使用 &lt;code&gt;default&lt;/code&gt; 关键字。&lt;/p&gt;
+&lt;p&gt;请看下面这个例子：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyClass&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; MyClass() &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;default&lt;/span&gt;; &lt;span style="color:#75715e"&gt;// 显式地要求编译器生成默认构造函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; MyClass(&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; val) &lt;span style="color:#f92672"&gt;:&lt;/span&gt; data(val) {} &lt;span style="color:#75715e"&gt;// 用户自定义了别的构造函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;private&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; data;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;
+在这个例子中，&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行代码，有什么&lt;strong&gt;实际意义&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;换句话说，如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，会发生什么变化？这个类还能通过 &lt;code&gt;MyClass obj;&lt;/code&gt; 这种方式创建对象吗？为什么？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当用户自己定义了一种构造函数时，编译器就&lt;strong&gt;不会自动生成&lt;/strong&gt;默认的无参数的构造函数。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MyClass() = default;&lt;/code&gt; 确保无参数的构造函数存在。&lt;/li&gt;
+&lt;li&gt;如果删去这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 这个类就无法通过 &lt;code&gt;MyClass obj;&lt;/code&gt; 这种方式创建对象，因为编译器检测不到对应的构造函数。&lt;/li&gt;
+&lt;li&gt;而增加上这一行，可以使得程序可以在无参数的情况下创建新的对象，等到对其内容有要求时，再做修改。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt; 你说的没错。这个问题的核心在于 C++ 的一条规则：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;一旦用户为类定义了任何一种构造函数（无论带不带参数），编译器就会“罢工”，不再自动生成默认（无参）构造函数。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;所以，在你给出的例子中：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为你已经定义了一个 &lt;code&gt;MyClass(int val)&lt;/code&gt;，编译器就不会再自动生成 &lt;code&gt;MyClass()&lt;/code&gt; 了。&lt;/li&gt;
+&lt;li&gt;如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 类就&lt;strong&gt;没有&lt;/strong&gt;无参构造函数。此时，&lt;code&gt;MyClass obj;&lt;/code&gt; 这样的代码就会&lt;strong&gt;编译失败&lt;/strong&gt;，因为它找不到匹配的构造函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;= default&lt;/code&gt; 的作用：&lt;/strong&gt;
+&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，就是你（程序员）在向编译器明确地&lt;strong&gt;下指令&lt;/strong&gt;：&lt;/p&gt;</description></item><item><title>虚析构函数</title><link>https://Mist2233.github.io/posts/%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/</link><pubDate>Mon, 13 Oct 2025 23:10:06 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/</guid><description>&lt;h2 id="不使用虚析构函数可能导致资源泄漏"&gt;不使用虚析构函数，可能导致资源泄漏&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，析构函数是在对象生命周期结束时，用于清理资源的特殊成员函数。在 C++ 的继承体系中，我们有时需要把基类的析构函数声明为&lt;strong&gt;虚函数 (virtual)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;请看下面这段代码，它可能会导致一个非常严重的问题：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#include&lt;/span&gt; &lt;span style="color:#75715e"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Base&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Base() { std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;cout &lt;span style="color:#f92672"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Base Created&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 注意：析构函数不是虚函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#f92672"&gt;~&lt;/span&gt;Base() { std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;cout &lt;span style="color:#f92672"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Base Destroyed&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Derived&lt;/span&gt; &lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; Base {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Derived() { std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;cout &lt;span style="color:#f92672"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Derived Created&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;~&lt;/span&gt;Derived() { std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;cout &lt;span style="color:#f92672"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Derived Destroyed&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Base&lt;span style="color:#f92672"&gt;*&lt;/span&gt; p &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Derived(); &lt;span style="color:#75715e"&gt;// 基类指针指向派生类对象
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;delete&lt;/span&gt; p; &lt;span style="color:#75715e"&gt;// 问题就出在这里！
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;你预测一下，上面这段代码的&lt;strong&gt;输出&lt;/strong&gt;会是什么？&lt;/li&gt;
+&lt;li&gt;这个输出结果揭示了什么样的&lt;strong&gt;严重问题&lt;/strong&gt;？&lt;/li&gt;
+&lt;li&gt;这个问题的&lt;strong&gt;根本原因&lt;/strong&gt;是什么？（即，&lt;code&gt;delete p;&lt;/code&gt; 这行代码，编译器是如何决定调用哪个析构函数的？）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上面代码的输出会是 &lt;code&gt;Base Created&lt;/code&gt; &lt;code&gt;Derived Created&lt;/code&gt; 和 &lt;code&gt;Base Destroyed&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;这说明，在构造时，我们调用了基类的构造函数和派生类的构造函数，但是在析构时，我们只调用的基类的析构函数。这两者的不匹配，可能导致分配的资源没有被清理干净。&lt;/li&gt;
+&lt;li&gt;根本原因：基类的析构函数不是虚函数，因此 &lt;code&gt;delete p&lt;/code&gt; 直接调用了基类的析构函数，而不是派生类的析构函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与深化):&lt;/strong&gt; 你说的完全正确。我来帮你把这个过程再详细地梳理一遍。&lt;/p&gt;</description></item><item><title>Const关键字</title><link>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Thu, 09 Oct 2025 13:09:59 +0800</pubDate><guid>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="const-修饰变量"&gt;&lt;code&gt;const&lt;/code&gt; 修饰变量&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 看到你的简历上写着熟悉 C++，那我们来聊聊 &lt;code&gt;const&lt;/code&gt; 关键字吧。它在 C++ 中有很多用途。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;我的第一个问题是：&lt;/strong&gt; 当 &lt;code&gt;const&lt;/code&gt; 用于修饰一个&lt;strong&gt;变量&lt;/strong&gt;时，它意味着什么？它和 C 语言中的 &lt;code&gt;#define&lt;/code&gt; 宏定义常量相比，有什么主要的优势？&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 方式一
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; MAX_SIZE &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;100&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 方式二
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;#define MAX_SIZE 100
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;const&lt;/code&gt; 关键字修饰变量，表示这个变量是一个常量，不能被修改。&lt;/li&gt;
+&lt;li&gt;和 &lt;code&gt;#define&lt;/code&gt; 宏定义常量相比，&lt;code&gt;const&lt;/code&gt; 变量更加有下面的优势：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;类型检查&lt;/strong&gt;：&lt;code&gt;const&lt;/code&gt; 是有类型的变量，编译器会进行类型检查，而 &lt;code&gt;#define&lt;/code&gt; 是纯文本变量，没有类型概念，容易引发隐性错误——编译通过但运行出错。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作用域控制&lt;/strong&gt;：&lt;code&gt;const&lt;/code&gt; 类型的变量可以定义在局部作用域中，而 &lt;code&gt;#define&lt;/code&gt; 是全局替换，容易产生命名冲突&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调试支持&lt;/strong&gt;：&lt;code&gt;const&lt;/code&gt; 变量可以在调试器中查看它的值和地址，而 &lt;code&gt;#define&lt;/code&gt; 变量在预处理阶段就被替换到，调试器无法识别。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;取地址操作&lt;/strong&gt;：&lt;code&gt;const&lt;/code&gt; 变量可以取地址，而 &lt;code&gt;#define&lt;/code&gt; 是文本替换，没有地址的概念。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跨文件访问&lt;/strong&gt;：&lt;code&gt;const&lt;/code&gt; 变量可以通过 &lt;code&gt;extern&lt;/code&gt; 声明在多个文件中共享，而 &lt;code&gt;#define&lt;/code&gt; 无法跨文件共享，只能重新定义。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;当然，&lt;code&gt;const&lt;/code&gt; 最主要的优势还是&lt;strong&gt;类型检查&lt;/strong&gt;和&lt;strong&gt;作用域控制&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="const-与指针结合"&gt;&lt;code&gt;const&lt;/code&gt; 与指针结合&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (继续提问):&lt;/strong&gt; 好的，你对 &lt;code&gt;const&lt;/code&gt; 修饰普通变量的理解非常透彻。我们来看它和&lt;strong&gt;指针&lt;/strong&gt;的结合。&lt;/p&gt;
+&lt;p&gt;请你解释一下，下面这三种声明中，&lt;code&gt;p&lt;/code&gt; 的类型有什么不同？分别都约束了什么东西不能被修改？&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; p; &lt;span style="color:#75715e"&gt;// 1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; p; &lt;span style="color:#75715e"&gt;// 2
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; p; &lt;span style="color:#75715e"&gt;// 3
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;（提示：一个有用的技巧是“从右往左读”，或者看 &lt;code&gt;const&lt;/code&gt; 在 &lt;code&gt;*&lt;/code&gt; 的哪一边。）&lt;/p&gt;</description></item><item><title>new运算符的细节</title><link>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</link><pubDate>Tue, 07 Oct 2025 09:22:04 +0800</pubDate><guid>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</guid><description>&lt;h2 id="new-的两步过程定位-new-操作"&gt;&lt;code&gt;new&lt;/code&gt; 的两步过程、定位 &lt;code&gt;new&lt;/code&gt; 操作&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，&lt;code&gt;new&lt;/code&gt; 操作符用于在堆上分配内存并构造对象。比如 &lt;code&gt;MyClass* p = new MyClass();&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;其实，这个简单的 &lt;code&gt;new&lt;/code&gt; 表达式，背后可以被看作是两个步骤的组合。你能描述一下这两个步骤分别是什么吗？&lt;/p&gt;
+&lt;p&gt;另外，C++ 还提供了一种叫做 &lt;strong&gt;“定位 &lt;code&gt;new&lt;/code&gt; (placement new)”&lt;/strong&gt; 的特殊语法。它的形式是 &lt;code&gt;new (address) Type(args)&lt;/code&gt;。你了解它是用来做什么的吗？它和普通的 &lt;code&gt;new&lt;/code&gt; 有什么核心区别？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;new&lt;/code&gt; 表达式可以看作这样两个步骤的组合：
+&lt;ul&gt;
+&lt;li&gt;第一步：分配内存。&lt;/li&gt;
+&lt;li&gt;第二步：在分配到的内存上构造对象，即初始化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;定位 &lt;code&gt;new&lt;/code&gt; 操作，顾名思义，就是在一个确定的地址上构造对象，而不是自己分配内存。通过定位 &lt;code&gt;new&lt;/code&gt; 构造的对象，不能调用 &lt;code&gt;delete&lt;/code&gt; 销毁，需要手动析构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. &lt;code&gt;new&lt;/code&gt; 表达式的两步走&lt;/strong&gt;
+你说的完全正确。&lt;code&gt;T* p = new T(args);&lt;/code&gt; 这个表达式，在概念上等价于：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;分配内存 (Allocation)&lt;/strong&gt;：调用一个名为 &lt;code&gt;operator new&lt;/code&gt; 的函数，来分配一块足够大的、未初始化的裸内存。这个函数很像 &lt;code&gt;malloc&lt;/code&gt;。
+&lt;code&gt;void* memory = operator new(sizeof(T));&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;构造对象 (Construction)&lt;/strong&gt;：在这块分配好的内存上，调用 &lt;code&gt;T&lt;/code&gt; 类的构造函数来初始化对象。
+&lt;code&gt;T* obj = static_cast&amp;lt;T*&amp;gt;(memory);&lt;/code&gt;
+&lt;code&gt;obj-&amp;gt;T::T(args);&lt;/code&gt; // 伪代码，表示调用构造函数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;2. 定位 &lt;code&gt;new&lt;/code&gt; (placement new)&lt;/strong&gt;
+你的解释也堪称完美：&lt;/p&gt;</description></item><item><title>栈、堆与栈溢出</title><link>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</link><pubDate>Fri, 03 Oct 2025 14:32:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</guid><description>&lt;h2 id="栈和堆的比较-stack-and-heap"&gt;栈和堆的比较 Stack and Heap&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，C++ 程序在运行时，局部变量通常分配在&lt;strong&gt;栈 (Stack)&lt;/strong&gt; 上，而动态分配的内存则来自&lt;strong&gt;堆 (Heap)&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;请你从&lt;strong&gt;内存管理方式&lt;/strong&gt;、&lt;strong&gt;分配效率&lt;/strong&gt;、&lt;strong&gt;空间大小&lt;/strong&gt;和&lt;strong&gt;数据生命周期&lt;/strong&gt;这四个角度，详细对比一下栈和堆的主要区别。&lt;/p&gt;
 &lt;p&gt;回答：&lt;/p&gt;
@@ -425,7 +595,8 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (补充与深化):&lt;/strong&gt; 你说的“能否放在赋值运算符左边”是一个非常好的启发式判断方法。一个更根本的、适用于现代 C++ 的区分标准是：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;左值 (lvalue)&lt;/strong&gt;：是一个&lt;strong&gt;表达式&lt;/strong&gt;，它指向了一个&lt;strong&gt;具名的、有持久状态的&lt;/strong&gt;对象或函数。我们可以&lt;strong&gt;对它取地址&lt;/strong&gt; (&lt;code&gt;&amp;amp;&lt;/code&gt;)。它在表达式结束后，依然存在。
 &lt;ul&gt;
@@ -509,49 +680,7 @@
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (补充与解释):&lt;/strong&gt; 你说的很对。我们来把这个问题分析得更透彻一些。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;为什么能编译通过？&lt;/strong&gt;
-因为编译器看到 &lt;code&gt;Derived::doSomething(long)&lt;/code&gt; 时，它并不认为你是在“重写”。由于参数列表不同 (&lt;code&gt;long&lt;/code&gt; vs &lt;code&gt;int&lt;/code&gt;)，编译器会认为你是在 &lt;code&gt;Derived&lt;/code&gt; 类里定义了一个全新的、和基类函数&lt;strong&gt;重载 (overload)&lt;/strong&gt; 的虚函数。&lt;/p&gt;</description></item><item><title>Const关键字</title><link>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sat, 06 Sep 2025 09:30:15 +0800</pubDate><guid>https://Mist2233.github.io/posts/const%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="const-的基本作用"&gt;&lt;code&gt;const&lt;/code&gt; 的基本作用&lt;/h2&gt;
-&lt;p&gt;我能想起来的 &lt;code&gt;const&lt;/code&gt; 作用：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;标记常量。&lt;/li&gt;
-&lt;li&gt;标记只能“读取”而不能“修改”的类函数。&lt;/li&gt;
-&lt;li&gt;在参数引用时，标记不能修改的参数。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="为什么推荐用-const-而不是-define-来定义常量"&gt;为什么推荐用 &lt;code&gt;const&lt;/code&gt; 而不是 &lt;code&gt;#define&lt;/code&gt; 来定义常量？&lt;/h2&gt;
-&lt;p&gt;我的理解：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;const&lt;/code&gt; 比 &lt;code&gt;#define&lt;/code&gt; 更智能。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;#define&lt;/code&gt; 是机械的、文本意义上的替换，你举的例子相当于把所有的 &lt;code&gt;b&lt;/code&gt; 都替换成 &lt;code&gt;10&lt;/code&gt;，这会带来一些运算上的问题，比如优先级之类的。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;const&lt;/code&gt; 更加智能。但是具体原理我也说不清楚，希望面试官补充一下。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;更加详细的补充：&lt;code&gt;#define&lt;/code&gt; 是&lt;strong&gt;预处理器&lt;/strong&gt;在编译前做的简单文本替换，它不理解 C++ 的语法。而 &lt;code&gt;const&lt;/code&gt; 是 C++ &lt;strong&gt;语言本身&lt;/strong&gt;的一部分。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;类型安全：&lt;code&gt;const&lt;/code&gt; 定义的变量可以识别类型，但是 &lt;code&gt;#define&lt;/code&gt; 做不到。&lt;/li&gt;
-&lt;li&gt;作用域：&lt;code&gt;const&lt;/code&gt; 遵循 C++变量作用的规则，但是 &lt;code&gt;#define&lt;/code&gt; 不会，容易造成命名冲突。&lt;/li&gt;
-&lt;li&gt;调试方便：&lt;code&gt;const&lt;/code&gt; 定义的变量是有名字的，调试时可以看到。&lt;/li&gt;
-&lt;li&gt;C++特性兼容：&lt;code&gt;const&lt;/code&gt; 变量可以取地址、作为引用传递。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;总结一下就是：&lt;/strong&gt; 在 C++ 中，尽可能用 &lt;code&gt;const&lt;/code&gt; (或 &lt;code&gt;enum&lt;/code&gt;) 来替代 &lt;code&gt;#define&lt;/code&gt;，因为 const 更安全、更规范、更易于维护。&lt;/p&gt;
-&lt;h2 id="const-搭配指针使用"&gt;&lt;code&gt;const&lt;/code&gt; 搭配指针使用&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; p;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; p;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; p;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上面三种用法的区别是？&lt;/p&gt;
-&lt;p&gt;我认为，需要看 &lt;code&gt;const&lt;/code&gt; 声明修饰的是指针本身，还是指针指向的内容：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;const int* p&lt;/code&gt; 中，&lt;code&gt;const&lt;/code&gt; 直接修饰 &lt;code&gt;int&lt;/code&gt;，可以结合为 &lt;code&gt;const int&lt;/code&gt; 所以表示指向的变量的类型为 &lt;code&gt;const int&lt;/code&gt;，即“指向常量的指针”。(pointer to const)
-&lt;ul&gt;
-&lt;li&gt;含义：不能通过 &lt;code&gt;p&lt;/code&gt; 来修改其指向的值，但是 &lt;code&gt;p&lt;/code&gt; 本身的值可以修改，即可以指向其他地址的变量。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;int* const p&lt;/code&gt; 中，&lt;code&gt;const&lt;/code&gt; 直接修饰指针 &lt;code&gt;p&lt;/code&gt;，所以表示指针值不可变，即“常量指针”。(const pointer)
-&lt;ul&gt;
-&lt;li&gt;含义：&lt;code&gt;p&lt;/code&gt; 本身是常量，不能被修改，但是 &lt;code&gt;p&lt;/code&gt; 指向的内容的值是可以修改的。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;而 &lt;code&gt;const int* const p&lt;/code&gt; 结合了上述两种情况，表示“指针值为常量，指向的变量也为常量”。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="const-和--结合"&gt;&lt;code&gt;const&lt;/code&gt; 和 &lt;code&gt;&amp;amp;&lt;/code&gt; 结合&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;面试官 (最终问题):&lt;/strong&gt; 很好，你对 &lt;code&gt;const&lt;/code&gt; 和指针的结合理解得很透彻。现在我们把你最早的回答串联起来。&lt;/p&gt;</description></item><item><title>函数重载和函数重写</title><link>https://Mist2233.github.io/posts/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E9%87%8D%E5%86%99/</link><pubDate>Sat, 06 Sep 2025 09:28:27 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E9%87%8D%E5%86%99/</guid><description>&lt;p&gt;昨天我们聊了虚函数和多态的实现，今天我们来聊一个与它紧密相关，但在概念上又容易混淆的话题：&lt;strong&gt;重载 (Overloading)、重写 (Overriding) 和隐藏 (Hiding)&lt;/strong&gt;。&lt;/p&gt;
+因为编译器看到 &lt;code&gt;Derived::doSomething(long)&lt;/code&gt; 时，它并不认为你是在“重写”。由于参数列表不同 (&lt;code&gt;long&lt;/code&gt; vs &lt;code&gt;int&lt;/code&gt;)，编译器会认为你是在 &lt;code&gt;Derived&lt;/code&gt; 类里定义了一个全新的、和基类函数&lt;strong&gt;重载 (overload)&lt;/strong&gt; 的虚函数。&lt;/p&gt;</description></item><item><title>函数重载和函数重写</title><link>https://Mist2233.github.io/posts/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E9%87%8D%E5%86%99/</link><pubDate>Sat, 06 Sep 2025 09:28:27 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E9%87%8D%E5%86%99/</guid><description>&lt;p&gt;昨天我们聊了虚函数和多态的实现，今天我们来聊一个与它紧密相关，但在概念上又容易混淆的话题：&lt;strong&gt;重载 (Overloading)、重写 (Overriding) 和隐藏 (Hiding)&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;这三个术语描述了 C++ 中函数名相同但行为不同的几种情况，是面试中考察“你是否能精确理解 C++ 概念”的经典问题。&lt;/p&gt;
 &lt;h2 id="overloading-和-overriding-的区别"&gt;Overloading 和 Overriding 的区别&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们经常会遇到函数名相同的情况。你能用自己的话分别解释一下，什么是&lt;strong&gt;函数重载 (Overloading)&lt;/strong&gt; 和&lt;strong&gt;函数重写 (Overriding)&lt;/strong&gt; 吗？它们两者最主要的区别是什么？&lt;/p&gt;
@@ -582,7 +711,8 @@
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;重写 (Overriding) 属于动态多态&lt;/strong&gt;，是在&lt;strong&gt;运行期&lt;/strong&gt;决定的。&lt;/p&gt;</description></item><item><title>面向对象与多态</title><link>https://Mist2233.github.io/posts/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%A4%9A%E6%80%81/</link><pubDate>Sat, 06 Sep 2025 09:28:10 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%A4%9A%E6%80%81/</guid><description>&lt;h2 id="什么是多态实现技术是什么"&gt;什么是多态？实现技术是什么？&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;看到你的简历上写着熟悉 C++ 的面向对象编程。那你能用自己的话简单解释一下，什么是&lt;strong&gt;多态&lt;/strong&gt;吗？在 C++ 中，我们通常通过什么关键技术来实现多态？&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;看到你的简历上写着熟悉 C++ 的面向对象编程。那你能用自己的话简单解释一下，什么是&lt;strong&gt;多态&lt;/strong&gt;吗？在 C++ 中，我们通常通过什么关键技术来实现多态？&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;我理解的多态，就是同一个函数在不同的继承类中可以有不同的内容，这取决于子类自己的实现方式。（更精炼的表达：&lt;strong&gt;同一个接口，不同的实现。&lt;/strong&gt;）&lt;/p&gt;
 &lt;p&gt;实现多态的关键技术通常是虚函数 (virtual function)，即基类中声明的函数，在派生类中可以有自己另外的实现 (override)，从而适配每个派生类的具体情况。（如果基类中没有对这一函数的实现，全部靠派生类自己实现，那么这种函数就是纯虚函数）&lt;/p&gt;
 &lt;h2 id="用基类指针指向派生类对象"&gt;用基类指针指向派生类对象&lt;/h2&gt;

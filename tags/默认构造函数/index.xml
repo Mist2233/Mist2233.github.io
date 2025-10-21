@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>默认构造函数 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</link><description>Recent content in 默认构造函数 on Mao's Blog</description><generator>Hugo -- 0.151.2</generator><language>zh-cn</language><lastBuildDate>Thu, 16 Oct 2025 09:05:16 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/index.xml" rel="self" type="application/rss+xml"/><item><title>default和delete</title><link>https://Mist2233.github.io/posts/default%E5%92%8Cdelete/</link><pubDate>Thu, 16 Oct 2025 09:05:16 +0800</pubDate><guid>https://Mist2233.github.io/posts/default%E5%92%8Cdelete/</guid><description>&lt;h2 id="default-关键字强制生成默认构造函数"&gt;&lt;code&gt;default&lt;/code&gt; 关键字强制生成默认构造函数&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，如果一个类我们不给它定义任何构造函数，编译器会自动为我们生成一个&lt;strong&gt;默认构造函数&lt;/strong&gt;。类似的，编译器也可能会为我们生成拷贝构造函数、拷贝赋值运算符等。&lt;/p&gt;
+&lt;p&gt;在 C++11 之后，如果我们想&lt;strong&gt;显式地&lt;/strong&gt;告诉编译器：“请为我生成一个默认的、最普通的版本”，我们可以使用 &lt;code&gt;default&lt;/code&gt; 关键字。&lt;/p&gt;
+&lt;p&gt;请看下面这个例子：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyClass&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; MyClass() &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;default&lt;/span&gt;; &lt;span style="color:#75715e"&gt;// 显式地要求编译器生成默认构造函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; MyClass(&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; val) &lt;span style="color:#f92672"&gt;:&lt;/span&gt; data(val) {} &lt;span style="color:#75715e"&gt;// 用户自定义了别的构造函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;private&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; data;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;
+在这个例子中，&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行代码，有什么&lt;strong&gt;实际意义&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;换句话说，如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，会发生什么变化？这个类还能通过 &lt;code&gt;MyClass obj;&lt;/code&gt; 这种方式创建对象吗？为什么？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当用户自己定义了一种构造函数时，编译器就&lt;strong&gt;不会自动生成&lt;/strong&gt;默认的无参数的构造函数。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MyClass() = default;&lt;/code&gt; 确保无参数的构造函数存在。&lt;/li&gt;
+&lt;li&gt;如果删去这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 这个类就无法通过 &lt;code&gt;MyClass obj;&lt;/code&gt; 这种方式创建对象，因为编译器检测不到对应的构造函数。&lt;/li&gt;
+&lt;li&gt;而增加上这一行，可以使得程序可以在无参数的情况下创建新的对象，等到对其内容有要求时，再做修改。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt; 你说的没错。这个问题的核心在于 C++ 的一条规则：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;一旦用户为类定义了任何一种构造函数（无论带不带参数），编译器就会“罢工”，不再自动生成默认（无参）构造函数。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;所以，在你给出的例子中：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为你已经定义了一个 &lt;code&gt;MyClass(int val)&lt;/code&gt;，编译器就不会再自动生成 &lt;code&gt;MyClass()&lt;/code&gt; 了。&lt;/li&gt;
+&lt;li&gt;如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 类就&lt;strong&gt;没有&lt;/strong&gt;无参构造函数。此时，&lt;code&gt;MyClass obj;&lt;/code&gt; 这样的代码就会&lt;strong&gt;编译失败&lt;/strong&gt;，因为它找不到匹配的构造函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;= default&lt;/code&gt; 的作用：&lt;/strong&gt;
+&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，就是你（程序员）在向编译器明确地&lt;strong&gt;下指令&lt;/strong&gt;：&lt;/p&gt;</description></item></channel></rss>

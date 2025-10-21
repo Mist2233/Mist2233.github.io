@@ -1,0 +1,136 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>explicit关键字 | Mao's Blog</title><meta name=keywords content><meta name=description content='好的，我们来深入解析 explicit 这个虽小但非常重要的关键字。
+你的理解完全正确！explicit 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。
+
+一、问题根源：什么是构造函数的“隐式转换”？
+在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的构造函数可以只用一个参数来调用，那么这个构造函数就可能被编译器用来进行隐式转换 (Implicit Conversion)。
+让我们来看一个没有 explicit 的“事故现场”：
+场景设定：我们有一个字符串类 MyString，它有一个构造函数，可以接受一个整数 n 来创建一个由 n 个 &#39;A&#39; 组成的字符串。
+#include <iostream>
+#include <string>
+
+class MyString {
+private:
+    std::string m_str;
+public:
+    // 这个构造函数可以用一个 int 参数来调用
+    MyString(int n) : m_str(n, &#39;A&#39;) {
+        std::cout << "MyString(" << n << ") 被调用了！\n";
+    }
+
+    const char* c_str() const { return m_str.c_str(); }
+};
+
+// 这是一个希望接收 MyString 对象的函数
+void printString(const MyString& s) {
+    std::cout << "打印: " << s.c_str() << std::endl;
+}
+现在，在 main 函数中，我们可能会写出这样的代码：'><meta name=author content="Mao"><link rel=canonical href=https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/><link crossorigin=anonymous href=/assets/css/stylesheet.2211ca3164be7830024f6aad2b3a2e520843a64f8f048445c3401c1249aa051d.css integrity="sha256-IhHKMWS+eDACT2qtKzouUghDpk+PBIRFw0AcEkmqBR0=" rel="preload stylesheet" as=style><link rel=icon href=https://Mist2233.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Mist2233.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Mist2233.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Mist2233.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Mist2233.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:url" content="https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/"><meta property="og:site_name" content="Mao's Blog"><meta property="og:title" content="explicit关键字"><meta property="og:description" content='好的，我们来深入解析 explicit 这个虽小但非常重要的关键字。
+你的理解完全正确！explicit 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。
+一、问题根源：什么是构造函数的“隐式转换”？ 在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的构造函数可以只用一个参数来调用，那么这个构造函数就可能被编译器用来进行隐式转换 (Implicit Conversion)。
+让我们来看一个没有 explicit 的“事故现场”：
+场景设定：我们有一个字符串类 MyString，它有一个构造函数，可以接受一个整数 n 来创建一个由 n 个 &#39;A&#39; 组成的字符串。
+#include <iostream> #include <string> class MyString { private: std::string m_str; public: // 这个构造函数可以用一个 int 参数来调用 MyString(int n) : m_str(n, &#39;A&#39;) { std::cout << "MyString(" << n << ") 被调用了！\n"; } const char* c_str() const { return m_str.c_str(); } }; // 这是一个希望接收 MyString 对象的函数 void printString(const MyString& s) { std::cout << "打印: " << s.c_str() << std::endl; } 现在，在 main 函数中，我们可能会写出这样的代码：'><meta property="og:locale" content="zh-cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-07-12T10:35:00+00:00"><meta property="article:modified_time" content="2025-07-12T10:35:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="explicit关键字"><meta name=twitter:description content='好的，我们来深入解析 explicit 这个虽小但非常重要的关键字。
+你的理解完全正确！explicit 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。
+
+一、问题根源：什么是构造函数的“隐式转换”？
+在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的构造函数可以只用一个参数来调用，那么这个构造函数就可能被编译器用来进行隐式转换 (Implicit Conversion)。
+让我们来看一个没有 explicit 的“事故现场”：
+场景设定：我们有一个字符串类 MyString，它有一个构造函数，可以接受一个整数 n 来创建一个由 n 个 &#39;A&#39; 组成的字符串。
+#include <iostream>
+#include <string>
+
+class MyString {
+private:
+    std::string m_str;
+public:
+    // 这个构造函数可以用一个 int 参数来调用
+    MyString(int n) : m_str(n, &#39;A&#39;) {
+        std::cout << "MyString(" << n << ") 被调用了！\n";
+    }
+
+    const char* c_str() const { return m_str.c_str(); }
+};
+
+// 这是一个希望接收 MyString 对象的函数
+void printString(const MyString& s) {
+    std::cout << "打印: " << s.c_str() << std::endl;
+}
+现在，在 main 函数中，我们可能会写出这样的代码：'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hello!","item":"https://Mist2233.github.io/posts/"},{"@type":"ListItem","position":2,"name":"explicit关键字","item":"https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"explicit关键字","name":"explicit关键字","description":"好的，我们来深入解析 explicit 这个虽小但非常重要的关键字。\n你的理解完全正确！explicit 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。\n一、问题根源：什么是构造函数的“隐式转换”？ 在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的构造函数可以只用一个参数来调用，那么这个构造函数就可能被编译器用来进行隐式转换 (Implicit Conversion)。\n让我们来看一个没有 explicit 的“事故现场”：\n场景设定：我们有一个字符串类 MyString，它有一个构造函数，可以接受一个整数 n 来创建一个由 n 个 'A' 组成的字符串。\n#include \u0026lt;iostream\u0026gt; #include \u0026lt;string\u0026gt; class MyString { private: std::string m_str; public: // 这个构造函数可以用一个 int 参数来调用 MyString(int n) : m_str(n, \u0026#39;A\u0026#39;) { std::cout \u0026lt;\u0026lt; \u0026#34;MyString(\u0026#34; \u0026lt;\u0026lt; n \u0026lt;\u0026lt; \u0026#34;) 被调用了！\\n\u0026#34;; } const char* c_str() const { return m_str.c_str(); } }; // 这是一个希望接收 MyString 对象的函数 void printString(const MyString\u0026amp; s) { std::cout \u0026lt;\u0026lt; \u0026#34;打印: \u0026#34; \u0026lt;\u0026lt; s.c_str() \u0026lt;\u0026lt; std::endl; } 现在，在 main 函数中，我们可能会写出这样的代码：\n","keywords":[],"articleBody":"好的，我们来深入解析 explicit 这个虽小但非常重要的关键字。\n你的理解完全正确！explicit 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。\n一、问题根源：什么是构造函数的“隐式转换”？ 在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的构造函数可以只用一个参数来调用，那么这个构造函数就可能被编译器用来进行隐式转换 (Implicit Conversion)。\n让我们来看一个没有 explicit 的“事故现场”：\n场景设定：我们有一个字符串类 MyString，它有一个构造函数，可以接受一个整数 n 来创建一个由 n 个 'A' 组成的字符串。\n#include #include class MyString { private: std::string m_str; public: // 这个构造函数可以用一个 int 参数来调用 MyString(int n) : m_str(n, 'A') { std::cout \u003c\u003c \"MyString(\" \u003c\u003c n \u003c\u003c \") 被调用了！\\n\"; } const char* c_str() const { return m_str.c_str(); } }; // 这是一个希望接收 MyString 对象的函数 void printString(const MyString\u0026 s) { std::cout \u003c\u003c \"打印: \" \u003c\u003c s.c_str() \u003c\u003c std::endl; } 现在，在 main 函数中，我们可能会写出这样的代码：\nint main() { std::cout \u003c\u003c \"--- 显式调用 ---\\n\"; MyString s1(10); // 1. 显式创建对象，意图清晰 printString(s1); std::cout \u003c\u003c \"\\n--- 隐式转换发生在这里 ---\\n\"; printString(10); // 2. 传递了一个整数 10 std::cout \u003c\u003c \"\\n--- 赋值时的隐式转换 ---\\n\"; MyString s2 = 20; // 3. 用整数 20 来“赋值” return 0; } 程序输出：\n--- 显式调用 --- MyString(10) 被调用了！ 打印: AAAAAAAAAA --- 隐式转换发生在这里 --- MyString(10) 被调用了！ 打印: AAAAAAAAAA --- 赋值时的隐式转换 --- MyString(20) 被调用了！ 分析：\n第 1 种情况 MyString s1(10); 是我们期望的，清晰明了。 第 2 种情况 printString(10);，我们明明传递的是 int，但代码居然通过了！因为编译器看到 printString 需要一个 MyString 对象，而你给了一个 int。它很“聪明”地发现 MyString 有一个 MyString(int) 构造函数，于是它就偷偷地用这个构造函数创建了一个临时的 MyString 对象，然后把这个临时对象传递给了函数。 第 3 种情况 MyString s2 = 20; 看起来像赋值，但实际上也发生了一次隐式转换，等价于 MyString s2(20);。 为什么这是个问题？ 这种“自作主张”的转换有时候会让代码变得难以理解，甚至引发难以察觉的 bug。一个读代码的人看到 printString(10);，可能完全意识不到这里发生了一次成本不低的、临时的对象构造和析构。代码的意图变得模糊了。我们希望对象的创建是有意的、明确的。\n二、解决方案：使用 explicit 关键字 explicit 的含义是“明确的”、“显式的”。把它放在构造函数前面，就等于在告诉编译器：\n“嘿，这个构造函数只能用于显式的对象创建，不许用它来进行任何形式的隐式转换！”\n让我们给刚才的构造函数加上 explicit：\nclass MyString { public: // 唯一的改动：加上 explicit explicit MyString(int n) : m_str(n, 'A') { std::cout \u003c\u003c \"MyString(\" \u003c\u003c n \u003c\u003c \") 被调用了！\\n\"; } // ... 其他部分不变 ... }; 现在，我们再次尝试编译之前的 main 函数：\nint main() { // 显式调用，依然正确 MyString s1(10); printString(s1); // 隐式转换，现在会导致编译错误！ // printString(10); // 错误！no suitable conversion function from \"int\" to \"MyString\" exists // 赋值时的隐式转换，现在也同样会导致编译错误！ // MyString s2 = 20; // 错误！ // 如果你真的想这么做，必须写得非常明确： printString(MyString(10)); // 正确，显式地创建了一个临时对象 MyString s2(20); // 正确，这是显式构造 return 0; } 结果： 加上 explicit 后，所有可能产生歧义的、隐式的转换都被编译器禁止了，它会直接报错。这迫使程序员必须明确地写出 MyString(10)，让代码的意图变得一清二楚。\n总结与黄金法则 explicit 的作用： 修饰单参数构造函数（或所有参数都有默认值的多参数构造函数），禁止其被用于隐式类型转换。\n为什么要用它？\n防止意外：避免因编译器“自作聪明”而导致的非预期对象构造。 提高代码清晰度：让每一次对象创建都成为一次明确、有意的行为。 减少潜在 Bug：避免了因隐式转换带来的性能损耗或逻辑错误。 黄金法则： 在 C++ 中，一个好的编程习惯是：给所有可以被单个参数调用的构造函数都加上 explicit 关键字，除非你真的有明确的、充分的理由希望它能进行隐式转换（比如，std::string 可以从 const char* 隐式构造，这是为了方便）。\n（自 C++11 起，explicit 也可以用于类型转换运算符，以阻止对象被隐式转换为其他类型，原理类似。）\n","wordCount":"290","inLanguage":"en","datePublished":"2025-07-12T10:35:00Z","dateModified":"2025-07-12T10:35:00Z","author":{"@type":"Person","name":"Mao"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/"},"publisher":{"@type":"Organization","name":"Mao's Blog","logo":{"@type":"ImageObject","url":"https://Mist2233.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://Mist2233.github.io/ accesskey=h title="Mao's Blog (Alt + H)">Mao's Blog</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://Mist2233.github.io/posts/ title="✍️ 博客"><span>✍️ 博客</span></a></li><li><a href=https://Mist2233.github.io/categories/ title="🗂️ 分类"><span>🗂️ 分类</span></a></li><li><a href=https://Mist2233.github.io/tags/ title="🏷️ 标签"><span>🏷️ 标签</span></a></li><li><a href=https://github.com/Mist2233 title="🐙 GitHub"><span>🐙 GitHub</span>&nbsp;
+<svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">explicit关键字</h1><div class=post-meta><span title='2025-07-12 10:35:00 +0000 UTC'>July 12, 2025</span>&nbsp;·&nbsp;Mao</div></header><div class=post-content><p>好的，我们来深入解析 <code>explicit</code> 这个虽小但非常重要的关键字。</p><p>你的理解完全正确！<code>explicit</code> 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。</p><hr><h3 id=一问题根源什么是构造函数的隐式转换>一、问题根源：什么是构造函数的“隐式转换”？<a hidden class=anchor aria-hidden=true href=#一问题根源什么是构造函数的隐式转换>#</a></h3><p>在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的<strong>构造函数可以只用一个参数来调用</strong>，那么这个构造函数就可能被编译器用来进行<strong>隐式转换 (Implicit Conversion)</strong>。</p><p>让我们来看一个没有 <code>explicit</code> 的“事故现场”：</p><p><strong>场景设定</strong>：我们有一个字符串类 <code>MyString</code>，它有一个构造函数，可以接受一个整数 <code>n</code> 来创建一个由 <code>n</code> 个 <code>'A'</code> 组成的字符串。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;string&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyString</span> {
+</span></span><span style=display:flex><span><span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    std<span style=color:#f92672>::</span>string m_str;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 这个构造函数可以用一个 int 参数来调用
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    MyString(<span style=color:#66d9ef>int</span> n) <span style=color:#f92672>:</span> m_str(n, <span style=color:#e6db74>&#39;A&#39;</span>) {
+</span></span><span style=display:flex><span>        std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;MyString(&#34;</span> <span style=color:#f92672>&lt;&lt;</span> n <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;) 被调用了！</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span><span style=color:#f92672>*</span> <span style=color:#a6e22e>c_str</span>() <span style=color:#66d9ef>const</span> { <span style=color:#66d9ef>return</span> m_str.c_str(); }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 这是一个希望接收 MyString 对象的函数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>printString</span>(<span style=color:#66d9ef>const</span> MyString<span style=color:#f92672>&amp;</span> s) {
+</span></span><span style=display:flex><span>    std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;打印: &#34;</span> <span style=color:#f92672>&lt;&lt;</span> s.c_str() <span style=color:#f92672>&lt;&lt;</span> std<span style=color:#f92672>::</span>endl;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>现在，在 <code>main</code> 函数中，我们可能会写出这样的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;--- 显式调用 ---</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>;
+</span></span><span style=display:flex><span>    MyString s1(<span style=color:#ae81ff>10</span>); <span style=color:#75715e>// 1. 显式创建对象，意图清晰
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    printString(s1);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>--- 隐式转换发生在这里 ---</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>;
+</span></span><span style=display:flex><span>    printString(<span style=color:#ae81ff>10</span>); <span style=color:#75715e>// 2. 传递了一个整数 10
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    
+</span></span><span style=display:flex><span>    std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>--- 赋值时的隐式转换 ---</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>;
+</span></span><span style=display:flex><span>    MyString s2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>20</span>; <span style=color:#75715e>// 3. 用整数 20 来“赋值”
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>程序输出：</strong></p><pre tabindex=0><code>--- 显式调用 ---
+MyString(10) 被调用了！
+打印: AAAAAAAAAA
+
+--- 隐式转换发生在这里 ---
+MyString(10) 被调用了！
+打印: AAAAAAAAAA
+
+--- 赋值时的隐式转换 ---
+MyString(20) 被调用了！
+</code></pre><p><strong>分析：</strong></p><ul><li>第 1 种情况 <code>MyString s1(10);</code> 是我们期望的，清晰明了。</li><li>第 2 种情况 <code>printString(10);</code>，我们明明传递的是 <code>int</code>，但代码居然通过了！因为编译器看到 <code>printString</code> 需要一个 <code>MyString</code> 对象，而你给了一个 <code>int</code>。它很“聪明”地发现 <code>MyString</code> 有一个 <code>MyString(int)</code> 构造函数，于是它就<strong>偷偷地</strong>用这个构造函数创建了一个临时的 <code>MyString</code> 对象，然后把这个临时对象传递给了函数。</li><li>第 3 种情况 <code>MyString s2 = 20;</code> 看起来像赋值，但实际上也发生了一次隐式转换，等价于 <code>MyString s2(20);</code>。</li></ul><p><strong>为什么这是个问题？</strong>
+这种“自作主张”的转换有时候会让代码变得难以理解，甚至引发难以察觉的 bug。一个读代码的人看到 <code>printString(10);</code>，可能完全意识不到这里发生了一次成本不低的、临时的对象构造和析构。代码的意图变得模糊了。我们希望对象的创建是<strong>有意的、明确的</strong>。</p><hr><h3 id=二解决方案使用-explicit-关键字>二、解决方案：使用 <code>explicit</code> 关键字<a hidden class=anchor aria-hidden=true href=#二解决方案使用-explicit-关键字>#</a></h3><p><code>explicit</code> 的含义是“<strong>明确的</strong>”、“<strong>显式的</strong>”。把它放在构造函数前面，就等于在告诉编译器：</p><blockquote><p><strong>“嘿，这个构造函数只能用于显式的对象创建，不许用它来进行任何形式的隐式转换！”</strong></p></blockquote><p>让我们给刚才的构造函数加上 <code>explicit</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyString</span> {
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 唯一的改动：加上 explicit
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>explicit</span> MyString(<span style=color:#66d9ef>int</span> n) <span style=color:#f92672>:</span> m_str(n, <span style=color:#e6db74>&#39;A&#39;</span>) {
+</span></span><span style=display:flex><span>        std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;MyString(&#34;</span> <span style=color:#f92672>&lt;&lt;</span> n <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;) 被调用了！</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ... 其他部分不变 ...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>};
+</span></span></code></pre></div><p>现在，我们再次尝试编译之前的 <code>main</code> 函数：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 显式调用，依然正确
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    MyString s1(<span style=color:#ae81ff>10</span>);
+</span></span><span style=display:flex><span>    printString(s1);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 隐式转换，现在会导致编译错误！
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// printString(10); // 错误！no suitable conversion function from &#34;int&#34; to &#34;MyString&#34; exists
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 赋值时的隐式转换，现在也同样会导致编译错误！
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// MyString s2 = 20; // 错误！
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 如果你真的想这么做，必须写得非常明确：
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    printString(MyString(<span style=color:#ae81ff>10</span>)); <span style=color:#75715e>// 正确，显式地创建了一个临时对象
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    MyString s2(<span style=color:#ae81ff>20</span>);          <span style=color:#75715e>// 正确，这是显式构造
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>结果</strong>：
+加上 <code>explicit</code> 后，所有可能产生歧义的、隐式的转换都被编译器禁止了，它会直接报错。这迫使程序员必须明确地写出 <code>MyString(10)</code>，让代码的意图变得一清二楚。</p><hr><h3 id=总结与黄金法则>总结与黄金法则<a hidden class=anchor aria-hidden=true href=#总结与黄金法则>#</a></h3><ul><li><p><strong><code>explicit</code> 的作用</strong>：
+修饰<strong>单参数构造函数</strong>（或所有参数都有默认值的多参数构造函数），禁止其被用于<strong>隐式类型转换</strong>。</p></li><li><p><strong>为什么要用它？</strong></p><ul><li><strong>防止意外</strong>：避免因编译器“自作聪明”而导致的非预期对象构造。</li><li><strong>提高代码清晰度</strong>：让每一次对象创建都成为一次明确、有意的行为。</li><li><strong>减少潜在 Bug</strong>：避免了因隐式转换带来的性能损耗或逻辑错误。</li></ul></li><li><p><strong>黄金法则</strong>：
+在 C++ 中，一个好的编程习惯是：<strong>给所有可以被单个参数调用的构造函数都加上 <code>explicit</code> 关键字，除非你真的有明确的、充分的理由希望它能进行隐式转换</strong>（比如，<code>std::string</code> 可以从 <code>const char*</code> 隐式构造，这是为了方便）。</p><p>（自 C++11 起，<code>explicit</code> 也可以用于类型转换运算符，以阻止对象被隐式转换为其他类型，原理类似。）</p></li></ul></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
