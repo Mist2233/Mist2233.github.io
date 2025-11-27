@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hello! on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Hello! on Mao's Blog</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Wed, 26 Nov 2025 08:38:45 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>命名空间</title><link>https://Mist2233.github.io/posts/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</link><pubDate>Wed, 26 Nov 2025 08:38:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</guid><description>&lt;h2 id="命名空间-namespace"&gt;命名空间 namespace&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hello! on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Hello! on Mao's Blog</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Thu, 27 Nov 2025 16:47:57 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>RAII设计哲学</title><link>https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</link><pubDate>Thu, 27 Nov 2025 16:47:57 +0800</pubDate><guid>https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</guid><description>&lt;h2 id="raii-resource-acquisition-is-initialization"&gt;RAII: Resource Acquisition Is Initialization&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我看你的代码风格很现代。在 C++ 资源管理中，&lt;strong&gt;RAII&lt;/strong&gt; 是一个核心概念。&lt;/p&gt;
+&lt;p&gt;你能用自己的话，简单解释一下什么是 RAII 吗？它的&lt;strong&gt;中文含义&lt;/strong&gt;是什么？它主要用来解决什么问题？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RAII 的全称是 Resource Acquisition Is Initialization，中文直译过来就是“资源获取即初始化”。意思就是，我们希望在获取资源（比如取用一个指针）时，取用到的资源不是未初始化的（比如说野指针），而是已经经过规范初始化的、安全可用的资源。&lt;/li&gt;
+&lt;li&gt;它主要用来解决的问题，就是未经许可的内存访问。比如，如果我访问一个野指针，其中的内容可能恰好指向程序的某些重要区域，当我修改其中数据时，程序就直接崩溃了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这是我对 RAII 这个概念自己的理解，如有不正确之处，还希望批评指正。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;你的回答非常坦诚，是基于字面意思的合理推测，但其实 &lt;strong&gt;RAII 的真正含义和你现在的理解有比较大的偏差&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;你现在的理解更偏向于“初始化安全”或者“避免野指针”，这当然也是好的编程习惯，但 RAII 的核心在于&lt;strong&gt;生命周期的绑定&lt;/strong&gt;和&lt;strong&gt;自动释放&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我们来纠正一下这个概念。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (纠正与引导):&lt;/strong&gt; 你的直觉很有意思，但 RAII 这个名字其实起得有点“烂”，非常容易让人产生和你一样的误解（以为重点在初始化）。&lt;/p&gt;
+&lt;p&gt;RAII 的核心其实不在于“获取资源时要初始化”，而在于 &lt;strong&gt;“资源的生命周期应该与对象的生命周期绑定”&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;关键点在于：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;构造函数 (Acquisition)&lt;/strong&gt;：当我们在栈上创建一个对象（比如一个类实例）时，我们在它的&lt;strong&gt;构造函数&lt;/strong&gt;里去“获取”资源（比如 &lt;code&gt;new&lt;/code&gt; 一块内存、打开一个文件、上一个锁）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;析构函数 (Release)&lt;/strong&gt;：这是最最关键的一步。当这个对象离开作用域（生命周期结束）时，它的&lt;strong&gt;析构函数&lt;/strong&gt;会被编译器&lt;strong&gt;自动调用&lt;/strong&gt;。我们就在析构函数里去“释放”那个资源（比如 &lt;code&gt;delete&lt;/code&gt; 内存、关闭文件、解锁）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;所以，RAII 解决的核心问题是：资源泄漏 (Resource Leak)。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;举个最经典的例子：&lt;/strong&gt;
+如果不使用 RAII：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;&lt;span style="color:#f92672"&gt;*&lt;/span&gt; p &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;[&lt;span style="color:#ae81ff"&gt;100&lt;/span&gt;]; &lt;span style="color:#75715e"&gt;// 获取资源
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (some_error) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 糟糕！如果这里直接 return 或抛出异常，
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#75715e"&gt;// 下面的 delete 永远不会执行，内存泄漏！
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;delete&lt;/span&gt;[] p; &lt;span style="color:#75715e"&gt;// 释放资源
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果使用 RAII（比如 &lt;code&gt;std::vector&lt;/code&gt; 就是一个 RAII 包装类）：&lt;/p&gt;</description></item><item><title>命名空间</title><link>https://Mist2233.github.io/posts/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</link><pubDate>Wed, 26 Nov 2025 08:38:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</guid><description>&lt;h2 id="命名空间-namespace"&gt;命名空间 namespace&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们经常看到 &lt;code&gt;std::cout&lt;/code&gt;、&lt;code&gt;std::vector&lt;/code&gt; 这样的写法，这里的 &lt;code&gt;std&lt;/code&gt; 就是一个&lt;strong&gt;命名空间&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;请问，&lt;strong&gt;命名空间 (namespace)&lt;/strong&gt; 的主要作用是什么？它解决了 C++（以及很多其他编程语言）中一个什么样的痛点？&lt;/p&gt;
 &lt;p&gt;此外，我们在 &lt;code&gt;.cpp&lt;/code&gt; 文件中经常会看到 &lt;code&gt;using namespace std;&lt;/code&gt; 这样的写法。请问，在&lt;strong&gt;头文件 (&lt;code&gt;.h&lt;/code&gt;)&lt;/strong&gt; 中使用 &lt;code&gt;using namespace std;&lt;/code&gt; 是一个好的习惯吗？为什么？&lt;/p&gt;
