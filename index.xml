@@ -1,16 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mao's Blog</title><link>https://Mist2233.github.io/</link><description>Recent content on Mao's Blog</description><generator>Hugo -- 0.156.0</generator><language>zh-cn</language><lastBuildDate>Thu, 12 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Mist2233.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>时光胶囊</title><link>https://Mist2233.github.io/memories/</link><pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate><guid>https://Mist2233.github.io/memories/</guid><description>&lt;div class="timeline-container"&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mao's Blog</title><link>https://Mist2233.github.io/</link><description>Recent content on Mao's Blog</description><generator>Hugo -- 0.156.0</generator><language>zh-cn</language><lastBuildDate>Thu, 12 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Mist2233.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>时光胶囊</title><link>https://Mist2233.github.io/memories/</link><pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate><guid>https://Mist2233.github.io/memories/</guid><description>&lt;!--
+所有内容请在 data/memories.yml 中管理
+--&gt;
+&lt;div class="timeline-container"&gt;
 &lt;div class="timeline-item"&gt;
-&lt;div class="timeline-date"&gt;2025-05-20&lt;/div&gt;
+&lt;div class="timeline-date"&gt;2023-11-12&lt;/div&gt;
 &lt;div class="timeline-content"&gt;
-这是我们在外滩拍的第一张合照。当时风很大，但阳光很好。
-&lt;!-- &lt;img src="https://Mist2233.github.io/images/memories/first_photo.jpg" class="timeline-img"&gt; --&gt;
-&lt;p&gt;（这里可以放图片）&lt;/p&gt;
+毛天宇说——&lt;br&gt;“双十一约会容易被打，所以我们11.12再约会吧——”&lt;br&gt;/转圈/跳跳/挥手/爱情 @疯纸鸟 &lt;br&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="timeline-item"&gt;
-&lt;div class="timeline-date"&gt;2026-01-25&lt;/div&gt;
+&lt;div class="timeline-date"&gt;2023-11-01&lt;/div&gt;
 &lt;div class="timeline-content"&gt;
-泰山登顶！南天门比想象中还要难爬。
+“你说活在明天 活在期待，&lt;br&gt;不如活得今天很自在。”&lt;br&gt; ——记录一起跑步打卡的一天/玫瑰&lt;br&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="timeline-item"&gt;
+&lt;div class="timeline-date"&gt;2023-10-26&lt;/div&gt;
+&lt;div class="timeline-content"&gt;
+那今天是更爱毛大的一天捏/玫瑰&lt;br&gt;跟毛大分享了闹别扭那天写的作文。&lt;br&gt;得到了毛大的回复/太阳&lt;br&gt;原来我的矫情和悲观也可以是被包容的耶✌🏻&lt;br&gt;呜呜呜好感动~&lt;br&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="timeline-item"&gt;
+&lt;div class="timeline-date"&gt;2023-10-25&lt;/div&gt;
+&lt;div class="timeline-content"&gt;
+我们在恋人空间的第一天🎉🎉🎉&lt;br&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="timeline-item"&gt;
+&lt;div class="timeline-date"&gt;2023-10-25&lt;/div&gt;
+&lt;div class="timeline-content"&gt;
+好奇在这里发消息你真的能收得到吗/疑问/疑问/疑问&lt;br&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -23,7 +42,7 @@ height: 12px; width: 12px; position: absolute; left: -31px; top: 5px;
 }
 .timeline-date { font-weight: bold; color: #666; font-size: 0.9em; margin-bottom: 5px; }
 .timeline-content { background: var(--entry); padding: 15px; border-radius: 8px; box-shadow: var(--shadow); }
-.timeline-img { max-width: 100%; border-radius: 5px; margin-top: 10px; }
+.timeline-img { max-width: 100%; border-radius: 5px; margin-top: 10px; display: block; }
 &lt;/style&gt;</description></item><item><title>SFINAE原则</title><link>https://Mist2233.github.io/posts/sfinae%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 02 Dec 2025 09:12:51 +0800</pubDate><guid>https://Mist2233.github.io/posts/sfinae%E5%8E%9F%E5%88%99/</guid><description>&lt;h2 id="sfinae-substitution-failure-is-not-an-error"&gt;SFINAE (Substitution Failure Is Not An Error)&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们之前聊过模板。在 C++ 模板编程中，有一个非常著名的缩写词叫 &lt;strong&gt;SFINAE&lt;/strong&gt; (读作 &amp;ldquo;sfi-nay&amp;rdquo;)。&lt;/p&gt;
 &lt;p&gt;请问，你知道 SFINAE 代表什么意思吗？或者你能简单描述一下，当编译器在实例化模板时，如果遇到了一个&lt;strong&gt;无效的类型替换&lt;/strong&gt;，它会怎么做？是直接报错停止编译，还是会尝试别的方案？&lt;/p&gt;
