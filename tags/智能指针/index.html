@@ -15,7 +15,7 @@ RAII 的核心其实不在于“获取资源时要初始化”，而在于 “�
 构造函数 (Acquisition)：当我们在栈上创建一个对象（比如一个类实例）时，我们在它的构造函数里去“获取”资源（比如 new 一块内存、打开一个文件、上一个锁）。 析构函数 (Release)：这是最最关键的一步。当这个对象离开作用域（生命周期结束）时，它的析构函数会被编译器自动调用。我们就在析构函数里去“释放”那个资源（比如 delete 内存、关闭文件、解锁）。 所以，RAII 解决的核心问题是：资源泄漏 (Resource Leak)。
 举个最经典的例子： 如果不使用 RAII：
 void func() { int* p = new int[100]; // 获取资源 if (some_error) { // 糟糕！如果这里直接 return 或抛出异常， // 下面的 delete 永远不会执行，内存泄漏！ return; } delete[] p; // 释放资源 } 如果使用 RAII（比如 std::vector 就是一个 RAII 包装类）：
-...</p></div><footer class=entry-footer><span title='2025-11-27 16:47:57 +0800 +0800'>November 27, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to RAII设计哲学" href=https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+...</p></div><footer class=entry-footer><span title='2025-11-27 16:47:57 +0800 +0800'>November 27, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to RAII设计哲学" href=https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/></a></article></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

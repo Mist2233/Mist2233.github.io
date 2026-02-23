@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>堆 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E5%A0%86/</link><description>Recent content in 堆 on Mao's Blog</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Fri, 03 Oct 2025 14:32:45 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E5%A0%86/index.xml" rel="self" type="application/rss+xml"/><item><title>栈、堆与栈溢出</title><link>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</link><pubDate>Fri, 03 Oct 2025 14:32:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</guid><description>&lt;h2 id="栈和堆的比较-stack-and-heap"&gt;栈和堆的比较 Stack and Heap&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>堆 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E5%A0%86/</link><description>Recent content in 堆 on Mao's Blog</description><generator>Hugo -- 0.156.0</generator><language>zh-cn</language><lastBuildDate>Fri, 03 Oct 2025 14:32:45 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E5%A0%86/index.xml" rel="self" type="application/rss+xml"/><item><title>栈、堆与栈溢出</title><link>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</link><pubDate>Fri, 03 Oct 2025 14:32:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</guid><description>&lt;h2 id="栈和堆的比较-stack-and-heap"&gt;栈和堆的比较 Stack and Heap&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，C++ 程序在运行时，局部变量通常分配在&lt;strong&gt;栈 (Stack)&lt;/strong&gt; 上，而动态分配的内存则来自&lt;strong&gt;堆 (Heap)&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;请你从&lt;strong&gt;内存管理方式&lt;/strong&gt;、&lt;strong&gt;分配效率&lt;/strong&gt;、&lt;strong&gt;空间大小&lt;/strong&gt;和&lt;strong&gt;数据生命周期&lt;/strong&gt;这四个角度，详细对比一下栈和堆的主要区别。&lt;/p&gt;
 &lt;p&gt;回答：&lt;/p&gt;
@@ -17,7 +17,7 @@
 &lt;ul&gt;
 &lt;li&gt;可以，除了递归之外，两个函数无限制地相互调用也可以出发栈溢出，比如下面的例子。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;funcA&lt;/span&gt;();
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;funcA&lt;/span&gt;();
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;funcB&lt;/span&gt;();
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;funcA&lt;/span&gt;() {
@@ -40,7 +40,7 @@
 &lt;ul&gt;
 &lt;li&gt;我明白了，可以通过在函数内部分配一个巨大的数组，来耗尽栈空间，从而实现栈溢出。比如下面的例子：&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;func&lt;/span&gt;() {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; bigArray[&lt;span style="color:#ae81ff"&gt;10000000000000000&lt;/span&gt;];
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}

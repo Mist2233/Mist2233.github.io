@@ -12,7 +12,7 @@ class MyClass { public: MyClass() = default; // 显式地要求编译器生成�
 一旦用户为类定义了任何一种构造函数（无论带不带参数），编译器就会“罢工”，不再自动生成默认（无参）构造函数。
 所以，在你给出的例子中：
 因为你已经定义了一个 MyClass(int val)，编译器就不会再自动生成 MyClass() 了。 如果我们删掉 MyClass() = default; 这一行，那么 MyClass 类就没有无参构造函数。此时，MyClass obj; 这样的代码就会编译失败，因为它找不到匹配的构造函数。 = default 的作用： MyClass() = default; 这一行，就是你（程序员）在向编译器明确地下指令：
-...</p></div><footer class=entry-footer><span title='2025-10-16 09:05:16 +0800 +0800'>October 16, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to default和delete" href=https://Mist2233.github.io/posts/default%E5%92%8Cdelete/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+...</p></div><footer class=entry-footer><span title='2025-10-16 09:05:16 +0800 +0800'>October 16, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to default和delete" href=https://Mist2233.github.io/posts/default%E5%92%8Cdelete/></a></article></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

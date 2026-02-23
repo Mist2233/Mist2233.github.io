@@ -7,7 +7,7 @@
 NULL 是一个宏，它除了表示空指针之外，更常用的含义是表示 0，一个整数。 由于 NULL 既能表示空指针，又能表示 0，因此它会引发歧义。 比如，某个函数重载了两个版本，一个的参数类型是 int，而另一个参数类型是 char*。当输入 NULL 时，通常会调用参数为 int 的那个版本。 而使用 nullptr 则规避了这一风险。nullptr 是一个真正的空指针常量，它是一个特殊的类型 std::nullptr_t，可以隐式地转换为任何的指针类型，而不会和 int 类型混淆。 面试官 (总结与肯定): 你说的完全正确。我们来把这个过程再详细地梳理一遍。nullptr 诞生的核心原因是解决函数重载时的二义性。
 NULL 的“前世今生” NULL 是一个定义在 &lt;cstddef> 等头文件中的预处理宏。它的具体定义取决于编译器，但通常是下面两种之一：
 #define NULL 0 // 或者 #define NULL 0L // 或者在 C++ 编译器中，有时甚至是 #define NULL nullptr // 这是现代编译器的“向后兼容”行为 在 C++98/03 的时代，你可以认为 NULL 就是一个值为 0 的整型常量。
-...</p></div><footer class=entry-footer><span title='2025-09-18 08:33:33 +0800 +0800'>September 18, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to NULL和nullptr" href=https://Mist2233.github.io/posts/null%E5%92%8Cnullptr/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+...</p></div><footer class=entry-footer><span title='2025-09-18 08:33:33 +0800 +0800'>September 18, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to NULL和nullptr" href=https://Mist2233.github.io/posts/null%E5%92%8Cnullptr/></a></article></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

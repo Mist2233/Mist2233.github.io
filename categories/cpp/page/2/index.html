@@ -74,7 +74,7 @@ class MyString { private: char* data_; // 手动管理的裸指针 size_t size_;
 左值：有家（内存地址），能活得久。 右值：没家（没法取地址），是“过客”（马上就消失）。 右值引用 面试官 (引入新概念): 好的，既然我们知道了左值和右值的区别。C++11 为了配合移动语义，引入了一种新的引用类型，叫做右值引用 (rvalue reference)，用 && 表示。
 int x = 10; // x 是一个左值 int& l_ref = x; // 左值引用 l_ref 绑定到左值 x (OK) int&& r_ref = 20; // 右值引用 r_ref 绑定到右值 20 (OK) // int&& r_ref2 = x; // 错误！右值引用不能直接绑定到左值 请问，&& 这个右值引用的主要设计目的是什么？它和我们之前讨论的移动语义 (Move Semantics) 是如何关联起来的？
 ...</p></div><footer class=entry-footer><span title='2025-09-09 10:09:30 +0800 +0800'>September 9, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to 左值与右值" href=https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://Mist2233.github.io/categories/cpp/>«&nbsp;Prev&nbsp;
-</a><a class=next href=https://Mist2233.github.io/categories/cpp/page/3/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+</a><a class=next href=https://Mist2233.github.io/categories/cpp/page/3/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

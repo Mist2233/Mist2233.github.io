@@ -10,7 +10,7 @@
 它的行为比我们想象的要“智能”一点，它遵循一个规则：
 对于类类型的成员 (Class-type Members)：如果这个类成员有自己的默认构造函数，那么编译器生成的默认构造函数就会自动调用这个成员的默认构造函数。
 class Engine { public: Engine() { std::cout &lt;&lt; "Engine constructed\n"; } }; class Car { public: // 没有定义任何构造函数 private: Engine engine_; // 类类型成员 }; // 当你创建 Car c; 时， // Car 的合成默认构造函数会被调用， // 它会自动调用 Engine 的默认构造函数， // 所以你会看到 "Engine constructed" 输出。 对于内置类型的成员 (Built-in Type Members, e.g., int, double, 指针)：
-...</p></div><footer class=entry-footer><span title='2025-09-07 21:25:43 +0800 +0800'>September 7, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to 构造函数相关知识" href=https://Mist2233.github.io/posts/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+...</p></div><footer class=entry-footer><span title='2025-09-07 21:25:43 +0800 +0800'>September 7, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to 构造函数相关知识" href=https://Mist2233.github.io/posts/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/></a></article></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
