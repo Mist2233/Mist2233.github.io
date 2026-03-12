@@ -39,7 +39,15 @@ class Base { public: int public_member; protected: int protected_member; private
 让我们来看一个没有 explicit 的“事故现场”：
 场景设定：我们有一个字符串类 MyString，它有一个构造函数，可以接受一个整数 n 来创建一个由 n 个 'A' 组成的字符串。
 #include &lt;iostream> #include &lt;string> class MyString { private: std::string m_str; public: // 这个构造函数可以用一个 int 参数来调用 MyString(int n) : m_str(n, 'A') { std::cout &lt;&lt; "MyString(" &lt;&lt; n &lt;&lt; ") 被调用了！\n"; } const char* c_str() const { return m_str.c_str(); } }; // 这是一个希望接收 MyString 对象的函数 void printString(const MyString& s) { std::cout &lt;&lt; "打印: " &lt;&lt; s.c_str() &lt;&lt; std::endl; } 现在，在 main 函数中，我们可能会写出这样的代码：
-...</p></div><footer class=entry-footer><span title='2025-07-12 10:35:00 +0000 UTC'>July 12, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to explicit关键字" href=https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://Mist2233.github.io/posts/page/3/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
+...</p></div><footer class=entry-footer><span title='2025-07-12 10:35:00 +0000 UTC'>July 12, 2025</span>&nbsp;·&nbsp;Mao</footer><a class=entry-link aria-label="post link to explicit关键字" href=https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent></h2></header><div class=entry-content><p>智能指针相关 Cpp 智能指针是什么？请简单介绍一下。
+[!NOTE]- 参考回答 智能指针是一个封装了原始指针的类模板，它的主要作用就是通过 RAII 原则，在指针对象析构时自动释放资源，从而避免“忘记手动 delete”导致的资源泄漏，或者调用野指针的问题。
+所谓的 RAII，指的就是：
+构造时：接过原始指针，这代表着接管了原始指针的资源。 析构时：在析构函数里自动释放资源。 它将原本需要人工管理的“内存申请与释放”，变成了编译器自动管理的“局部变量生命周期”。 C++11 及以后，主要提供了三种智能指针，代表三种管理资源的逻辑： (1) std::unique_ptr —— “独占权”
+所有权：同一时间只能有一个 unique_ptr 指向该资源。 性能：零开销（Zero Overhead）。它的执行效率和原始指针几乎一模一样。 限制：不能拷贝，只能移动（std::move）。 场景：最常用的指针。适用于明确知道“谁是主人”的场景。 (2) std::shared_ptr —— “共享权”
+所有权：多个指针可以指向同一个资源。 机制：正如我们刚才聊的，它通过控制块里的引用计数来工作。 性能：有一定开销（需要原子操作增减计数，需要额外堆内存存控制块）。 场景：资源需要被多个模块共享，且无法确定谁最后退出的场景。 (3) std::weak_ptr —— “观察者”
+所有权：不拥有所有权。它只是一个旁观者。 机制：指向 shared_ptr 管理的对象，但不增加强引用计数。 场景：解决 shared_ptr 的循环引用问题，或者作为缓存监控（防悬空）。 你提到了 shared_ptr，请问它是线程安全的吗？
+[!NOTE]- 参考回答 最准确的回答是：shared_ptr 的引用计数是线程安全的，但 shared_ptr 对象本身以及它管理的数据不是。
+...</p></div><footer class=entry-footer>Mao</footer><a class=entry-link aria-label="post link to " href=https://Mist2233.github.io/posts/cpp%E5%85%AB%E8%82%A1%E9%9D%A2%E8%AF%95%E9%A2%98/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://Mist2233.github.io/posts/page/3/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://Mist2233.github.io/>Mao's Blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
