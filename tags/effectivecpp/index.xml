@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>EffectiveCpp on Mao's Blog</title><link>https://Mist2233.github.io/tags/effectivecpp/</link><description>Recent content in EffectiveCpp on Mao's Blog</description><generator>Hugo -- 0.160.1</generator><language>zh-cn</language><lastBuildDate>Thu, 23 Apr 2026 08:17:01 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/effectivecpp/index.xml" rel="self" type="application/rss+xml"/><item><title>1-AccustomingYourselfToC++</title><link>https://Mist2233.github.io/posts/1-accustomingyourselftoc++/</link><pubDate>Thu, 23 Apr 2026 08:17:01 +0800</pubDate><guid>https://Mist2233.github.io/posts/1-accustomingyourselftoc++/</guid><description>&lt;h2 id="item1-view-cpp-as-a-federation-of-languages"&gt;Item1: View Cpp as a federation of languages&lt;/h2&gt;
+&lt;p&gt;C++可以看成是下面四种不同语言的组合：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C 语言&lt;/li&gt;
+&lt;li&gt;面向对象的 C++：主要针对封装、多态、继承、虚函数等等。&lt;/li&gt;
+&lt;li&gt;模板 C++：主要针对泛型编程。&lt;/li&gt;
+&lt;li&gt;The STL（标准模板库）：最常用且特别的模板库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;每种对应不同的策略，需要根据情况选择对应的策略。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!NOTE]
+Rules for effective C++ programming vary, depending on the part of C++ you are using.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="item2-prefer-consts-enums-and-inlines-to-define"&gt;Item2: Prefer &lt;code&gt;consts&lt;/code&gt;, &lt;code&gt;enums&lt;/code&gt; and &lt;code&gt;inlines&lt;/code&gt; to &lt;code&gt;#define&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;#define&lt;/code&gt; 在 preprocess 阶段完成，而前面三个关键字都是在 compile 阶段完成的。&lt;/p&gt;
+&lt;p&gt;符号表：symbol table。这个概念和编译的关系是？符号表似乎就是一个存了所有变量名字的大表吧。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#define&lt;/code&gt; 出来的东西本质上不是变量，不会进到符号表里面，这给我们 debug 带来困难。&lt;/p&gt;
+&lt;p&gt;代码体积更小（不会有多余的 copy），含义更加明确。&lt;/p&gt;
+&lt;p&gt;两类特殊情况：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Constant pointer：需要指针值和指针指向的指都被定义成常量，这样这个常量才算真正的“常量”。&lt;/li&gt;
+&lt;li&gt;Class-specific constants：限制一个常量的作用域在这个类内部，则这个常量是这个类的成员。并且，为了使得这个常量只有一个 copy，还要声明其为 &lt;code&gt;static&lt;/code&gt; 类型。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GamePlayer&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;NumTurns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;scores&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;NumTurns&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;上面是对 &lt;code&gt;NumTurns&lt;/code&gt; 这个常量的 declaration，而不是 definition。这两个有什么区别吗？&lt;/p&gt;</description></item></channel></rss>
