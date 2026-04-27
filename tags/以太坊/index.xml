@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>以太坊 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E4%BB%A5%E5%A4%AA%E5%9D%8A/</link><description>Recent content in 以太坊 on Mao's Blog</description><generator>Hugo -- 0.160.1</generator><language>zh-cn</language><lastBuildDate>Mon, 08 Sep 2025 22:27:55 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E4%BB%A5%E5%A4%AA%E5%9D%8A/index.xml" rel="self" type="application/rss+xml"/><item><title>什么是Geth？</title><link>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</link><pubDate>Mon, 08 Sep 2025 22:27:55 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</guid><description>&lt;h2 id="什么是-geth"&gt;什么是 Geth？&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>以太坊 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E4%BB%A5%E5%A4%AA%E5%9D%8A/</link><description>Recent content in 以太坊 on Mao's Blog</description><generator>Hugo -- 0.160.1</generator><language>zh-cn</language><lastBuildDate>Fri, 12 Sep 2025 20:03:57 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E4%BB%A5%E5%A4%AA%E5%9D%8A/index.xml" rel="self" type="application/rss+xml"/><item><title>Geth的Snapshot机制</title><link>https://Mist2233.github.io/posts/geth%E7%9A%84snapshot%E6%9C%BA%E5%88%B6/</link><pubDate>Fri, 12 Sep 2025 20:03:57 +0800</pubDate><guid>https://Mist2233.github.io/posts/geth%E7%9A%84snapshot%E6%9C%BA%E5%88%B6/</guid><description>&lt;p&gt;&lt;a href="https://blog.ethereum.org/2020/07/17/ask-about-geth-snapshot-acceleration"&gt;Ask about Geth: Snapshot acceleration | Ethereum Foundation Blog&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;核心问题：&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;“Could you share how the flat db structure is different from the legacy structure?” (“Ask about Geth: Snapshot acceleration”)&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;意思是，扁平化数据结构 (即 Snapshot) 和原本的传统结构有何不同？&lt;/p&gt;
+&lt;h2 id="state-in-ethereum-以太坊组织数据的方式"&gt;State in Ethereum 以太坊组织数据的方式&lt;/h2&gt;
+&lt;p&gt;MPT (Merkle Patricia Tree) = Merkle Tree + Patricia Tree&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Merkle Tree 保证了“可验证性”，即无需提供整个数据集，而只需要路径上的一部分数据，即可验证数据真伪。（高效）&lt;/li&gt;
+&lt;li&gt;Patricia Tree 保证了“确定性”，即：对于任何一组确定的键值对，它们组成的 Patricia Tree 的结构是唯一的。（共识）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MPT 为何能解决验证问题呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;保证了共识&lt;/strong&gt;：由于 Patricia Tree 的确定性，所有拥有相同世界状态的节点，必然会计算出&lt;strong&gt;完全相同的 State Root&lt;/strong&gt;。这使得全网可以通过比对一个简短的哈希值来确认彼此的状态是否一致，这是共识的基础。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;实现了轻客户端验证&lt;/strong&gt;：由于 Merkle Tree 的可验证性，一个“轻客户端”（只存储区块头，知道 State Root）可以向一个“全节点”请求某个账户的余额。全节点会返回这个余额数据，并附上一条“默克尔证明”。轻客户端就可以在不下载整个世界状态（可能高达数TB）的情况下，仅用这个小小的证明来验证这个余额是否真实、可信，并且确实是包含在那个 State Root 所代表的世界状态里的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;“The cost of logarithmic updates and logarithmic verification is logarithmic reads and logarithmic storage for every individual key.” (“Ask about Geth: Snapshot acceleration”)&lt;/p&gt;</description></item><item><title>什么是Geth？</title><link>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</link><pubDate>Mon, 08 Sep 2025 22:27:55 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E4%BB%80%E4%B9%88%E6%98%AFgeth/</guid><description>&lt;h2 id="什么是-geth"&gt;什么是 Geth？&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Geth&lt;/strong&gt; 是 “&lt;strong&gt;Go Ethereum&lt;/strong&gt;” 的缩写。&lt;/p&gt;
 &lt;p&gt;简单来说，&lt;strong&gt;Geth 是一个你可以下载并运行的软件程序，它能将你的计算机变成一个以太坊网络中的“节点”（一个参与者）。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;它是以太坊基金会官方开发的、用 Go 语言编写的，也是目前最流行、使用最广泛的以太坊客户端。&lt;/p&gt;
@@ -36,4 +51,35 @@ Geth 会开放一个“服务窗口”（RPC API），允许其他软件（比�
 &lt;/ol&gt;
 &lt;hr&gt;
 &lt;h2 id="总结"&gt;总结&lt;/h2&gt;
-&lt;p&gt;总而言之，&lt;strong&gt;Geth 是你进入和参与以太坊世界的大门和核心引擎&lt;/strong&gt;。没有像 Geth 这样的客户端软件，以太坊网络就无法运行，因为它正是由千千万万个运行着 Geth 的节点共同组成的。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;总而言之，&lt;strong&gt;Geth 是你进入和参与以太坊世界的大门和核心引擎&lt;/strong&gt;。没有像 Geth 这样的客户端软件，以太坊网络就无法运行，因为它正是由千千万万个运行着 Geth 的节点共同组成的。&lt;/p&gt;</description></item><item><title>是谁偷走了我的Gas？</title><link>https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/</link><pubDate>Sat, 06 Sep 2025 10:21:41 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%98%AF%E8%B0%81%E5%81%B7%E8%B5%B0%E4%BA%86%E6%88%91%E7%9A%84gas/</guid><description>&lt;p&gt;原文地址：&lt;a href="https://www.usenix.org/conference/fast25/presentation/he"&gt;Maat: Analyzing and Optimizing Overcharge on Blockchain Storage | USENIX&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="第一遍阅读后-5-10-分钟"&gt;第一遍阅读后 (5-10 分钟)&lt;/h2&gt;
+&lt;!--
+只读标题、摘要、引言、小标题、结论
+读完之后，关闭论文，凭自己的记忆概括，回答下面的问题
+--&gt;
+&lt;h3 id="这篇文章大概是关于什么的"&gt;这篇文章，大概是关于什么的？&lt;/h3&gt;
+&lt;p&gt;这篇文章主要讲的是作者团队开发了一个叫做 Maat 的工具，用来解决 Ethereum 中存储过度收费的问题。&lt;/p&gt;
+&lt;p&gt;这个 Maat 有三大好处：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;能在更精细的颗粒度上识别存储收费情况。(fine-grained)&lt;/li&gt;
+&lt;li&gt;基于共识开发，具有节点之间的连续性。(consensus-oriented)&lt;/li&gt;
+&lt;li&gt;实现资源的预分配。(resource pre-allocation)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以及，使用 Maat 的额外开销很小，且具有扩展性。&lt;/p&gt;
+&lt;h2 id="第二遍阅读后-约-1-小时"&gt;第二遍阅读后 (约 1 小时)&lt;/h2&gt;
+&lt;!--
+搞懂文章的核心论点、主要贡献和证据，但忽略复杂的数学证明和实现细节：
+1. 仔细阅读引言和结论。
+2. 仔细看懂所有的**图表 (Figures &amp; Tables)**。图表通常是文章信息的精华。
+3. 快速浏览正文，在旁边标记出你不懂的术语和关键的参考文献。
+4. 在读完后，用你自己的话，**写下一句话总结**：“这篇文章，通过 XX 方法，解决了 XX 问题，得出了 XX 结论。”
+--&gt;
+&lt;h3 id="论文核心问题-这篇文章想要解决的核心问题是"&gt;【论文核心问题】： 这篇文章想要解决的核心问题是？&lt;/h3&gt;
+&lt;p&gt;Three overcharge issues:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Continuous access to the same object within a block&lt;/li&gt;
+&lt;li&gt;Conitnuous access to the same object across a limited number of blocks&lt;/li&gt;
+&lt;li&gt;The deployment of duplicate contracts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="它的解决方案-作者提出的核心方法模型是"&gt;【它的解决方案】： 作者提出的核心方法/模型是？&lt;/h3&gt;
+&lt;p&gt;作者构建了一个工具：&lt;a href="https://github.com/hzysvilla/Maat"&gt;hzysvilla/Maat&lt;/a&gt;。它主要采用下面三种作用：&lt;/p&gt;</description></item></channel></rss>

@@ -7,11 +7,10 @@
 &lt;li&gt;The STL（标准模板库）：最常用且特别的模板库。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;每种对应不同的策略，需要根据情况选择对应的策略。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[!NOTE]
-Rules for effective C++ programming vary, depending on the part of C++ you are using.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id="item2-prefer-consts-enums-and-inlines-to-define"&gt;Item2: Prefer &lt;code&gt;consts&lt;/code&gt;, &lt;code&gt;enums&lt;/code&gt; and &lt;code&gt;inlines&lt;/code&gt; to &lt;code&gt;#define&lt;/code&gt;&lt;/h2&gt;
+&lt;div class="callout callout-note"&gt;
+&lt;p class="callout-header"&gt;Note&lt;/p&gt;
+&lt;div class="callout-body"&gt;&lt;p&gt;Rules for effective C++ programming vary, depending on the part of C++ you are using.&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="item2-prefer-consts-enums-and-inlines-to-define"&gt;Item2: Prefer &lt;code&gt;consts&lt;/code&gt;, &lt;code&gt;enums&lt;/code&gt; and &lt;code&gt;inlines&lt;/code&gt; to &lt;code&gt;#define&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#define&lt;/code&gt; 在 preprocess 阶段完成，而前面三个关键字都是在 compile 阶段完成的。&lt;/p&gt;
 &lt;p&gt;符号表：symbol table。这个概念和编译的关系是？符号表似乎就是一个存了所有变量名字的大表吧。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;#define&lt;/code&gt; 出来的东西本质上不是变量，不会进到符号表里面，这给我们 debug 带来困难。&lt;/p&gt;
@@ -34,16 +33,15 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;NumTurns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;scores&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;NumTurns&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;上面是对 &lt;code&gt;NumTurns&lt;/code&gt; 这个常量的 declaration，而不是 definition。这两个有什么区别吗？&lt;/p&gt;</description></item><item><title>Cpp八股面试题</title><link>https://Mist2233.github.io/posts/cpp%E5%85%AB%E8%82%A1%E9%9D%A2%E8%AF%95%E9%A2%98/</link><pubDate>Thu, 12 Mar 2026 22:01:25 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E5%85%AB%E8%82%A1%E9%9D%A2%E8%AF%95%E9%A2%98/</guid><description>&lt;h2 id="智能指针相关"&gt;智能指针相关&lt;/h2&gt;
 &lt;p&gt;Cpp 智能指针是什么？请简单介绍一下。&lt;/p&gt;
 &lt;!-- - 我回答的是智能指针就是将裸指针包装成一个符合 RAII 原则的类，使得其在析构时资源能够自动释放。 --&gt;
 &lt;!-- - 我还提到了三种智能指针：unique_ptr, shared_ptr 和 weak_ptr，并指出 unique_ptr 表示只有一个指针指向对应的资源，shared_ptr 表示有多个指针指向同一份资源，但是我表示我忘记了 weak_ptr 是什么…… --&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[!NOTE]- 参考回答
-智能指针是一个封装了原始指针的类模板，它的主要作用就是通过 RAII 原则，在指针对象析构时自动释放资源，从而避免“忘记手动 &lt;code&gt;delete&lt;/code&gt;”导致的资源泄漏，或者调用野指针的问题。&lt;/p&gt;
+&lt;div class="callout callout-note"&gt;
+&lt;p class="callout-header"&gt;参考回答&lt;/p&gt;
+&lt;div class="callout-body"&gt;&lt;p&gt;智能指针是一个封装了原始指针的类模板，它的主要作用就是通过 RAII 原则，在指针对象析构时自动释放资源，从而避免“忘记手动 &lt;code&gt;delete&lt;/code&gt;”导致的资源泄漏，或者调用野指针的问题。&lt;/p&gt;
 &lt;p&gt;所谓的 RAII，指的就是：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;构造时：接过原始指针，这代表着接管了原始指针的资源。&lt;/li&gt;
@@ -70,14 +68,12 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;li&gt;&lt;strong&gt;所有权&lt;/strong&gt;：&lt;strong&gt;不拥有所有权&lt;/strong&gt;。它只是一个旁观者。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;机制&lt;/strong&gt;：指向 &lt;code&gt;shared_ptr&lt;/code&gt; 管理的对象，但不增加强引用计数。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;场景&lt;/strong&gt;：解决 &lt;code&gt;shared_ptr&lt;/code&gt; 的&lt;strong&gt;循环引用&lt;/strong&gt;问题，或者作为缓存监控（防悬空）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;你提到了 &lt;code&gt;shared_ptr&lt;/code&gt;，请问它是线程安全的吗？&lt;/p&gt;
+&lt;/ul&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;你提到了 &lt;code&gt;shared_ptr&lt;/code&gt;，请问它是线程安全的吗？&lt;/p&gt;
 &lt;!-- - 我回答的是 `shared_ptr` 的计数是线程安全的，因为它是原子操作；而其本身不是线程安全的，也就是说，多个线程持有的 `shared_ptr` 对数据的读写可能产生一些冲突，或者说数据竞争。 --&gt;
 &lt;!-- - 面试官随后问我 `shared_ptr` 的计数是怎么保证线程安全的，我说就是使用 Cpp 中定义的一些接口，用定义好的原子操作实现的。不过这里我可能解释得不是特别清楚。 --&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[!NOTE]- 参考回答
-最准确的回答是：&lt;strong&gt;&lt;code&gt;shared_ptr&lt;/code&gt; 的引用计数是线程安全的，但 &lt;code&gt;shared_ptr&lt;/code&gt; 对象本身以及它管理的数据不是。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>SFINAE原则</title><link>https://Mist2233.github.io/posts/sfinae%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 02 Dec 2025 09:12:51 +0800</pubDate><guid>https://Mist2233.github.io/posts/sfinae%E5%8E%9F%E5%88%99/</guid><description>&lt;h2 id="sfinae-substitution-failure-is-not-an-error"&gt;SFINAE (Substitution Failure Is Not An Error)&lt;/h2&gt;
+&lt;div class="callout callout-note"&gt;
+&lt;p class="callout-header"&gt;参考回答&lt;/p&gt;</description></item><item><title>SFINAE原则</title><link>https://Mist2233.github.io/posts/sfinae%E5%8E%9F%E5%88%99/</link><pubDate>Tue, 02 Dec 2025 09:12:51 +0800</pubDate><guid>https://Mist2233.github.io/posts/sfinae%E5%8E%9F%E5%88%99/</guid><description>&lt;h2 id="sfinae-substitution-failure-is-not-an-error"&gt;SFINAE (Substitution Failure Is Not An Error)&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们之前聊过模板。在 C++ 模板编程中，有一个非常著名的缩写词叫 &lt;strong&gt;SFINAE&lt;/strong&gt; (读作 &amp;ldquo;sfi-nay&amp;rdquo;)。&lt;/p&gt;
 &lt;p&gt;请问，你知道 SFINAE 代表什么意思吗？或者你能简单描述一下，当编译器在实例化模板时，如果遇到了一个&lt;strong&gt;无效的类型替换&lt;/strong&gt;，它会怎么做？是直接报错停止编译，还是会尝试别的方案？&lt;/p&gt;
 &lt;p&gt;回答：&lt;/p&gt;
@@ -119,8 +115,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Selected B&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;现在，你在 &lt;code&gt;main&lt;/code&gt; 函数里调用了 &lt;code&gt;foo(10)&lt;/code&gt;。&lt;/p&gt;</description></item><item><title>RAII设计哲学</title><link>https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</link><pubDate>Thu, 27 Nov 2025 16:47:57 +0800</pubDate><guid>https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</guid><description>&lt;h2 id="raii-resource-acquisition-is-initialization"&gt;RAII: Resource Acquisition Is Initialization&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
@@ -168,8 +163,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 释放资源
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;如果使用 RAII（比如 &lt;code&gt;std::vector&lt;/code&gt; 就是一个 RAII 包装类）：&lt;/p&gt;</description></item><item><title>命名空间</title><link>https://Mist2233.github.io/posts/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</link><pubDate>Wed, 26 Nov 2025 08:38:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</guid><description>&lt;h2 id="命名空间-namespace"&gt;命名空间 namespace&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们经常看到 &lt;code&gt;std::cout&lt;/code&gt;、&lt;code&gt;std::vector&lt;/code&gt; 这样的写法，这里的 &lt;code&gt;std&lt;/code&gt; 就是一个&lt;strong&gt;命名空间&lt;/strong&gt;。&lt;/p&gt;
@@ -188,17 +182,13 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;命名空间的定义&lt;/strong&gt;：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;“命名空间类似一个集合&amp;hellip; 也是一个前缀。”&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;这个比喻非常形象！命名空间本质上就是一个&lt;strong&gt;逻辑上的作用域&lt;/strong&gt;。它把一组相关的标识符（函数、类、变量等）包裹起来，像是一个&lt;strong&gt;虚拟的文件夹&lt;/strong&gt;。&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;“命名空间类似一个集合&amp;hellip; 也是一个前缀。”&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;这个比喻非常形象！命名空间本质上就是一个&lt;strong&gt;逻辑上的作用域&lt;/strong&gt;。它把一组相关的标识符（函数、类、变量等）包裹起来，像是一个&lt;strong&gt;虚拟的文件夹&lt;/strong&gt;。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;解决的痛点&lt;/strong&gt;：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;“解决的痛点是：如何区分不同位置的同名函数？”&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;完全正确！这就是&lt;strong&gt;命名冲突 (Name Collision)&lt;/strong&gt; 问题。在大型项目中，成千上万的代码、引入几十个第三方库，如果没有命名空间，大家为了给函数起个不重名的名字（比如 &lt;code&gt;LibA_test&lt;/code&gt;, &lt;code&gt;MyProj_test&lt;/code&gt;），头都要炸了。命名空间优雅地解决了这个问题。&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;“解决的痛点是：如何区分不同位置的同名函数？”&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;完全正确！这就是&lt;strong&gt;命名冲突 (Name Collision)&lt;/strong&gt; 问题。在大型项目中，成千上万的代码、引入几十个第三方库，如果没有命名空间，大家为了给函数起个不重名的名字（比如 &lt;code&gt;LibA_test&lt;/code&gt;, &lt;code&gt;MyProj_test&lt;/code&gt;），头都要炸了。命名空间优雅地解决了这个问题。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;头文件中的 &lt;code&gt;using namespace std;&lt;/code&gt;&lt;/strong&gt;：&lt;/p&gt;</description></item><item><title>C++类型转换符</title><link>https://Mist2233.github.io/posts/c++%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%AC%A6/</link><pubDate>Tue, 21 Oct 2025 08:28:49 +0800</pubDate><guid>https://Mist2233.github.io/posts/c++%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%AC%A6/</guid><description>&lt;p&gt;&lt;strong&gt;我们开始今天的 C++ 八股环节！&lt;/strong&gt;&lt;/p&gt;
@@ -249,8 +239,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="nc"&gt;Color&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;RED&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;c_val&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;RED&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Color&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Color&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Color&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Color&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;&lt;em&gt;void&lt;/em&gt; 指针转换&lt;/em&gt;*：将 &lt;code&gt;void*&lt;/code&gt; 指针转换为具体的类型指针。
@@ -261,8 +250,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pi&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pi&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -294,8 +282,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;
 在这个例子中，&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行代码，有什么&lt;strong&gt;实际意义&lt;/strong&gt;？&lt;/p&gt;
@@ -309,10 +296,8 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt; 你说的没错。这个问题的核心在于 C++ 的一条规则：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;一旦用户为类定义了任何一种构造函数（无论带不带参数），编译器就会“罢工”，不再自动生成默认（无参）构造函数。&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;strong&gt;所以，在你给出的例子中：&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;strong&gt;一旦用户为类定义了任何一种构造函数（无论带不带参数），编译器就会“罢工”，不再自动生成默认（无参）构造函数。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;&lt;strong&gt;所以，在你给出的例子中：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;因为你已经定义了一个 &lt;code&gt;MyClass(int val)&lt;/code&gt;，编译器就不会再自动生成 &lt;code&gt;MyClass()&lt;/code&gt; 了。&lt;/li&gt;
 &lt;li&gt;如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 类就&lt;strong&gt;没有&lt;/strong&gt;无参构造函数。此时，&lt;code&gt;MyClass obj;&lt;/code&gt; 这样的代码就会&lt;strong&gt;编译失败&lt;/strong&gt;，因为它找不到匹配的构造函数。&lt;/li&gt;
@@ -368,8 +353,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 问题就出在这里！
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
@@ -393,8 +377,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;MAX_SIZE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 方式二
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#define MAX_SIZE 100
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#define MAX_SIZE 100&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;回答：&lt;/p&gt;
 &lt;ul&gt;
@@ -412,7 +395,8 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id="const-与指针结合"&gt;&lt;code&gt;const&lt;/code&gt; 与指针结合&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;面试官 (继续提问):&lt;/strong&gt; 好的，你对 &lt;code&gt;const&lt;/code&gt; 修饰普通变量的理解非常透彻。我们来看它和&lt;strong&gt;指针&lt;/strong&gt;的结合。&lt;/p&gt;</description></item><item><title>new运算符的细节</title><link>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</link><pubDate>Tue, 07 Oct 2025 09:22:04 +0800</pubDate><guid>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</guid><description>&lt;h2 id="new-的两步过程定位-new-操作"&gt;&lt;code&gt;new&lt;/code&gt; 的两步过程、定位 &lt;code&gt;new&lt;/code&gt; 操作&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (继续提问):&lt;/strong&gt; 好的，你对 &lt;code&gt;const&lt;/code&gt; 修饰普通变量的理解非常透彻。我们来看它和&lt;strong&gt;指针&lt;/strong&gt;的结合。&lt;/p&gt;
+&lt;p&gt;请你解释一下，下面这三种声明中，&lt;code&gt;p&lt;/code&gt; 的类型有什么不同？分别都约束了什么东西不能被修改？&lt;/p&gt;</description></item><item><title>new运算符的细节</title><link>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</link><pubDate>Tue, 07 Oct 2025 09:22:04 +0800</pubDate><guid>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</guid><description>&lt;h2 id="new-的两步过程定位-new-操作"&gt;&lt;code&gt;new&lt;/code&gt; 的两步过程、定位 &lt;code&gt;new&lt;/code&gt; 操作&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，&lt;code&gt;new&lt;/code&gt; 操作符用于在堆上分配内存并构造对象。比如 &lt;code&gt;MyClass* p = new MyClass();&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;其实，这个简单的 &lt;code&gt;new&lt;/code&gt; 表达式，背后可以被看作是两个步骤的组合。你能描述一下这两个步骤分别是什么吗？&lt;/p&gt;
 &lt;p&gt;另外，C++ 还提供了一种叫做 &lt;strong&gt;“定位 &lt;code&gt;new&lt;/code&gt; (placement new)”&lt;/strong&gt; 的特殊语法。它的形式是 &lt;code&gt;new (address) Type(args)&lt;/code&gt;。你了解它是用来做什么的吗？它和普通的 &lt;code&gt;new&lt;/code&gt; 有什么核心区别？&lt;/p&gt;
@@ -490,8 +474,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;funcA&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (继续引导):&lt;/strong&gt; 很好。不过，我们还能不能让问题变得更“纯粹”一点？&lt;/p&gt;</description></item><item><title>模板：template和typename</title><link>https://Mist2233.github.io/posts/%E6%A8%A1%E6%9D%BFtemplate%E5%92%8Ctypename/</link><pubDate>Mon, 29 Sep 2025 09:33:17 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A8%A1%E6%9D%BFtemplate%E5%92%8Ctypename/</guid><description>&lt;h2 id="模板的作用与分类"&gt;模板的作用与分类&lt;/h2&gt;
@@ -535,8 +518,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// 发生了什么？
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;3.14&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;2.71&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// 这里又发生了什么？
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;回答：&lt;/p&gt;
 &lt;ul&gt;
@@ -591,8 +573,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;func2&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;World&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;回答：&lt;/p&gt;
 &lt;ul&gt;
@@ -725,8 +706,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 又是同样的通用初始化逻辑
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Common logic executed.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;你可以看到，这三个构造函数中，有很多&lt;strong&gt;重复的代码&lt;/strong&gt;（比如对 &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; 的初始化，以及那个通用的逻辑）。在 C++11 之前，处理这种代码重复是一个比较头疼的问题。&lt;/p&gt;</description></item><item><title>NULL和nullptr</title><link>https://Mist2233.github.io/posts/null%E5%92%8Cnullptr/</link><pubDate>Thu, 18 Sep 2025 08:33:33 +0800</pubDate><guid>https://Mist2233.github.io/posts/null%E5%92%8Cnullptr/</guid><description>&lt;h2 id="nullptr-解决函数重载的二义性"&gt;&lt;code&gt;nullptr&lt;/code&gt; 解决函数重载的二义性&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++11 之前，我们通常使用一个宏 &lt;code&gt;NULL&lt;/code&gt; 来表示空指针。而在 C++11 中，引入了一个新的关键字 &lt;code&gt;nullptr&lt;/code&gt; 来专门表示空指针。&lt;/p&gt;
@@ -843,8 +823,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;func_A&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;函数调用链是 &lt;code&gt;main&lt;/code&gt; -&amp;gt; &lt;code&gt;func_A&lt;/code&gt; -&amp;gt; &lt;code&gt;func_B&lt;/code&gt; -&amp;gt; &lt;code&gt;func_C&lt;/code&gt;。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>Cpp字符串处理</title><link>https://Mist2233.github.io/posts/cpp%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/</link><pubDate>Mon, 15 Sep 2025 09:21:27 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/</guid><description>&lt;h2 id="stdstring-的优点"&gt;&lt;code&gt;std::string&lt;/code&gt; 的优点&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们有两种主要的方式来表示字符串：C++ 标准库提供的 &lt;code&gt;std::string&lt;/code&gt; 类，以及从 C 语言继承来的、以空字符 &lt;code&gt;\0&lt;/code&gt; 结尾的字符数组（我们常说的 C 风格字符串，通常用 &lt;code&gt;char*&lt;/code&gt; 或 &lt;code&gt;const char*&lt;/code&gt; 指针来表示）。&lt;/p&gt;
@@ -1019,8 +998,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 2. 但是，我们忘记定义拷贝构造函数...
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 3. 也忘记定义拷贝赋值运算符...
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;strong&gt;现在，我们来看看编译器自动生成的拷贝函数会有什么问题：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>左值与右值</title><link>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</link><pubDate>Tue, 09 Sep 2025 10:09:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/</guid><description>&lt;h2 id="什么是左值什么是右值如何区分它们"&gt;什么是左值？什么是右值？如何区分它们？&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们经常听到“左值”和“右值”这两个术语。你能用自己的话，简单地解释一下，什么是左值，什么是右值吗？最简单的区分它们的方法是什么？&lt;/p&gt;
@@ -1030,10 +1008,8 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;li&gt;右值是通过某些代数计算式得到的临时值，它通常出现在赋值式子的右边，因此被称为“右值”。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;面试官 (补充与深化):&lt;/strong&gt; 你说的“能否放在赋值运算符左边”是一个非常好的启发式判断方法。一个更根本的、适用于现代 C++ 的区分标准是：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;strong&gt;我们能否对这个表达式“取地址”？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;左值 (lvalue)&lt;/strong&gt;：是一个&lt;strong&gt;表达式&lt;/strong&gt;，它指向了一个&lt;strong&gt;具名的、有持久状态的&lt;/strong&gt;对象或函数。我们可以&lt;strong&gt;对它取地址&lt;/strong&gt; (&lt;code&gt;&amp;amp;&lt;/code&gt;)。它在表达式结束后，依然存在。
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;例子&lt;/strong&gt;：变量名 &lt;code&gt;int x;&lt;/code&gt; &lt;code&gt;x&lt;/code&gt; 是一个左值，我们可以 &lt;code&gt;&amp;amp;x&lt;/code&gt;。&lt;code&gt;std::string s;&lt;/code&gt; &lt;code&gt;s&lt;/code&gt; 是一个左值。&lt;/li&gt;
@@ -1152,8 +1128,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 这里有一个小小的笔误，程序员将int写成了long
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="cm"&gt;/* ... */&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;在 &lt;code&gt;Derived&lt;/code&gt; 类中，程序员的&lt;strong&gt;意图&lt;/strong&gt;是&lt;strong&gt;重写 (override)&lt;/strong&gt; 基类的 &lt;code&gt;doSomething&lt;/code&gt; 函数。但由于笔误，他把参数类型从 &lt;code&gt;int&lt;/code&gt; 写成了 &lt;code&gt;long&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;请问，在没有 &lt;code&gt;override&lt;/code&gt; 关键字的情况下，这段代码能编译通过吗？如果能，它在多态调用时，可能会产生什么样的问题？&lt;/p&gt;
@@ -1193,10 +1168,8 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;重写 (Overriding) 属于动态多态&lt;/strong&gt;，是在&lt;strong&gt;运行期&lt;/strong&gt;决定的。&lt;/p&gt;</description></item><item><title>面向对象与多态</title><link>https://Mist2233.github.io/posts/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%A4%9A%E6%80%81/</link><pubDate>Sat, 06 Sep 2025 09:28:10 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%A4%9A%E6%80%81/</guid><description>&lt;h2 id="什么是多态实现技术是什么"&gt;什么是多态？实现技术是什么？&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;看到你的简历上写着熟悉 C++ 的面向对象编程。那你能用自己的话简单解释一下，什么是&lt;strong&gt;多态&lt;/strong&gt;吗？在 C++ 中，我们通常通过什么关键技术来实现多态？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;我理解的多态，就是同一个函数在不同的继承类中可以有不同的内容，这取决于子类自己的实现方式。（更精炼的表达：&lt;strong&gt;同一个接口，不同的实现。&lt;/strong&gt;）&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;看到你的简历上写着熟悉 C++ 的面向对象编程。那你能用自己的话简单解释一下，什么是&lt;strong&gt;多态&lt;/strong&gt;吗？在 C++ 中，我们通常通过什么关键技术来实现多态？&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;我理解的多态，就是同一个函数在不同的继承类中可以有不同的内容，这取决于子类自己的实现方式。（更精炼的表达：&lt;strong&gt;同一个接口，不同的实现。&lt;/strong&gt;）&lt;/p&gt;
 &lt;p&gt;实现多态的关键技术通常是虚函数 (virtual function)，即基类中声明的函数，在派生类中可以有自己另外的实现 (override)，从而适配每个派生类的具体情况。（如果基类中没有对这一函数的实现，全部靠派生类自己实现，那么这种函数就是纯虚函数）&lt;/p&gt;
 &lt;h2 id="用基类指针指向派生类对象"&gt;用基类指针指向派生类对象&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
@@ -1232,8 +1205,7 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;makeSound&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;override&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Woof!&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -1372,7 +1344,56 @@ Rules for effective C++ programming vary, depending on the part of C++ you are u
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived_Public&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived_Protected&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;protected&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived_Private&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;private&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived_Private&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;private&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;请问，这三种不同的继承方式，会如何影响&lt;strong&gt;基类 (&lt;code&gt;Base&lt;/code&gt;) 的成员&lt;/strong&gt;在&lt;strong&gt;派生类 (&lt;code&gt;Derived&lt;/code&gt;) 中&lt;/strong&gt;的访问权限？&lt;/p&gt;</description></item></channel></rss>
+&lt;/div&gt;&lt;p&gt;请问，这三种不同的继承方式，会如何影响&lt;strong&gt;基类 (&lt;code&gt;Base&lt;/code&gt;) 的成员&lt;/strong&gt;在&lt;strong&gt;派生类 (&lt;code&gt;Derived&lt;/code&gt;) 中&lt;/strong&gt;的访问权限？&lt;/p&gt;</description></item><item><title>explicit关键字</title><link>https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sat, 12 Jul 2025 10:35:00 +0000</pubDate><guid>https://Mist2233.github.io/posts/explicit%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;p&gt;好的，我们来深入解析 &lt;code&gt;explicit&lt;/code&gt; 这个虽小但非常重要的关键字。&lt;/p&gt;
+&lt;p&gt;你的理解完全正确！&lt;code&gt;explicit&lt;/code&gt; 关键字就像一个“门卫”，它守在你的构造函数门口，防止一些“不请自来”的隐式类型转换，从而让代码的行为更加清晰、可控。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="一问题根源什么是构造函数的隐式转换"&gt;一、问题根源：什么是构造函数的“隐式转换”？&lt;/h3&gt;
+&lt;p&gt;在 C++ 中，编译器有时候会“自作主张”地帮你进行类型转换，让代码能够通过编译。如果一个类的&lt;strong&gt;构造函数可以只用一个参数来调用&lt;/strong&gt;，那么这个构造函数就可能被编译器用来进行&lt;strong&gt;隐式转换 (Implicit Conversion)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;让我们来看一个没有 &lt;code&gt;explicit&lt;/code&gt; 的“事故现场”：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;场景设定&lt;/strong&gt;：我们有一个字符串类 &lt;code&gt;MyString&lt;/code&gt;，它有一个构造函数，可以接受一个整数 &lt;code&gt;n&lt;/code&gt; 来创建一个由 &lt;code&gt;n&lt;/code&gt; 个 &lt;code&gt;'A'&lt;/code&gt; 组成的字符串。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyString&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;m_str&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 这个构造函数可以用一个 int 参数来调用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;MyString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;m_str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;A&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;MyString(&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;) 被调用了！&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;m_str&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 这是一个希望接收 MyString 对象的函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;printString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;MyString&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;打印: &amp;#34;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;现在，在 &lt;code&gt;main&lt;/code&gt; 函数中，我们可能会写出这样的代码：&lt;/p&gt;</description></item></channel></rss>

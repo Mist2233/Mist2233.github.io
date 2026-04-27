@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>现代C++ on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E7%8E%B0%E4%BB%A3c++/</link><description>Recent content in 现代C++ on Mao's Blog</description><generator>Hugo -- 0.160.1</generator><language>zh-cn</language><lastBuildDate>Thu, 16 Oct 2025 09:05:16 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E7%8E%B0%E4%BB%A3c++/index.xml" rel="self" type="application/rss+xml"/><item><title>default和delete</title><link>https://Mist2233.github.io/posts/default%E5%92%8Cdelete/</link><pubDate>Thu, 16 Oct 2025 09:05:16 +0800</pubDate><guid>https://Mist2233.github.io/posts/default%E5%92%8Cdelete/</guid><description>&lt;h2 id="default-关键字强制生成默认构造函数"&gt;&lt;code&gt;default&lt;/code&gt; 关键字强制生成默认构造函数&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，如果一个类我们不给它定义任何构造函数，编译器会自动为我们生成一个&lt;strong&gt;默认构造函数&lt;/strong&gt;。类似的，编译器也可能会为我们生成拷贝构造函数、拷贝赋值运算符等。&lt;/p&gt;
+&lt;p&gt;在 C++11 之后，如果我们想&lt;strong&gt;显式地&lt;/strong&gt;告诉编译器：“请为我生成一个默认的、最普通的版本”，我们可以使用 &lt;code&gt;default&lt;/code&gt; 关键字。&lt;/p&gt;
+&lt;p&gt;请看下面这个例子：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyClass&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;MyClass&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 显式地要求编译器生成默认构造函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;MyClass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt; &lt;span class="c1"&gt;// 用户自定义了别的构造函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;
+在这个例子中，&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行代码，有什么&lt;strong&gt;实际意义&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;换句话说，如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，会发生什么变化？这个类还能通过 &lt;code&gt;MyClass obj;&lt;/code&gt; 这种方式创建对象吗？为什么？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当用户自己定义了一种构造函数时，编译器就&lt;strong&gt;不会自动生成&lt;/strong&gt;默认的无参数的构造函数。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MyClass() = default;&lt;/code&gt; 确保无参数的构造函数存在。&lt;/li&gt;
+&lt;li&gt;如果删去这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 这个类就无法通过 &lt;code&gt;MyClass obj;&lt;/code&gt; 这种方式创建对象，因为编译器检测不到对应的构造函数。&lt;/li&gt;
+&lt;li&gt;而增加上这一行，可以使得程序可以在无参数的情况下创建新的对象，等到对其内容有要求时，再做修改。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt; 你说的没错。这个问题的核心在于 C++ 的一条规则：&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;strong&gt;一旦用户为类定义了任何一种构造函数（无论带不带参数），编译器就会“罢工”，不再自动生成默认（无参）构造函数。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;&lt;strong&gt;所以，在你给出的例子中：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为你已经定义了一个 &lt;code&gt;MyClass(int val)&lt;/code&gt;，编译器就不会再自动生成 &lt;code&gt;MyClass()&lt;/code&gt; 了。&lt;/li&gt;
+&lt;li&gt;如果我们&lt;strong&gt;删掉&lt;/strong&gt; &lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，那么 &lt;code&gt;MyClass&lt;/code&gt; 类就&lt;strong&gt;没有&lt;/strong&gt;无参构造函数。此时，&lt;code&gt;MyClass obj;&lt;/code&gt; 这样的代码就会&lt;strong&gt;编译失败&lt;/strong&gt;，因为它找不到匹配的构造函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;= default&lt;/code&gt; 的作用：&lt;/strong&gt;
+&lt;code&gt;MyClass() = default;&lt;/code&gt; 这一行，就是你（程序员）在向编译器明确地&lt;strong&gt;下指令&lt;/strong&gt;：&lt;/p&gt;</description></item><item><title>using关键字</title><link>https://Mist2233.github.io/posts/using%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Wed, 24 Sep 2025 09:26:08 +0800</pubDate><guid>https://Mist2233.github.io/posts/using%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="using-声明和-using-指令"&gt;&lt;code&gt;using&lt;/code&gt; 声明和 &lt;code&gt;using&lt;/code&gt; 指令&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，&lt;code&gt;using&lt;/code&gt; 关键字有多种用途。我们先来聊聊它最常见的两种用法：&lt;strong&gt;&lt;code&gt;using&lt;/code&gt; 声明 (using-declaration)&lt;/strong&gt; 和 &lt;strong&gt;&lt;code&gt;using&lt;/code&gt; 指令 (using-directive)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;请问，下面这两行代码，它们分别属于哪一种？它们在作用和影响范围上，有什么本质的区别？&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 场景一
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;func1&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 这是什么？
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 场景二
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 这又是什么？
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;func2&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;World&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;using std::cout&lt;/code&gt; 属于 &lt;code&gt;using&lt;/code&gt; 声明，它只引入命名空间中的单个成员，作用在当前作用域中，适合局部使用。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;using namespace std&lt;/code&gt; 属于 &lt;code&gt;using&lt;/code&gt; 指令，它负责引入整个命名空间，作用在全局，但容易导致二义性问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt; 你说的完全正确。&lt;/p&gt;</description></item><item><title>NULL和nullptr</title><link>https://Mist2233.github.io/posts/null%E5%92%8Cnullptr/</link><pubDate>Thu, 18 Sep 2025 08:33:33 +0800</pubDate><guid>https://Mist2233.github.io/posts/null%E5%92%8Cnullptr/</guid><description>&lt;h2 id="nullptr-解决函数重载的二义性"&gt;&lt;code&gt;nullptr&lt;/code&gt; 解决函数重载的二义性&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++11 之前，我们通常使用一个宏 &lt;code&gt;NULL&lt;/code&gt; 来表示空指针。而在 C++11 中，引入了一个新的关键字 &lt;code&gt;nullptr&lt;/code&gt; 来专门表示空指针。&lt;/p&gt;
+&lt;p&gt;请问，我们为什么需要 &lt;code&gt;nullptr&lt;/code&gt;？或者说，使用宏 &lt;code&gt;NULL&lt;/code&gt; 在某些情况下，会带来什么样的问题或歧义，是 &lt;code&gt;nullptr&lt;/code&gt; 能够解决的？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;NULL&lt;/code&gt; 是一个宏，它除了表示空指针之外，更常用的含义是表示 &lt;code&gt;0&lt;/code&gt;，一个整数。&lt;/li&gt;
+&lt;li&gt;由于 &lt;code&gt;NULL&lt;/code&gt; 既能表示空指针，又能表示 &lt;code&gt;0&lt;/code&gt;，因此它会引发歧义。&lt;/li&gt;
+&lt;li&gt;比如，某个函数重载了两个版本，一个的参数类型是 &lt;code&gt;int&lt;/code&gt;，而另一个参数类型是 &lt;code&gt;char*&lt;/code&gt;。当输入 &lt;code&gt;NULL&lt;/code&gt; 时，通常会调用参数为 &lt;code&gt;int&lt;/code&gt; 的那个版本。&lt;/li&gt;
+&lt;li&gt;而使用 &lt;code&gt;nullptr&lt;/code&gt; 则规避了这一风险。&lt;code&gt;nullptr&lt;/code&gt; 是一个真正的空指针常量，它是一个特殊的类型 &lt;code&gt;std::nullptr_t&lt;/code&gt;，可以隐式地转换为任何的指针类型，而不会和 &lt;code&gt;int&lt;/code&gt; 类型混淆。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (总结与肯定):&lt;/strong&gt; 你说的完全正确。我们来把这个过程再详细地梳理一遍。&lt;code&gt;nullptr&lt;/code&gt; 诞生的&lt;strong&gt;核心原因&lt;/strong&gt;是&lt;strong&gt;解决函数重载时的二义性&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;NULL&lt;/code&gt; 的“前世今生”&lt;/strong&gt;
+&lt;code&gt;NULL&lt;/code&gt; 是一个定义在 &lt;code&gt;&amp;lt;cstddef&amp;gt;&lt;/code&gt; 等头文件中的&lt;strong&gt;预处理宏&lt;/strong&gt;。它的具体定义取决于编译器，但通常是下面两种之一：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#define NULL 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 或者
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#define NULL 0L
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 或者在 C++ 编译器中，有时甚至是
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#define NULL nullptr &lt;/span&gt;&lt;span class="c1"&gt;// 这是现代编译器的“向后兼容”行为
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;在 C++98/03 的时代，你可以认为 &lt;code&gt;NULL&lt;/code&gt; 就是一个值为 &lt;code&gt;0&lt;/code&gt; 的&lt;strong&gt;整型常量&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>Cpp字符串处理</title><link>https://Mist2233.github.io/posts/cpp%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/</link><pubDate>Mon, 15 Sep 2025 09:21:27 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/</guid><description>&lt;h2 id="stdstring-的优点"&gt;&lt;code&gt;std::string&lt;/code&gt; 的优点&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 中，我们有两种主要的方式来表示字符串：C++ 标准库提供的 &lt;code&gt;std::string&lt;/code&gt; 类，以及从 C 语言继承来的、以空字符 &lt;code&gt;\0&lt;/code&gt; 结尾的字符数组（我们常说的 C 风格字符串，通常用 &lt;code&gt;char*&lt;/code&gt; 或 &lt;code&gt;const char*&lt;/code&gt; 指针来表示）。&lt;/p&gt;
+&lt;p&gt;请问，和传统的 C 风格字符串相比，使用 &lt;code&gt;std::string&lt;/code&gt; 类有什么主要的&lt;strong&gt;优点&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;std::string&lt;/code&gt; 的封装程度更好，使用时不易出错。&lt;/li&gt;
+&lt;li&gt;具体来说，包括自动内存管理、安全性和功能性三个方面。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与扩展):&lt;/strong&gt; 你说的完全正确。&lt;code&gt;std.string&lt;/code&gt; 作为一个&lt;strong&gt;类&lt;/strong&gt;，把所有复杂的、容易出错的底层操作都&lt;strong&gt;封装&lt;/strong&gt;起来了，为我们提供了极大的便利和安全保障。&lt;/p&gt;
+&lt;p&gt;我来帮你把它的优点展开成几个具体的点，这也是面试时希望听到的内容：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;自动内存管理 (Automatic Memory Management)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;std::string&lt;/code&gt;&lt;/strong&gt;: &lt;code&gt;string&lt;/code&gt; 对象自己会负责管理存储字符串所需的内存。当字符串变长时，它会自动&lt;strong&gt;扩容&lt;/strong&gt;；当 &lt;code&gt;string&lt;/code&gt; 对象被销毁时，它会自动&lt;strong&gt;释放&lt;/strong&gt;内存。你完全不需要操心 &lt;code&gt;new[]&lt;/code&gt; 和 &lt;code&gt;delete[]&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;char*&lt;/code&gt;&lt;/strong&gt;: 你必须手动管理内存。&lt;code&gt;malloc&lt;/code&gt; / &lt;code&gt;free&lt;/code&gt; 或 &lt;code&gt;new[]&lt;/code&gt; / &lt;code&gt;delete[]&lt;/code&gt; 必须成对出现，极其容易忘记释放，导致&lt;strong&gt;内存泄漏&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;安全性 (Safety)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;std::string&lt;/code&gt;&lt;/strong&gt;: 它内部记录了字符串的&lt;strong&gt;当前长度&lt;/strong&gt;。
+&lt;ul&gt;
+&lt;li&gt;成员函数 &lt;code&gt;length()&lt;/code&gt; 或 &lt;code&gt;size()&lt;/code&gt; 可以 O (1) 复杂度地返回长度。&lt;/li&gt;
+&lt;li&gt;成员函数 &lt;code&gt;at(i)&lt;/code&gt; 提供&lt;strong&gt;边界检查&lt;/strong&gt;，越界会抛出异常。&lt;/li&gt;
+&lt;li&gt;拼接、拷贝等操作都会自动处理内存，不会造成缓冲区溢出。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;char*&lt;/code&gt;&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;长度信息依赖于结尾的 &lt;code&gt;\0&lt;/code&gt;。每次计算长度 (&lt;code&gt;strlen&lt;/code&gt;) 都需要从头遍历，时间复杂度 O (n)。&lt;/li&gt;
+&lt;li&gt;所有操作（如 &lt;code&gt;strcpy&lt;/code&gt;, &lt;code&gt;strcat&lt;/code&gt;）都&lt;strong&gt;不进行边界检查&lt;/strong&gt;，如果目标缓冲区不够大，就会发生&lt;strong&gt;缓冲区溢出&lt;/strong&gt;，这是 C/C++ 中最危险的安全漏洞之一。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;功能丰富且易用 (Rich Functionality)&lt;/strong&gt;：&lt;/p&gt;</description></item><item><title>Cpp的三种类型推导关键字</title><link>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E5%85%B3%E9%94%AE%E5%AD%97/</link><pubDate>Sun, 14 Sep 2025 09:33:26 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E5%85%B3%E9%94%AE%E5%AD%97/</guid><description>&lt;h2 id="auto-关键字"&gt;&lt;code&gt;auto&lt;/code&gt; 关键字&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; C++11 引入了 &lt;code&gt;auto&lt;/code&gt; 关键字，它极大地改变了我们编写 C++ 代码的方式。&lt;/p&gt;
+&lt;p&gt;你能简单解释一下，&lt;code&gt;auto&lt;/code&gt; 关键字的作用是什么吗？使用它有什么好处？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;auto&lt;/code&gt; 关键字的作用是，省略具体的变量类型，而是根据实际变量的类型推导出其类型。&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;auto&lt;/code&gt; 关键字，就不必写复杂的类型名（比如常用的 STL 迭代器），让代码看上去更简洁。&lt;/li&gt;
+&lt;li&gt;同时，&lt;code&gt;auto&lt;/code&gt; 关键字还能实现类似“多态”的效果（这里说“多态”不太准确，应该说，是泛型编程），使得同一份代码可以被许多不同的类型复用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与澄清):&lt;/strong&gt; 你说的很对。我们来把你的回答再精确化和补充一下。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;auto&lt;/code&gt; 的作用：&lt;/strong&gt;
+它是一个&lt;strong&gt;类型占位符&lt;/strong&gt;。编译器会在&lt;strong&gt;编译时&lt;/strong&gt;，根据变量的&lt;strong&gt;初始化表达式&lt;/strong&gt;，自动推导出变量应该具有的正确类型。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;auto&lt;/code&gt; 的好处：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;简洁性 (Brevity)&lt;/strong&gt;：正如你所说，它可以避免写冗长、复杂的类型名。这一点在处理 STL 的&lt;strong&gt;迭代器&lt;/strong&gt;和&lt;strong&gt;模板&lt;/strong&gt;时尤其明显。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// C++03
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;iterator&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;my_vec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// C++11 with auto
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;my_vec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// 简洁、易读、不易出错
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;正确性 (Correctness)&lt;/strong&gt;：&lt;code&gt;auto&lt;/code&gt; 保证了变量的类型与初始化表达式的类型&lt;strong&gt;完全匹配&lt;/strong&gt;，避免了因手写类型错误或发生意外的类型转换而导致的 bug。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;可维护性 (Maintainability)&lt;/strong&gt;：如果初始化表达式的类型未来发生了变化（比如一个函数的返回值从 &lt;code&gt;int&lt;/code&gt; 变成了 &lt;code&gt;long long&lt;/code&gt;），使用了 &lt;code&gt;auto&lt;/code&gt; 的代码&lt;strong&gt;不需要任何修改&lt;/strong&gt;，会自动适应新的类型。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;关于你提到的“多态效果”：&lt;/strong&gt;
+这个描述非常有趣！&lt;code&gt;auto&lt;/code&gt; 本身是在编译期进行类型推导，不直接产生运行时的多态（那需要虚函数）。但你说的“使得同一份代码可以被许多不同的类型复用”，这个思想非常接近&lt;strong&gt;泛型编程 (Generic Programming)&lt;/strong&gt;。
+&lt;code&gt;auto&lt;/code&gt; 在 C++14 的&lt;strong&gt;泛型 Lambda&lt;/strong&gt; 中 &lt;code&gt;[](auto x){ ... }&lt;/code&gt; 和 C++20 的&lt;strong&gt;函数参数&lt;/strong&gt;中 &lt;code&gt;void func(auto param)&lt;/code&gt;，确实扮演了类似模板参数的角色，让一段代码能适用于多种类型。你的直觉是非常准的。&lt;/p&gt;</description></item><item><title>Lambda表达式</title><link>https://Mist2233.github.io/posts/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</link><pubDate>Sat, 13 Sep 2025 18:22:44 +0800</pubDate><guid>https://Mist2233.github.io/posts/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</guid><description>&lt;h2 id="什么是-lambda-表达式"&gt;什么是 Lambda 表达式？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 好的，我们来聊聊 C++11 引入的一个非常强大的特性——&lt;strong&gt;Lambda 表达式&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;你能用自己的话简单解释一下，Lambda 表达式是什么吗？它主要解决了什么问题，或者说，它为我们编写 C++ 代码带来了什么样的便利？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我的理解是，lambda 表达式就是“匿名函数”，即省略名字的函数。&lt;/li&gt;
+&lt;li&gt;它定义了一个函数，这个函数有函数的所有功能，但不需要名字。&lt;/li&gt;
+&lt;li&gt;这让我们在需要写一些小巧的工具性一次性函数时，省去了从头定义函数的麻烦，让代码看上去更加简洁。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与肯定):&lt;/strong&gt; 你说的完全正确。Lambda 表达式的出现，极大地改变了 C++ 的编程风格，特别是与标准库算法（STL Algorithms）结合使用时。&lt;/p&gt;
+&lt;p&gt;在 C++11 之前，如果我们需要给 &lt;code&gt;std::sort&lt;/code&gt;, &lt;code&gt;std::find_if&lt;/code&gt; 这样的算法传递一个自定义的比较或判断逻辑，我们通常需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在别处定义一个完整的具名函数。&lt;/li&gt;
+&lt;li&gt;或者定义一个函数对象（一个重载了 &lt;code&gt;operator()&lt;/code&gt; 的 &lt;code&gt;struct&lt;/code&gt; 或 &lt;code&gt;class&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这两种方式都比较繁琐，并且会导致&lt;strong&gt;逻辑和使用点的分离&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;而 Lambda 表达式，正如你所说，允许我们在&lt;strong&gt;需要的地方，就地定义&lt;/strong&gt;一个匿名的、小巧的函数，让代码更紧凑、可读性也更强。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="lambda-表达式的捕获列表"&gt;Lambda 表达式的捕获列表&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (深入提问):&lt;/strong&gt; 好的，你对 Lambda 的基本概念很清楚。我们来看一下 Lambda 表达式的语法结构。&lt;/p&gt;
+&lt;p&gt;一个完整的 Lambda 表达式看起来像这样：
+&lt;code&gt;[ captures ] ( params ) -&amp;gt; return_type { body }&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;其中，&lt;code&gt;[ captures ]&lt;/code&gt; 这个部分，我们称之为&lt;strong&gt;捕获列表 (Capture List)&lt;/strong&gt;，这是 Lambda 表达式最强大、也最核心的部分。&lt;/p&gt;</description></item><item><title>vector的内部实现和优化</title><link>https://Mist2233.github.io/posts/vector%E7%9A%84%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%92%8C%E4%BC%98%E5%8C%96/</link><pubDate>Sat, 06 Sep 2025 09:27:46 +0800</pubDate><guid>https://Mist2233.github.io/posts/vector%E7%9A%84%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%92%8C%E4%BC%98%E5%8C%96/</guid><description>&lt;h2 id="vector-在内存中如何存储数据和-array-的区别"&gt;&lt;code&gt;vector&lt;/code&gt; 在内存中如何存储数据？和 &lt;code&gt;array&lt;/code&gt; 的区别？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我看你写的代码里经常使用 &lt;code&gt;std::vector&lt;/code&gt;。你能简单描述一下 &lt;code&gt;std::vector&lt;/code&gt; 在内存中是如何存储数据的吗？它和普通的 C 风格数组（比如 &lt;code&gt;int arr[10]&lt;/code&gt;）有什么主要的区别？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于这个问题，我并不太了解，我谈一谈我粗浅的看法。&lt;/li&gt;
+&lt;li&gt;首先，vector 应该是基于数组 array 实现的，其底层就是一块动态分配的、连续的内存数组。这是 vector 能够支持快速随机访问的根本原因。但是，vector 肯定有它自身的优化在。&lt;/li&gt;
+&lt;li&gt;边界检查：
+&lt;ul&gt;
+&lt;li&gt;array 只管给你分配一段连续的内存，其他的管理你都要自己来，也不会管你数组 idx 是否越界；&lt;/li&gt;
+&lt;li&gt;在 vector 中，如果用 &lt;code&gt;[]&lt;/code&gt; 操作符，那么行为和 array 一样，不会管你越界与否；&lt;/li&gt;
+&lt;li&gt;但是，vector 提供了 &lt;code&gt;at()&lt;/code&gt; 这个成员函数，&lt;code&gt;vec.at(i)&lt;/code&gt; 会进行边界检查。如果 &lt;code&gt;i&lt;/code&gt; 越界，vector 会抛出 &lt;code&gt;std::out_of_range&lt;/code&gt; 异常。这说明 vector 的安全性更好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自动初始化：
+&lt;ul&gt;
+&lt;li&gt;再比如，定义 array 时，程序不会帮我们自动初始化，array 中可能有一些奇怪的原始数据（随机值）；&lt;/li&gt;
+&lt;li&gt;但是，定义 vector 时，程序会帮我们自动初始化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不过，我没有提到 vector 和 array 最重要的区别：（根据 Gemini 的解释补充）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Vector 的大小是动态可变的，可以不断地 &lt;code&gt;push_back&lt;/code&gt; 新的元素，而 array 的大小是固定的。&lt;/li&gt;
+&lt;li&gt;这就是 vector 的动态扩容机制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="vector-的扩容机制-reallocation"&gt;&lt;code&gt;vector&lt;/code&gt; 的扩容机制 (Reallocation)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与追问):&lt;/strong&gt; 你说得很好。vector 最大的特点就是它的大小是&lt;strong&gt;动态可变&lt;/strong&gt;的。我们可以不断地对它 &lt;code&gt;push_back&lt;/code&gt; 新的元素。&lt;/p&gt;</description></item></channel></rss>

@@ -1,4 +1,110 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>内存管理 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link><description>Recent content in 内存管理 on Mao's Blog</description><generator>Hugo -- 0.160.1</generator><language>zh-cn</language><lastBuildDate>Tue, 07 Oct 2025 09:22:04 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>new运算符的细节</title><link>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</link><pubDate>Tue, 07 Oct 2025 09:22:04 +0800</pubDate><guid>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</guid><description>&lt;h2 id="new-的两步过程定位-new-操作"&gt;&lt;code&gt;new&lt;/code&gt; 的两步过程、定位 &lt;code&gt;new&lt;/code&gt; 操作&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>内存管理 on Mao's Blog</title><link>https://Mist2233.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link><description>Recent content in 内存管理 on Mao's Blog</description><generator>Hugo -- 0.160.1</generator><language>zh-cn</language><lastBuildDate>Thu, 27 Nov 2025 16:47:57 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>RAII设计哲学</title><link>https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</link><pubDate>Thu, 27 Nov 2025 16:47:57 +0800</pubDate><guid>https://Mist2233.github.io/posts/raii%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</guid><description>&lt;h2 id="raii-resource-acquisition-is-initialization"&gt;RAII: Resource Acquisition Is Initialization&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;模拟面试开始&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我看你的代码风格很现代。在 C++ 资源管理中，&lt;strong&gt;RAII&lt;/strong&gt; 是一个核心概念。&lt;/p&gt;
+&lt;p&gt;你能用自己的话，简单解释一下什么是 RAII 吗？它的&lt;strong&gt;中文含义&lt;/strong&gt;是什么？它主要用来解决什么问题？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RAII 的全称是 Resource Acquisition Is Initialization，中文直译过来就是“资源获取即初始化”。意思就是，我们希望在获取资源（比如取用一个指针）时，取用到的资源不是未初始化的（比如说野指针），而是已经经过规范初始化的、安全可用的资源。&lt;/li&gt;
+&lt;li&gt;它主要用来解决的问题，就是未经许可的内存访问。比如，如果我访问一个野指针，其中的内容可能恰好指向程序的某些重要区域，当我修改其中数据时，程序就直接崩溃了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这是我对 RAII 这个概念自己的理解，如有不正确之处，还希望批评指正。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;你的回答非常坦诚，是基于字面意思的合理推测，但其实 &lt;strong&gt;RAII 的真正含义和你现在的理解有比较大的偏差&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;你现在的理解更偏向于“初始化安全”或者“避免野指针”，这当然也是好的编程习惯，但 RAII 的核心在于&lt;strong&gt;生命周期的绑定&lt;/strong&gt;和&lt;strong&gt;自动释放&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我们来纠正一下这个概念。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (纠正与引导):&lt;/strong&gt; 你的直觉很有意思，但 RAII 这个名字其实起得有点“烂”，非常容易让人产生和你一样的误解（以为重点在初始化）。&lt;/p&gt;
+&lt;p&gt;RAII 的核心其实不在于“获取资源时要初始化”，而在于 &lt;strong&gt;“资源的生命周期应该与对象的生命周期绑定”&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;关键点在于：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;构造函数 (Acquisition)&lt;/strong&gt;：当我们在栈上创建一个对象（比如一个类实例）时，我们在它的&lt;strong&gt;构造函数&lt;/strong&gt;里去“获取”资源（比如 &lt;code&gt;new&lt;/code&gt; 一块内存、打开一个文件、上一个锁）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;析构函数 (Release)&lt;/strong&gt;：这是最最关键的一步。当这个对象离开作用域（生命周期结束）时，它的&lt;strong&gt;析构函数&lt;/strong&gt;会被编译器&lt;strong&gt;自动调用&lt;/strong&gt;。我们就在析构函数里去“释放”那个资源（比如 &lt;code&gt;delete&lt;/code&gt; 内存、关闭文件、解锁）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;所以，RAII 解决的核心问题是：资源泄漏 (Resource Leak)。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;举个最经典的例子：&lt;/strong&gt;
+如果不使用 RAII：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;// 获取资源
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;some_error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 糟糕！如果这里直接 return 或抛出异常，
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 下面的 delete 永远不会执行，内存泄漏！
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 释放资源
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;如果使用 RAII（比如 &lt;code&gt;std::vector&lt;/code&gt; 就是一个 RAII 包装类）：&lt;/p&gt;</description></item><item><title>虚析构函数</title><link>https://Mist2233.github.io/posts/%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/</link><pubDate>Mon, 13 Oct 2025 23:10:06 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/</guid><description>&lt;h2 id="不使用虚析构函数可能导致资源泄漏"&gt;不使用虚析构函数，可能导致资源泄漏&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，析构函数是在对象生命周期结束时，用于清理资源的特殊成员函数。在 C++ 的继承体系中，我们有时需要把基类的析构函数声明为&lt;strong&gt;虚函数 (virtual)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;请看下面这段代码，它可能会导致一个非常严重的问题：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Base Created&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 注意：析构函数不是虚函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Base Destroyed&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Derived Created&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;Derived Destroyed&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// 基类指针指向派生类对象
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 问题就出在这里！
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;你预测一下，上面这段代码的&lt;strong&gt;输出&lt;/strong&gt;会是什么？&lt;/li&gt;
+&lt;li&gt;这个输出结果揭示了什么样的&lt;strong&gt;严重问题&lt;/strong&gt;？&lt;/li&gt;
+&lt;li&gt;这个问题的&lt;strong&gt;根本原因&lt;/strong&gt;是什么？（即，&lt;code&gt;delete p;&lt;/code&gt; 这行代码，编译器是如何决定调用哪个析构函数的？）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;回答：&lt;/p&gt;</description></item><item><title>new运算符的细节</title><link>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</link><pubDate>Tue, 07 Oct 2025 09:22:04 +0800</pubDate><guid>https://Mist2233.github.io/posts/new%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82/</guid><description>&lt;h2 id="new-的两步过程定位-new-操作"&gt;&lt;code&gt;new&lt;/code&gt; 的两步过程、定位 &lt;code&gt;new&lt;/code&gt; 操作&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，&lt;code&gt;new&lt;/code&gt; 操作符用于在堆上分配内存并构造对象。比如 &lt;code&gt;MyClass* p = new MyClass();&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;其实，这个简单的 &lt;code&gt;new&lt;/code&gt; 表达式，背后可以被看作是两个步骤的组合。你能描述一下这两个步骤分别是什么吗？&lt;/p&gt;
 &lt;p&gt;另外，C++ 还提供了一种叫做 &lt;strong&gt;“定位 &lt;code&gt;new&lt;/code&gt; (placement new)”&lt;/strong&gt; 的特殊语法。它的形式是 &lt;code&gt;new (address) Type(args)&lt;/code&gt;。你了解它是用来做什么的吗？它和普通的 &lt;code&gt;new&lt;/code&gt; 有什么核心区别？&lt;/p&gt;
@@ -24,7 +130,62 @@
 &lt;code&gt;obj-&amp;gt;T::T(args);&lt;/code&gt; // 伪代码，表示调用构造函数&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;2. 定位 &lt;code&gt;new&lt;/code&gt; (placement new)&lt;/strong&gt;
-你的解释也堪称完美：&lt;/p&gt;</description></item><item><title>Cpp的三五零法则</title><link>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E4%BA%94%E9%9B%B6%E6%B3%95%E5%88%99/</link><pubDate>Fri, 12 Sep 2025 08:50:48 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E4%BA%94%E9%9B%B6%E6%B3%95%E5%88%99/</guid><description>&lt;h2 id="三法则-the-rule-of-three"&gt;三法则 The Rule Of Three&lt;/h2&gt;
+你的解释也堪称完美：&lt;/p&gt;</description></item><item><title>栈、堆与栈溢出</title><link>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</link><pubDate>Fri, 03 Oct 2025 14:32:45 +0800</pubDate><guid>https://Mist2233.github.io/posts/%E6%A0%88%E5%A0%86%E4%B8%8E%E6%A0%88%E6%BA%A2%E5%87%BA/</guid><description>&lt;h2 id="栈和堆的比较-stack-and-heap"&gt;栈和堆的比较 Stack and Heap&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我们知道，C++ 程序在运行时，局部变量通常分配在&lt;strong&gt;栈 (Stack)&lt;/strong&gt; 上，而动态分配的内存则来自&lt;strong&gt;堆 (Heap)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;请你从&lt;strong&gt;内存管理方式&lt;/strong&gt;、&lt;strong&gt;分配效率&lt;/strong&gt;、&lt;strong&gt;空间大小&lt;/strong&gt;和&lt;strong&gt;数据生命周期&lt;/strong&gt;这四个角度，详细对比一下栈和堆的主要区别。&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在内存管理方式上，栈的内存是自动分配、释放的连续空间，而堆的内存是需要程序员手动分配、释放的非连续空间。&lt;/li&gt;
+&lt;li&gt;在分配效率上，栈的分配效率比堆更高。&lt;/li&gt;
+&lt;li&gt;在空间大小上，栈的空间大小比堆更小，当栈达到一定深度，就会发生溢出。&lt;/li&gt;
+&lt;li&gt;在数据生命周期上，栈的生命周期更短，通常是一次函数调用开始时，栈空间被分配，而该次函数调用结束时，栈的内存就被释放。而堆上的内存，通常在整个程序的生命中始终存在，直到我们手动释放它。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="栈溢出-stack-overflow"&gt;栈溢出 Stack Overflow&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (深入追问):&lt;/strong&gt; 好的，你对基础区别已经很清楚了。我们来深入聊聊你提到的 &lt;strong&gt;“栈溢出 (Stack Overflow)”&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;你刚才说“当栈达到一定深度，就会发生溢出”。这通常是由&lt;strong&gt;无限递归&lt;/strong&gt;或&lt;strong&gt;过深的递归&lt;/strong&gt;导致的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;我的问题是：&lt;/strong&gt; 除了递归，还有没有&lt;strong&gt;其他&lt;/strong&gt;常见的编程行为，也可能导致栈溢出？你能否写一个&lt;strong&gt;不使用递归&lt;/strong&gt;的、非常简单的代码片段，来人为地触发一个栈溢出？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以，除了递归之外，两个函数无限制地相互调用也可以出发栈溢出，比如下面的例子。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;funcA&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;funcB&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;funcA&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;funcB&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;funcB&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;funcA&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;funcA&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (继续引导):&lt;/strong&gt; 很好。不过，我们还能不能让问题变得更“纯粹”一点？&lt;/p&gt;</description></item><item><title>Cpp的三五零法则</title><link>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E4%BA%94%E9%9B%B6%E6%B3%95%E5%88%99/</link><pubDate>Fri, 12 Sep 2025 08:50:48 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E7%9A%84%E4%B8%89%E4%BA%94%E9%9B%B6%E6%B3%95%E5%88%99/</guid><description>&lt;h2 id="三法则-the-rule-of-three"&gt;三法则 The Rule Of Three&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 在 C++ 编程中，我们经常听到一个叫做 &lt;strong&gt;“三法则 (The Rule of Three)”&lt;/strong&gt; 的设计原则。你能用自己的话解释一下，这个“三法则”指的是什么吗？它规定了如果一个类定义了哪三个特殊的成员函数之一，那么它可能也需要定义另外两个？&lt;/p&gt;
 &lt;p&gt;回答：&lt;/p&gt;
 &lt;ul&gt;
@@ -93,7 +254,86 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 2. 但是，我们忘记定义拷贝构造函数...
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// 3. 也忘记定义拷贝赋值运算符...
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;strong&gt;现在，我们来看看编译器自动生成的拷贝函数会有什么问题：&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;现在，我们来看看编译器自动生成的拷贝函数会有什么问题：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>vector的内部实现和优化</title><link>https://Mist2233.github.io/posts/vector%E7%9A%84%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%92%8C%E4%BC%98%E5%8C%96/</link><pubDate>Sat, 06 Sep 2025 09:27:46 +0800</pubDate><guid>https://Mist2233.github.io/posts/vector%E7%9A%84%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%92%8C%E4%BC%98%E5%8C%96/</guid><description>&lt;h2 id="vector-在内存中如何存储数据和-array-的区别"&gt;&lt;code&gt;vector&lt;/code&gt; 在内存中如何存储数据？和 &lt;code&gt;array&lt;/code&gt; 的区别？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官：&lt;/strong&gt; 我看你写的代码里经常使用 &lt;code&gt;std::vector&lt;/code&gt;。你能简单描述一下 &lt;code&gt;std::vector&lt;/code&gt; 在内存中是如何存储数据的吗？它和普通的 C 风格数组（比如 &lt;code&gt;int arr[10]&lt;/code&gt;）有什么主要的区别？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于这个问题，我并不太了解，我谈一谈我粗浅的看法。&lt;/li&gt;
+&lt;li&gt;首先，vector 应该是基于数组 array 实现的，其底层就是一块动态分配的、连续的内存数组。这是 vector 能够支持快速随机访问的根本原因。但是，vector 肯定有它自身的优化在。&lt;/li&gt;
+&lt;li&gt;边界检查：
+&lt;ul&gt;
+&lt;li&gt;array 只管给你分配一段连续的内存，其他的管理你都要自己来，也不会管你数组 idx 是否越界；&lt;/li&gt;
+&lt;li&gt;在 vector 中，如果用 &lt;code&gt;[]&lt;/code&gt; 操作符，那么行为和 array 一样，不会管你越界与否；&lt;/li&gt;
+&lt;li&gt;但是，vector 提供了 &lt;code&gt;at()&lt;/code&gt; 这个成员函数，&lt;code&gt;vec.at(i)&lt;/code&gt; 会进行边界检查。如果 &lt;code&gt;i&lt;/code&gt; 越界，vector 会抛出 &lt;code&gt;std::out_of_range&lt;/code&gt; 异常。这说明 vector 的安全性更好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自动初始化：
+&lt;ul&gt;
+&lt;li&gt;再比如，定义 array 时，程序不会帮我们自动初始化，array 中可能有一些奇怪的原始数据（随机值）；&lt;/li&gt;
+&lt;li&gt;但是，定义 vector 时，程序会帮我们自动初始化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不过，我没有提到 vector 和 array 最重要的区别：（根据 Gemini 的解释补充）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Vector 的大小是动态可变的，可以不断地 &lt;code&gt;push_back&lt;/code&gt; 新的元素，而 array 的大小是固定的。&lt;/li&gt;
+&lt;li&gt;这就是 vector 的动态扩容机制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="vector-的扩容机制-reallocation"&gt;&lt;code&gt;vector&lt;/code&gt; 的扩容机制 (Reallocation)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与追问):&lt;/strong&gt; 你说得很好。vector 最大的特点就是它的大小是&lt;strong&gt;动态可变&lt;/strong&gt;的。我们可以不断地对它 &lt;code&gt;push_back&lt;/code&gt; 新的元素。&lt;/p&gt;</description></item><item><title>Cpp内存管理</title><link>https://Mist2233.github.io/posts/cpp%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link><pubDate>Sat, 06 Sep 2025 09:27:23 +0800</pubDate><guid>https://Mist2233.github.io/posts/cpp%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid><description>&lt;h2 id="cpp-内存分区"&gt;Cpp 内存分区&lt;/h2&gt;
+&lt;p&gt;你能简单介绍一下 C++ 程序的内存分区吗？一个 C++ 程序在运行时，它的内存大概被分成了哪几个区域？&lt;/p&gt;
+&lt;p&gt;回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cpp 程序运行时，分成堆、栈，以及全局的静态区域。&lt;/li&gt;
+&lt;li&gt;栈中的数据在函数调用结束时，就自动被释放。&lt;/li&gt;
+&lt;li&gt;堆中的数据由程序员自己分配，自己释放。&lt;/li&gt;
+&lt;li&gt;全局的静态区域在整段程序结束时，自行释放数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;请问，我的理解正确吗？&lt;/p&gt;
+&lt;p&gt;基本正确，但还需要补充：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (补充与细化):&lt;/strong&gt; 你说的完全正确。为了让这个回答更完整、更专业，我们通常会把内存分区说得更细一些，一般分为&lt;strong&gt;五个区&lt;/strong&gt;。你提到的三个区是其中最重要的，我帮你补充另外两个。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一个典型的 C++ 程序内存布局：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;栈区 (Stack)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;存放&lt;/strong&gt;：函数的参数值、局部变量等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;管理&lt;/strong&gt;：由&lt;strong&gt;编译器&lt;/strong&gt;自动分配和释放。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：函数调用时入栈，函数返回时出栈，分配速度快，但空间有限且是连续的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;堆区 (Heap)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;存放&lt;/strong&gt;：程序运行时&lt;strong&gt;动态分配&lt;/strong&gt;的内存，比如通过 &lt;code&gt;new&lt;/code&gt; 或 &lt;code&gt;malloc&lt;/code&gt; 创建的对象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;管理&lt;/strong&gt;：由&lt;strong&gt;程序员&lt;/strong&gt;手动分配 (&lt;code&gt;new&lt;/code&gt;) 和释放 (&lt;code&gt;delete&lt;/code&gt;)。如果忘记释放，就会造成&lt;strong&gt;内存泄漏&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：空间大，不连续，分配和释放速度相对较慢。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;全局/静态存储区 (Static Storage Area)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;存放&lt;/strong&gt;：&lt;strong&gt;全局变量&lt;/strong&gt;和&lt;strong&gt;静态变量&lt;/strong&gt; (包括全局 &lt;code&gt;static&lt;/code&gt; 变量和函数内 &lt;code&gt;static&lt;/code&gt; 变量)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;管理&lt;/strong&gt;：在程序&lt;strong&gt;编译时&lt;/strong&gt;就已经分配好了，在程序整个运行期间都存在，程序结束时由操作系统释放。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;常量存储区 (Constant Storage Area)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;存放&lt;/strong&gt;：常量，特别是&lt;strong&gt;字符串常量&lt;/strong&gt; (e.g., &lt;code&gt;&amp;quot;hello world&amp;quot;&lt;/code&gt;)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：内容只读，不允许修改。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;代码区 (Code Area / Text Segment)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;存放&lt;/strong&gt;：编译后的&lt;strong&gt;二进制机器代码&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：只读，且可共享。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;你能把这五个区记住，在面试时就能给出一个非常全面和专业的回答。&lt;/p&gt;
+&lt;h2 id="堆和栈的对比"&gt;堆和栈的对比&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;面试官 (深入提问):&lt;/strong&gt; 好的，你对内存分区已经很清楚了。我们来聚焦于&lt;strong&gt;堆 (Heap)&lt;/strong&gt; 和&lt;strong&gt;栈 (Stack)&lt;/strong&gt; 的对比。&lt;/p&gt;</description></item></channel></rss>

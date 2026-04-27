@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#da7756"/>
+      <stop offset="100%" stop-color="#c96442"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="44" fill="url(#bg)"/>
+  <text x="100" y="135" font-family="Georgia, 'Noto Serif SC', ui-serif, serif" font-size="110" font-weight="700" fill="#faf9f6" text-anchor="middle">M</text>
+  <circle cx="40" cy="40" r="8" fill="#faf9f6" opacity="0.3"/>
+  <circle cx="170" cy="155" r="6" fill="#faf9f6" opacity="0.2"/>
+  <circle cx="155" cy="30" r="4" fill="#faf9f6" opacity="0.25"/>
+</svg>
