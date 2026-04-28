@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>EffectiveCpp on Mao's Blog</title><link>https://Mist2233.github.io/series/effectivecpp/</link><description>Recent content in EffectiveCpp on Mao's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 23 Apr 2026 08:17:01 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/series/effectivecpp/index.xml" rel="self" type="application/rss+xml"/><item><title>1-AccustomingYourselfToC++</title><link>https://Mist2233.github.io/posts/1-accustomingyourselftoc++/</link><pubDate>Thu, 23 Apr 2026 08:17:01 +0800</pubDate><guid>https://Mist2233.github.io/posts/1-accustomingyourselftoc++/</guid><description>&lt;h2 id="item1-view-cpp-as-a-federation-of-languages"&gt;Item1: View Cpp as a federation of languages&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>EffectiveCpp on Mao's Blog</title><link>https://Mist2233.github.io/series/effectivecpp/</link><description>Recent content in EffectiveCpp on Mao's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 28 Apr 2026 12:26:00 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/series/effectivecpp/index.xml" rel="self" type="application/rss+xml"/><item><title>2-Constructors, Destructors, and Assignment Operators</title><link>https://Mist2233.github.io/posts/2-constructors-destructors-and-assignment-operators/</link><pubDate>Tue, 28 Apr 2026 12:26:00 +0800</pubDate><guid>https://Mist2233.github.io/posts/2-constructors-destructors-and-assignment-operators/</guid><description>&lt;p&gt;构造函数、析构函数、赋值运算符，可以说是一个对象最重要的三个成员函数，它们分别掌管成员变量的出生、死亡以及变化。&lt;/p&gt;
+&lt;h2 id="item5-know-what-functions-c-silently-writes-and-calls"&gt;Item5: Know what functions C++ silently writes and calls&lt;/h2&gt;
+&lt;p&gt;虽然我们只是创建一个空类，没有写任何的函数，但是，编译器还是会默认声明一些特殊的成员函数。具体来说，包括：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;函数&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;默认构造函数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Empty() = default;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;析构函数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;~Empty() = default;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;拷贝构造函数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Empty(const Empty&amp;amp;) = default;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;拷贝赋值运算符&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Empty&amp;amp; operator=(const Empty&amp;amp;) = default;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;移动构造函数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Empty(Empty&amp;amp;&amp;amp;) = default;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;移动赋值运算符&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Empty&amp;amp; operator=(Empty&amp;amp;&amp;amp;) = default;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;【补充知识】五法则&lt;/strong&gt;：&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;除了默认构造函数之外，剩下的五个特殊的成员函数，如果我们手动定义了其中一个，剩下的四个就都不会被编译器自动生成。这是因为，一旦我们需要手动定义这五个函数中的一个，就说明存在需要手动释放的资源（比如 &lt;code&gt;new&lt;/code&gt; 出的内存、打开的文件、拿到的锁等等）。既然有资源需要手动释放，那么默认的拷贝（浅拷贝）一定会出问题——两个对象会持有同一份资源，析构时双重释放。&lt;/p&gt;
+&lt;p&gt;这个规则被称为“五法则”，其逻辑链是：
+需要自定义某个函数 → 说明持有资源 → 拷贝/移动不能信任默认实现 → 五个都要自定义&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;回到正题。比如说，我们定义：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;但实际上，编译器生成的等价于：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 编译器实际生成的等价于
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Empty&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这些函数都是 public 并且 inline 的，且只有它们在被实际调用的时候，编译器才会真正生成它们的定义（不是在声明时就生成）。&lt;/p&gt;</description></item><item><title>1-AccustomingYourselfToC++</title><link>https://Mist2233.github.io/posts/1-accustomingyourselftoc++/</link><pubDate>Thu, 23 Apr 2026 08:17:01 +0800</pubDate><guid>https://Mist2233.github.io/posts/1-accustomingyourselftoc++/</guid><description>&lt;h2 id="item1-view-cpp-as-a-federation-of-languages"&gt;Item1: View Cpp as a federation of languages&lt;/h2&gt;
 &lt;p&gt;C++可以看成是下面四种不同语言的组合：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;C 语言&lt;/li&gt;
