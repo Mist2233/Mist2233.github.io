@@ -1,4 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hello! on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Hello! on Mao's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 28 Apr 2026 12:26:00 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>2-Constructors, Destructors, and Assignment Operators</title><link>https://Mist2233.github.io/posts/2-constructors-destructors-and-assignment-operators/</link><pubDate>Tue, 28 Apr 2026 12:26:00 +0800</pubDate><guid>https://Mist2233.github.io/posts/2-constructors-destructors-and-assignment-operators/</guid><description>&lt;p&gt;构造函数、析构函数、赋值运算符，可以说是一个对象最重要的三个成员函数，它们分别掌管成员变量的出生、死亡以及变化。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hello! on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Hello! on Mao's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 02 May 2026 09:27:30 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>3-Resource Management</title><link>https://Mist2233.github.io/posts/3-resourcemanagement/</link><pubDate>Sat, 02 May 2026 09:27:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/3-resourcemanagement/</guid><description>&lt;p&gt;C++中，我们需要手动管理资源。最常见的资源就是动态分配的内存，但注意，它不是唯一的资源。其他资源还有：file descriptors, mutex locks, fonts and brushes in graphical user interfaces.&lt;/p&gt;
+&lt;h2 id="item13-use-objects-to-manage-resouces"&gt;Item13: Use objects to manage resouces&lt;/h2&gt;
+&lt;p&gt;核心思想：把资源放进对象里，用对象来管理资源，让对象的构造和析构来保证资源的获取与释放。&lt;/p&gt;
+&lt;p&gt;其实，这就是 RAII。&lt;/p&gt;
+&lt;p&gt;这是因为，C++没有垃圾回收机制，手动 &lt;code&gt;new&lt;/code&gt; / &lt;code&gt;delete&lt;/code&gt; 十分容易出错（比如 &lt;code&gt;delete&lt;/code&gt; 可能因为一些异常情况而没有被执行），所以我们需要一个规范化的获取和释放资源的流程。&lt;/p&gt;
+&lt;h3 id="手动管理资源的做法"&gt;手动管理资源的做法&lt;/h3&gt;
+&lt;p&gt;例如，下面的代码使用一个 factory function 来为所有继承自 &lt;code&gt;Investment&lt;/code&gt; 的类创建统一的调用接口（一个基类指针）。&lt;/p&gt;
+&lt;p&gt;如果你手动管理资源（&lt;code&gt;new&lt;/code&gt; / &lt;code&gt;delete&lt;/code&gt;、&lt;code&gt;fopen&lt;/code&gt; / &lt;code&gt;fclose&lt;/code&gt;、&lt;code&gt;lock&lt;/code&gt; / &lt;code&gt;unlock&lt;/code&gt;），很容易出错：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Investment&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pInv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;createInvestment&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// ... 中间可能有 return、异常、goto 等各种出口
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pInv&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 万一没走到这里？内存泄漏
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;当然，你可以说：啊我 coding 的时候很仔细的，不会犯这样的低级错误。&lt;/p&gt;
+&lt;p&gt;但是，随着工程越来越大，代码越来越长，不规范的写法维护的成本也会越来越高。所以，为了确保资源一定能够安全释放，我们还是使用 RAII 的做法。&lt;/p&gt;
+&lt;h3 id="raii-的做法"&gt;RAII 的做法&lt;/h3&gt;
+&lt;p&gt;用一个对象来持有资源，对象的析构函数负责释放资源。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;auto_ptr&lt;/code&gt; 就是这样一个对象。它是一个智能指针，管理着一个裸指针；在自身析构时，会自动对自己管理的裸指针调用 &lt;code&gt;delete&lt;/code&gt;。&lt;/p&gt;
+&lt;div class="callout callout-note"&gt;
+&lt;p class="callout-header"&gt;再次回顾：&amp;lt;code&amp;gt;delete&amp;lt;/code&amp;gt; 实际做了两件事情&lt;/p&gt;</description></item><item><title>2-Constructors, Destructors, and Assignment Operators</title><link>https://Mist2233.github.io/posts/2-constructors-destructors-and-assignment-operators/</link><pubDate>Tue, 28 Apr 2026 12:26:00 +0800</pubDate><guid>https://Mist2233.github.io/posts/2-constructors-destructors-and-assignment-operators/</guid><description>&lt;p&gt;构造函数、析构函数、赋值运算符，可以说是一个对象最重要的三个成员函数，它们分别掌管成员变量的出生、死亡以及变化。&lt;/p&gt;
 &lt;h2 id="item5-know-what-functions-c-silently-writes-and-calls"&gt;Item5: Know what functions C++ silently writes and calls&lt;/h2&gt;
 &lt;p&gt;虽然我们只是创建一个空类，没有写任何的函数，但是，编译器还是会默认声明一些特殊的成员函数。具体来说，包括：&lt;/p&gt;
 &lt;table&gt;
