@@ -1,4 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hello! on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Hello! on Mao's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 02 May 2026 09:27:30 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>3-Resource Management</title><link>https://Mist2233.github.io/posts/3-resourcemanagement/</link><pubDate>Sat, 02 May 2026 09:27:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/3-resourcemanagement/</guid><description>&lt;p&gt;C++中，我们需要手动管理资源。最常见的资源就是动态分配的内存，但注意，它不是唯一的资源。其他资源还有：file descriptors, mutex locks, fonts and brushes in graphical user interfaces.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hello! on Mao's Blog</title><link>https://Mist2233.github.io/posts/</link><description>Recent content in Hello! on Mao's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 09 May 2026 20:39:00 +0800</lastBuildDate><atom:link href="https://Mist2233.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>4-Designs and Declarations</title><link>https://Mist2233.github.io/posts/4-designsanddeclarations/</link><pubDate>Sat, 09 May 2026 20:39:00 +0800</pubDate><guid>https://Mist2233.github.io/posts/4-designsanddeclarations/</guid><description>&lt;p&gt;本章将介绍设计和声明 C++ 接口的一些原则。&lt;/p&gt;
+&lt;h2 id="item18-make-interfaces-easy-to-use-correctly-and-hard-to-use-incorrectly"&gt;Item18: Make interfaces easy to use correctly and hard to use incorrectly&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;核心思想&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;好的接口应该&lt;strong&gt;引导正确使用，阻止错误使用&lt;/strong&gt;。如果用户用错了，编译器应该报错，而不是运行时才发现 bug。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以，我们在设计接口的时候，最好多问自己一个问题：&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;如果别人用我的接口，最可能的几种用错方式是什么？我能不能在编译期就拦住，从而让用户正确地使用接口？&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;具体来说，主要有下面四个点需要检查：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;参数顺序容易搞混吗？ -&amp;gt; 用类型区分&lt;/li&gt;
+&lt;li&gt;参数有合法范围吗？ -&amp;gt; 用 &lt;code&gt;enum&lt;/code&gt; 或者 &lt;code&gt;enum class&lt;/code&gt; 限定范围&lt;/li&gt;
+&lt;li&gt;行为和内置类型一致吗？ -&amp;gt; 该 &lt;code&gt;const&lt;/code&gt; 就 &lt;code&gt;const&lt;/code&gt;，该重载运算符就重载&lt;/li&gt;
+&lt;li&gt;涉及资源管理吗？ -&amp;gt; 返回智能指针，不要返回裸指针&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="参数顺序容易搞混吗"&gt;参数顺序容易搞混吗？&lt;/h3&gt;
+&lt;p&gt;比如说，我有一个 &lt;code&gt;Date&lt;/code&gt; 类，它的构造函数需要三个参数：month-day-year。如果我全都定义成 &lt;code&gt;int&lt;/code&gt; 类型，那么在传错顺序时很难检查出来。&lt;/p&gt;
+&lt;p&gt;所以，我可以自定义新的三个类：&lt;code&gt;Month&lt;/code&gt;、&lt;code&gt;Day&lt;/code&gt; 和 &lt;code&gt;Year&lt;/code&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 危险：三个 int，顺序很容易传反
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;day&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 改进：用类型区分
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="nc"&gt;Month&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="nf"&gt;Month&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="nc"&gt;Day&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="nf"&gt;Day&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="nc"&gt;Year&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="nf"&gt;Year&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Month&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Day&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Year&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这样，就可以轻松区分下面三种情况，用户很难传错参数：&lt;/p&gt;</description></item><item><title>3-Resource Management</title><link>https://Mist2233.github.io/posts/3-resourcemanagement/</link><pubDate>Sat, 02 May 2026 09:27:30 +0800</pubDate><guid>https://Mist2233.github.io/posts/3-resourcemanagement/</guid><description>&lt;p&gt;C++中，我们需要手动管理资源。最常见的资源就是动态分配的内存，但注意，它不是唯一的资源。其他资源还有：file descriptors, mutex locks, fonts and brushes in graphical user interfaces.&lt;/p&gt;
 &lt;h2 id="item13-use-objects-to-manage-resouces"&gt;Item13: Use objects to manage resouces&lt;/h2&gt;
 &lt;p&gt;核心思想：把资源放进对象里，用对象来管理资源，让对象的构造和析构来保证资源的获取与释放。&lt;/p&gt;
 &lt;p&gt;其实，这就是 RAII。&lt;/p&gt;
