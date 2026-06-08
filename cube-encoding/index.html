@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>彳亍法 · 魔方盲拧编码学习</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    #container {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    /* ------- 控制面板 ------- */
+    #controls {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(30, 30, 50, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 20px 20px;
+      min-width: 200px;
+      user-select: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    #controls h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .ctrl-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.04);
+      font-size: 13px;
+      color: #ccc;
+    }
+    .ctrl-btn:hover { background: rgba(255,255,255,0.08); }
+    .ctrl-btn .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .ctrl-btn .dot.off { opacity: 0.2; }
+    .dot.edge { background: #4fc3f7; }
+    .dot.corner { background: #ffb74d; }
+    .dot.auto { background: #81c784; }
+    .dot.practice { background: #ff6b6b; }
+
+    .legend-row {
+      display: flex; align-items: center;
+      gap: 6px; font-size: 12px; color: #aaa;
+      padding: 2px 0;
+    }
+    .legend-row .swatch {
+      width: 14px; height: 14px;
+      border-radius: 3px; flex-shrink: 0;
+    }
+
+    /* ------- 编码表 ------- */
+    #legend-toggle {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      z-index: 10;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(30,30,50,0.85);
+      backdrop-filter: blur(12px);
+      color: #ccc;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    #legend-toggle:hover { background: rgba(255,255,255,0.1); }
+
+    #legend-panel {
+      position: absolute;
+      right: 16px;
+      top: 56px;
+      z-index: 10;
+      width: 340px;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+      background: rgba(30,30,50,0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    #legend-panel.hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
+
+    #legend-panel h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 10px 0 6px;
+    }
+    #legend-panel h3:first-child { margin-top: 0; }
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 3px;
+      margin-bottom: 8px;
+    }
+    .legend-cell {
+      text-align: center;
+      padding: 3px 2px;
+      border-radius: 4px;
+      font-size: 11px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .legend-cell .l { font-weight: 600; font-size: 13px; }
+    .legend-cell .p { font-size: 9px; color: #888; }
+    .legend-cell.edge .l { color: #4fc3f7; }
+    .legend-cell.corner .l { color: #ffb74d; }
+
+    .legend-note {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* ------- 练习模式 ------- */
+    #practice-overlay {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      background: rgba(20, 20, 40, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px 32px;
+      text-align: center;
+      min-width: 240px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+    #practice-overlay.hidden { opacity: 0; transform: translateX(-50%) scale(0.9); pointer-events: none; }
+    #practice-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+    #practice-piece-name {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin: 4px 0 8px;
+    }
+    #practice-answer {
+      margin: 10px 0;
+      transition: all 0.3s ease;
+    }
+    #practice-answer.hidden { opacity: 0; transform: translateY(8px); }
+    #practice-letters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .practice-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      font-size: 22px;
+      font-weight: 800;
+      font-family: '"SF Mono", "Fira Code", "Consolas", monospace';
+      border: 3px solid;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.9);
+      color: #000;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .practice-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+    .practice-buttons button {
+      padding: 6px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      color: #ccc;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s;
+    }
+    .practice-buttons button:hover { background: rgba(255,255,255,0.12); }
+    #practice-reveal { background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7; }
+    #practice-reveal:hover { background: rgba(79, 195, 247, 0.35); }
+    #practice-exit { color: #888; font-size: 12px; }
+    #practice-mode-toggle {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: #999;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.15s;
+    }
+    #practice-mode-toggle:hover { background: rgba(255,255,255,0.1); }
+    #practice-mode-toggle .mode-on { color: #ffb74d; font-weight: 600; }
+    #practice-colors {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .practice-color-chip {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      border: 2px solid rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .practice-color-label {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* ------- 底部信息 ------- */
+    #footer {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      pointer-events: none;
+      text-align: center;
+    }
+
+    /* ------- Scroll ------- */
+    #legend-panel::-webkit-scrollbar { width: 4px; }
+    #legend-panel::-webkit-scrollbar-track { background: transparent; }
+    #legend-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+    @media (max-width: 640px) {
+      #controls { top: 8px; left: 8px; padding: 12px 14px; min-width: 160px; }
+      #controls h2 { font-size: 13px; }
+      .ctrl-btn { font-size: 11px; padding: 4px 10px; }
+      #legend-panel { right: 8px; top: 48px; width: calc(100vw - 16px); max-height: 50vh; font-size: 12px; }
+      #legend-toggle { right: 8px; top: 8px; font-size: 11px; padding: 6px 10px; }
+      .legend-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container"></div>
+
+  <!-- 控制面板 -->
+  <div id="controls">
+    <h2>🧩 彳亍法编码</h2>
+    <div class="ctrl-group">
+      <div class="ctrl-btn" data-toggle="edge">
+        <span class="dot edge"></span> 棱块编码（12 棱）
+      </div>
+      <div class="ctrl-btn" data-toggle="corner">
+        <span class="dot corner"></span> 角块编码（8 角）
+      </div>
+      <div class="ctrl-btn" data-toggle="autospin">
+        <span class="dot auto"></span> 自动旋转
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="ctrl-btn" data-toggle="practice" style="border-color:#ff6b6b;">
+        <span class="dot practice"></span> 练习模式
+      </div>
+    </div>
+    <div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
+      <div class="legend-row"><div class="swatch" style="background:#4fc3f7;"></div> 棱块字母</div>
+      <div class="legend-row"><div class="swatch" style="background:#ffb74d;"></div> 角块字母</div>
+    </div>
+  </div>
+
+  <!-- 编码表 -->
+  <button id="legend-toggle">📖 编码表</button>
+  <div id="legend-panel" class="hidden">
+    <h3 style="color:#4fc3f7;">▎棱块编码</h3>
+    <div class="legend-grid" id="edge-legend-grid"></div>
+    <h3 style="color:#ffb74d; margin-top:14px;">▎角块编码</h3>
+    <div class="legend-grid" id="corner-legend-grid"></div>
+    <div class="legend-note">
+      ⚡ 共 48 个编码字母（棱块 24 + 角块 24）<br/>
+      字母顺序 A–Z，跳过 U、V（发音不便作拼音联想）<br/>
+      拖拽旋转 · 滚轮缩放
+    </div>
+  </div>
+
+  <div id="footer">拖拽旋转 · 滚轮缩放</div>
+
+  <!-- 练习模式遮罩 -->
+  <div id="practice-overlay" class="hidden">
+    <div id="practice-badge"></div>
+    <div id="practice-piece-name"></div>
+    <div id="practice-colors" class="hidden" style="display:flex;justify-content:center;gap:6px;margin:10px 0;flex-wrap:wrap;align-items:center;"></div>
+    <div id="practice-answer" class="hidden">
+      <div id="practice-letters"></div>
+    </div>
+    <div class="practice-buttons">
+      <button id="practice-reveal">显示答案</button>
+      <button id="practice-next">下一题 →</button>
+      <button id="practice-exit">退出</button>
+    </div>
+    <div>
+      <button id="practice-mode-toggle">🎨 颜色模式</button>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+  // ============================================================
+  //  1. 颜色定义
+  // ============================================================
+  // 黄顶红前配色（中国速拧魔方常用方案）
+  const FACE_COLORS = {
+    U: 0xFFD500, D: 0xFFFFFF,
+    F: 0xC41E3A, B: 0xFF5800,
+    R: 0x009E60, L: 0x0051BA,
+  };
+
+  const FACE_NAMES = {
+    '+y': 'U', '-y': 'D',
+    '+z': 'F', '-z': 'B',
+    '+x': 'R', '-x': 'L',
+  };
+  const DIRS = ['+x','-x','+y','-y','+z','-z'];
+
+  // 黄顶红前配色对应的 CSS 色值
+  const COLOR_CSS = {
+    U: '#FFD500', D: '#FFFFFF',
+    F: '#C41E3A', B: '#FF5800',
+    R: '#009E60', L: '#0051BA',
+  };
+
+  // ============================================================
+  //  2. 彳亍法编码数据
+  // ============================================================
+  // 棱块：12 个 × 2 贴纸 = 24 个字母（A–Z 跳过 U, V）
+  const EDGE_DATA = [
+    { pos: [ 0, 1, 1], name: 'UF', labels: { '+y': 'A', '+z': 'B' } },
+    { pos: [-1, 1, 0], name: 'UL', labels: { '+y': 'C', '-x': 'D' } },
+    { pos: [ 0, 1,-1], name: 'UB', labels: { '+y': 'E', '-z': 'F' } },
+    { pos: [ 1, 1, 0], name: 'UR', labels: { '+y': 'G', '+x': 'H' } },
+    { pos: [ 1, 0, 1], name: 'FR', labels: { '+z': 'Q', '+x': 'R' } },
+    { pos: [-1, 0, 1], name: 'FL', labels: { '+z': 'S', '-x': 'T' } },
+    { pos: [-1, 0,-1], name: 'BL', labels: { '-z': 'W', '-x': 'X' } },
+    { pos: [ 1, 0,-1], name: 'BR', labels: { '-z': 'Y', '+x': 'Z' } },
+    { pos: [ 0,-1, 1], name: 'DF', labels: { '-y': 'I', '+z': 'J' } },
+    { pos: [-1,-1, 0], name: 'DL', labels: { '-y': 'K', '-x': 'L' } },
+    { pos: [ 0,-1,-1], name: 'DB', labels: { '-y': 'M', '-z': 'N' } },
+    { pos: [ 1,-1, 0], name: 'DR', labels: { '-y': 'O', '+x': 'P' } },
+  ];
+
+  // 角块：8 个 × 3 贴纸 = 24 个字母（A–Z 跳过 U, V）
+  const CORNER_DATA = [
+    { pos: [-1, 1, 1], name: 'UFL', labels: { '+y': 'A', '+z': 'B', '-x': 'C' } },
+    { pos: [-1, 1,-1], name: 'UBL', labels: { '+y': 'D', '-x': 'E', '-z': 'F' } },
+    { pos: [ 1, 1,-1], name: 'UBR', labels: { '+y': 'G', '-z': 'H', '+x': 'I' } },
+    { pos: [ 1, 1, 1], name: 'UFR', labels: { '+y': 'J', '+x': 'K', '+z': 'L' } },
+    { pos: [-1,-1, 1], name: 'DFL', labels: { '-y': 'W', '+z': 'N', '-x': 'M' } },
+    { pos: [ 1,-1, 1], name: 'DFR', labels: { '-y': 'X', '+x': 'Z', '+z': 'Y' } },
+    { pos: [ 1,-1,-1], name: 'DBR', labels: { '-y': 'R', '-z': 'T', '+x': 'S' } },
+    { pos: [-1,-1,-1], name: 'DBL', labels: { '-y': 'O', '-x': 'Q', '-z': 'P' } },
+  ];
+
+  // 中心块：6 个（无编码，仅参考）
+  const CENTER_DATA = [
+    { pos: [ 0, 1, 0], name: 'U', dir: '+y' },
+    { pos: [ 0,-1, 0], name: 'D', dir: '-y' },
+    { pos: [ 0, 0, 1], name: 'F', dir: '+z' },
+    { pos: [ 0, 0,-1], name: 'B', dir: '-z' },
+    { pos: [ 1, 0, 0], name: 'R', dir: '+x' },
+    { pos: [-1, 0, 0], name: 'L', dir: '-x' },
+  ];
+
+  // ============================================================
+  //  3. Three.js 场景
+  // ============================================================
+  const container = document.getElementById('container');
+  const { clientWidth: W, clientHeight: H } = container;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a1a2e);
+
+  const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 100);
+  camera.position.set(5.5, 4.0, 5.5);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x1a1a2e);
+  container.appendChild(renderer.domElement);
+
+  const labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(W, H);
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0';
+  labelRenderer.domElement.style.pointerEvents = 'none';
+  container.appendChild(labelRenderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 4;
+  controls.maxDistance = 15;
+  controls.target.set(0, 0, 0);
+  controls.autoRotate = false;
+  controls.autoRotateSpeed = 2.0;
+
+  // ---- 无影平光 ----
+  const ambient = new THREE.AmbientLight(0xffffff, 1.0);
+  scene.add(ambient);
+
+  // ---- 地面反光效果（圆环） ----
+  // (已移除，保持画面简洁)
+
+  // ============================================================
+  //  4. 构建魔方
+  // ============================================================
+  const CUBIE_GAP = 0.06;
+  const CUBIE_SIZE = 1 - CUBIE_GAP;
+  const LABEL_OFFSET = CUBIE_SIZE / 2 + 0.04;
+
+  // 存放贴纸标签
+  const edgeLabels = [];   // CSS2DObject[]
+  const cornerLabels = []; // CSS2DObject[]
+  const centerLabels = []; // CSS2DObject[]
+  const meshByPos = new Map(); // "x,y,z" → Mesh
+
+  const cubieGeo = new THREE.BoxGeometry(CUBIE_SIZE, CUBIE_SIZE, CUBIE_SIZE);
+
+  // 判断某面是否有贴纸（在表面）
+  function hasSticker(pos, dir) {
+    const axisIdx = { x: 0, y: 1, z: 2 }[dir[1]];
+    const sign = dir[0] === '+' ? 1 : -1;
+    return pos[axisIdx] === sign;
+  }
+
+  // 生成材质数组 [right, left, top, bottom, front, back]
+  function makeMaterials(pos) {
+    const defaultMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
+    return DIRS.map(dir => {
+      if (!hasSticker(pos, dir)) return defaultMat;
+      const faceName = FACE_NAMES[dir];
+      const color = FACE_COLORS[faceName];
+      const mat = new THREE.MeshBasicMaterial({ color });
+      mat.userData.faceName = faceName;
+      return mat;
+    });
+  }
+
+  // 生成贴纸标签偏移位置
+  function stickerPos(pos, dir) {
+    const [x, y, z] = pos;
+    const ox = dir.includes('x') ? (dir[0]==='+' ? 1 : -1) * LABEL_OFFSET : 0;
+    const oy = dir.includes('y') ? (dir[0]==='+' ? 1 : -1) * LABEL_OFFSET : 0;
+    const oz = dir.includes('z') ? (dir[0]==='+' ? 1 : -1) * LABEL_OFFSET : 0;
+    return new THREE.Vector3(x + ox, y + oy, z + oz);
+  }
+
+  // 从方向字符串获取外向法线（用于背面剔除）
+  function outwardDir(dir) {
+    const x = dir.includes('x') ? (dir[0] === '+' ? 1 : -1) : 0;
+    const y = dir.includes('y') ? (dir[0] === '+' ? 1 : -1) : 0;
+    const z = dir.includes('z') ? (dir[0] === '+' ? 1 : -1) : 0;
+    return new THREE.Vector3(x, y, z);
+  }
+
+  // 创建标签 DOM
+  function createLabelDOM(letter, type, faceName) {
+    const isEdge = type === 'edge';
+    const bgColor = COLOR_CSS[faceName] || '#FFFFFF';
+    const div = document.createElement('div');
+    div.textContent = letter;
+    div.style.color = '#000000';
+    div.style.fontWeight = '800';
+    div.style.fontWeight = '700';
+    div.style.fontSize = '15px';
+    div.style.fontFamily = '"SF Mono", "Fira Code", "Consolas", monospace';
+    div.style.width = '24px';
+    div.style.height = '24px';
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.justifyContent = 'center';
+    div.style.borderRadius = isEdge ? '50%' : '4px';
+    div.style.border = `2px solid ${isEdge ? '#4fc3f7' : '#ffb74d'}`;
+    div.style.background = bgColor;
+    div.style.textShadow = '0 0 2px rgba(255,255,255,0.8)';
+    div.style.boxShadow = '0 1px 4px rgba(0,0,0,0.35)';
+    div.style.transition = 'transform 0.15s';
+    div.style.pointerEvents = 'auto';
+    div.style.cursor = 'pointer';
+    div.title = `${type==='edge'?'棱块':'角块'} ${letter} · ${faceName}面`;
+    div.dataset.letter = letter;
+    div.dataset.type = type;
+    return div;
+  }
+
+  // 构建所有 cubies
+  const cubieGroup = new THREE.Group();
+
+  // ---- 棱块 ----
+  for (const e of EDGE_DATA) {
+    const pos = e.pos;
+    const mesh = new THREE.Mesh(cubieGeo, makeMaterials(pos));
+    mesh.position.set(pos[0], pos[1], pos[2]);
+    cubieGroup.add(mesh);
+    meshByPos.set(pos.join(','), mesh);
+
+    for (const [dir, letter] of Object.entries(e.labels)) {
+      const faceName = FACE_NAMES[dir];
+      const div = createLabelDOM(letter, 'edge', faceName);
+      div.style.borderColor = '#4fc3f7';
+      const label = new CSS2DObject(div);
+      label.position.copy(stickerPos(pos, dir));
+      label.userData = { type: 'edge', letter, active: true, outwardDir: outwardDir(dir) };
+      cubieGroup.add(label);
+      edgeLabels.push(label);
+    }
+  }
+
+  // ---- 角块 ----
+  for (const c of CORNER_DATA) {
+    const pos = c.pos;
+    const mesh = new THREE.Mesh(cubieGeo, makeMaterials(pos));
+    mesh.position.set(pos[0], pos[1], pos[2]);
+    cubieGroup.add(mesh);
+    meshByPos.set(pos.join(','), mesh);
+
+    for (const [dir, letter] of Object.entries(c.labels)) {
+      const faceName = FACE_NAMES[dir];
+      const div = createLabelDOM(letter, 'corner', faceName);
+      div.style.borderColor = '#ffb74d';
+      div.style.borderRadius = '4px';
+      const label = new CSS2DObject(div);
+      label.position.copy(stickerPos(pos, dir));
+      label.userData = { type: 'corner', letter, active: true, outwardDir: outwardDir(dir) };
+      cubieGroup.add(label);
+      cornerLabels.push(label);
+    }
+  }
+
+  // ---- 中心块 ----
+  for (const c of CENTER_DATA) {
+    const pos = c.pos;
+    const mesh = new THREE.Mesh(cubieGeo, makeMaterials(pos));
+    mesh.position.set(pos[0], pos[1], pos[2]);
+    cubieGroup.add(mesh);
+
+    // 中心面标记：小字显示面名
+    const div = document.createElement('div');
+    div.textContent = c.name;
+    div.style.color = (c.name === 'U' || c.name === 'D') ? '#333' : '#fff';
+    div.style.fontWeight = '600';
+    div.style.fontSize = '12px';
+    div.style.fontFamily = '"SF Mono", "Fira Code", "Consolas", monospace';
+    div.style.background = 'rgba(0,0,0,0.3)';
+    div.style.backdropFilter = 'blur(2px)';
+    div.style.padding = '2px 5px';
+    div.style.borderRadius = '4px';
+    div.style.fontSize = '14px';
+    div.style.opacity = '0.6';
+    const label = new CSS2DObject(div);
+    label.position.copy(stickerPos(pos, c.dir));
+    label.userData = { outwardDir: outwardDir(c.dir) };
+    cubieGroup.add(label);
+    centerLabels.push(label);
+  }
+
+  scene.add(cubieGroup);
+
+  // ============================================================
+  //  5. 状态切换
+  // ============================================================
+  let showEdge = true;
+  let showCorner = true;
+
+  function updateLabelVisibility() {
+    const _v = new THREE.Vector3();
+    for (const lbl of edgeLabels) {
+      if (!showEdge) { lbl.visible = false; continue; }
+      _v.copy(camera.position).sub(lbl.position).normalize();
+      lbl.visible = lbl.userData.outwardDir.dot(_v) > 0.15;
+    }
+    for (const lbl of cornerLabels) {
+      if (!showCorner) { lbl.visible = false; continue; }
+      _v.copy(camera.position).sub(lbl.position).normalize();
+      lbl.visible = lbl.userData.outwardDir.dot(_v) > 0.15;
+    }
+    for (const lbl of centerLabels) {
+      _v.copy(camera.position).sub(lbl.position).normalize();
+      lbl.visible = lbl.userData.outwardDir.dot(_v) > 0.15;
+    }
+  }
+
+  function updateToggleUI() {
+    document.querySelectorAll('[data-toggle]').forEach(el => {
+      const key = el.dataset.toggle;
+      const dot = el.querySelector('.dot');
+      let on;
+      if (key === 'edge') on = showEdge;
+      else if (key === 'corner') on = showCorner;
+      else if (key === 'autospin') on = controls.autoRotate;
+      dot.classList.toggle('off', !on);
+    });
+  }
+
+  document.querySelectorAll('[data-toggle]').forEach(el => {
+    el.addEventListener('click', () => {
+      const key = el.dataset.toggle;
+      if (key === 'edge') { showEdge = !showEdge; updateLabelVisibility(); }
+      else if (key === 'corner') { showCorner = !showCorner; updateLabelVisibility(); }
+      else if (key === 'autospin') { controls.autoRotate = !controls.autoRotate; }
+      updateToggleUI();
+    });
+  });
+
+  updateLabelVisibility();
+  updateToggleUI();
+
+  // ============================================================
+  //  6. 编码表面板
+  // ============================================================
+  function buildLegendGrid(data, containerId, type) {
+    const grid = document.getElementById(containerId);
+    grid.innerHTML = '';
+    for (const item of data) {
+      for (const [dir, letter] of Object.entries(item.labels)) {
+        const cell = document.createElement('div');
+        cell.className = `legend-cell ${type}`;
+        const faceName = FACE_NAMES[dir];
+        const ch = { U:'顶', D:'底', F:'前', B:'后', R:'右', L:'左' }[faceName] || faceName;
+        cell.innerHTML = `<div class="l">${letter}</div><div class="p">${item.name}·${ch}</div>`;
+        grid.appendChild(cell);
+      }
+    }
+    // 排序：按字母
+    const cells = [...grid.children];
+    cells.sort((a, b) => {
+      const la = a.querySelector('.l').textContent;
+      const lb = b.querySelector('.l').textContent;
+      return la.localeCompare(lb);
+    });
+    grid.innerHTML = '';
+    for (const c of cells) grid.appendChild(c);
+  }
+
+  buildLegendGrid(EDGE_DATA, 'edge-legend-grid', 'edge');
+  buildLegendGrid(CORNER_DATA, 'corner-legend-grid', 'corner');
+
+  document.getElementById('legend-toggle').addEventListener('click', () => {
+    document.getElementById('legend-panel').classList.toggle('hidden');
+  });
+
+  // ============================================================
+  //  7. 自适应
+  // ============================================================
+  function resize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+    labelRenderer.setSize(w, h);
+  }
+  window.addEventListener('resize', resize);
+
+  // ============================================================
+  //  8. 动画循环
+  // ============================================================
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    updateLabelVisibility();
+    renderer.render(scene, camera);
+    labelRenderer.render(scene, camera);
+  }
+  animate();
+
+  // ============================================================
+  //  9. 标签悬停放大效果
+  // ============================================================
+  // 通过 CSS2D 自带的 pointer-events，label 本身可交互
+  // 简单 hover 效果：鼠标移上放大
+  document.querySelectorAll('.ctrl-btn, #legend-toggle').forEach(el => {
+    el.style.cursor = 'pointer';
+  });
+
+  // 在 labelRenderer 上层捕获 hover
+  labelRenderer.domElement.style.pointerEvents = 'none';
+  // 允许 label 自身接收事件
+  document.querySelectorAll('#container [data-letter]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      el.style.transform = 'scale(1.3)';
+      el.style.zIndex = '100';
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'scale(1)';
+      el.style.zIndex = '1';
+    });
+  });
+
+  // ============================================================
+  // 10. 练习模式
+  // ============================================================
+  let practiceActive = false;
+  let practiceItem = null;
+  let practicePool = [];  // { type, data }
+  let colorMode = false;
+
+  // 方向 → 颜色名（中文）和 CSS 色值
+  const DIR_COLOR = {
+    '+y': { name: '黄', css: '#FFD500' },
+    '-y': { name: '白', css: '#FFFFFF' },
+    '+z': { name: '红', css: '#C41E3A' },
+    '-z': { name: '橙', css: '#FF5800' },
+    '+x': { name: '绿', css: '#009E60' },
+    '-x': { name: '蓝', css: '#0051BA' },
+  };
+
+  // 高亮框
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: 0x00ffcc,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.7,
+  });
+  const glowGeo = new THREE.BoxGeometry(CUBIE_SIZE * 1.14, CUBIE_SIZE * 1.14, CUBIE_SIZE * 1.14);
+  const glowMesh = new THREE.Mesh(glowGeo, glowMat);
+  glowMesh.visible = false;
+  scene.add(glowMesh);
+
+  function updatePracticePool() {
+    practicePool = [];
+    if (showEdge) for (const e of EDGE_DATA) practicePool.push({ type: 'edge', data: e });
+    if (showCorner) for (const c of CORNER_DATA) practicePool.push({ type: 'corner', data: c });
+  }
+
+  function getSortedColors(labels) {
+    // 按方向排序：先 y（上下）、再 z（前后）、再 x（左右）
+    const order = ['+y','-y','+z','-z','+x','-x'];
+    return Object.entries(labels)
+      .filter(([dir]) => DIR_COLOR[dir])
+      .sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]))
+      .map(([dir]) => DIR_COLOR[dir]);
+  }
+
+  function enterPractice() {
+    practiceActive = true;
+    updatePracticePool();
+    // 强制隐藏所有标签
+    for (const lbl of edgeLabels) lbl.visible = false;
+    for (const lbl of cornerLabels) lbl.visible = false;
+    document.getElementById('practice-overlay').classList.remove('hidden');
+    nextPractice();
+  }
+
+  function exitPractice() {
+    practiceActive = false;
+    glowMesh.visible = false;
+    document.getElementById('practice-overlay').classList.add('hidden');
+    document.getElementById('practice-answer').classList.add('hidden');
+    updateLabelVisibility();
+  }
+
+  function showPracticeQuestion(pick) {
+    const isEdge = pick.type === 'edge';
+    const nameEl = document.getElementById('practice-piece-name');
+    const badgeEl = document.getElementById('practice-badge');
+    const colorsEl = document.getElementById('practice-colors');
+
+    if (colorMode) {
+      // 颜色模式：隐藏名称，显示色块
+      nameEl.style.display = 'none';
+      colorsEl.classList.remove('hidden');
+      colorsEl.style.display = 'flex';
+
+      const colors = getSortedColors(pick.data.labels);
+      colorsEl.innerHTML = '';
+      for (let i = 0; i < colors.length; i++) {
+        if (i > 0) {
+          const sep = document.createElement('span');
+          sep.textContent = '·';
+          sep.style.cssText = 'font-size:18px;color:#666;';
+          colorsEl.appendChild(sep);
+        }
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;';
+        const chip = document.createElement('div');
+        chip.className = 'practice-color-chip';
+        chip.style.background = colors[i].css;
+        chip.style.borderColor = colors[i].css === '#FFFFFF' ? '#888' : 'rgba(0,0,0,0.2)';
+        const label = document.createElement('div');
+        label.className = 'practice-color-label';
+        label.textContent = colors[i].name;
+        label.style.color = colors[i].css === '#FFFFFF' ? '#ccc' : colors[i].css;
+        wrap.appendChild(chip);
+        wrap.appendChild(label);
+        colorsEl.appendChild(wrap);
+      }
+    } else {
+      // 名称模式：显示块名，隐藏色块
+      nameEl.style.display = 'block';
+      nameEl.textContent = pick.data.name;
+      nameEl.style.color = isEdge ? '#4fc3f7' : '#ffb74d';
+      colorsEl.classList.add('hidden');
+    }
+
+    badgeEl.textContent = isEdge ? '棱块' : '角块';
+    badgeEl.style.color = isEdge ? '#4fc3f7' : '#ffb74d';
+    badgeEl.style.border = `1px solid ${isEdge ? '#4fc3f755' : '#ffb74d55'}`;
+    badgeEl.style.background = isEdge ? '#4fc3f720' : '#ffb74d20';
+
+    // 高亮
+    const pos = pick.data.pos;
+    glowMesh.position.set(pos[0], pos[1], pos[2]);
+    glowMesh.visible = true;
+  }
+
+  function nextPractice() {
+    if (practicePool.length === 0) {
+      document.getElementById('practice-piece-name').textContent = '没有可用的块';
+      document.getElementById('practice-piece-name').style.display = 'block';
+      document.getElementById('practice-badge').textContent = '请开启棱块或角块';
+      document.getElementById('practice-badge').style.color = '#888';
+      document.getElementById('practice-colors').classList.add('hidden');
+      document.getElementById('practice-answer').classList.add('hidden');
+      glowMesh.visible = false;
+      return;
+    }
+
+    document.getElementById('practice-answer').classList.add('hidden');
+    const pick = practicePool[Math.floor(Math.random() * practicePool.length)];
+    practiceItem = pick;
+    showPracticeQuestion(pick);
+  }
+
+  function revealAnswer() {
+    if (!practiceItem) return;
+    document.getElementById('practice-answer').classList.remove('hidden');
+    const lettersEl = document.getElementById('practice-letters');
+    lettersEl.innerHTML = '';
+    const labels = practiceItem.data.labels;
+    const isEdge = practiceItem.type === 'edge';
+    // 与颜色显示使用相同的排序，保证颜色与字母一一对应
+    const order = ['+y','-y','+z','-z','+x','-x'];
+    const sorted = Object.entries(labels).sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
+    for (const [, letter] of sorted) {
+      const span = document.createElement('span');
+      span.className = 'practice-letter';
+      span.textContent = letter;
+      span.style.borderColor = isEdge ? '#4fc3f7' : '#ffb74d';
+      span.style.borderRadius = isEdge ? '50%' : '8px';
+      lettersEl.appendChild(span);
+    }
+  }
+
+  // 练习按钮
+  document.querySelector('[data-toggle="practice"]').addEventListener('click', () => {
+    if (practiceActive) { exitPractice(); }
+    else { enterPractice(); }
+    const dot = document.querySelector('[data-toggle="practice"] .dot');
+    dot.classList.toggle('off', !practiceActive);
+  });
+
+  document.getElementById('practice-reveal').addEventListener('click', revealAnswer);
+  document.getElementById('practice-next').addEventListener('click', nextPractice);
+  document.getElementById('practice-exit').addEventListener('click', exitPractice);
+
+  // 颜色模式切换
+  document.getElementById('practice-mode-toggle').addEventListener('click', () => {
+    colorMode = !colorMode;
+    const btn = document.getElementById('practice-mode-toggle');
+    btn.innerHTML = colorMode
+      ? '<span class="mode-on">🎨 颜色模式</span>'
+      : '📛 名称模式';
+    if (practiceItem) showPracticeQuestion(practiceItem);
+  });
+
+  console.log('🧩 彳亍法编码 3D 魔方已加载！');
+  console.log(`棱块编码: ${EDGE_DATA.length} 个 · 角块编码: ${CORNER_DATA.length} 个`);
+  </script>
+</body>
+</html>
