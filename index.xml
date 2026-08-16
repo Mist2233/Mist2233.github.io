@@ -3609,4 +3609,16 @@ Geth 会开放一个“服务窗口”（RPC API），允许其他软件（比�
 &lt;p&gt;一次在幼儿园，摔在楼梯上滚落而下，同样是磕了一个洞，同样缝了几针，只不过是在额头上，最后留了一个浅浅的疤；一次在小学一年级，在家门口一跤摔断了右手手腕，被迫用左手学习写字；一次在小学四年级，进校门时的一跤磕断门牙，从此笑容中总是有一抹暗淡的色彩。&lt;/p&gt;
 &lt;p&gt;摔倒总是在最想不到的瞬间出现，打乱你生活的所有安排，然后似启发、似挑衅地问道：“现在，阁下又该如何应对？”&lt;/p&gt;
 &lt;p&gt;所以，该如何应对呢？摔倒了该如何应对呢？联赛的第一题就不会做该如何应对呢？高考前彻夜难眠该如何应对呢？动车晚点两小时，来不及赶赴一场重要的宴会该如何应对呢？喜欢的人说要离开该如何应对呢？和梦校擦肩而过该如何应对呢？……&lt;/p&gt;
-&lt;p&gt;我不知道答案。可能我也不需要知道答案。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;我不知道答案。可能我也不需要知道答案。&lt;/p&gt;</description></item><item><title/><link>https://Mist2233.github.io/posts/6-inheritanceandobjectorienteddesign/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://Mist2233.github.io/posts/6-inheritanceandobjectorienteddesign/</guid><description>&lt;p&gt;终于学习到面向对象的设计思想了吗？不容易啊！&lt;/p&gt;
+&lt;h2 id="item32-make-sure-public-inheritance-models-is-a"&gt;Item32: Make sure public inheritance models &amp;ldquo;is-a&amp;rdquo;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;public&lt;/code&gt; inheritance 的实际含义就是“is-a”。&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;“If you write that class D (“Derived”) publicly inherits from class B (“Base”), you are telling C++ compilers (as well as human readers of your code) that every object of type D is also an object of type B, but not vice versa.”&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;子类公共继承了父类，实际上就是在说，子类的某个对象，在逻辑上也是被包含在父类中的。子类是父类的特化，父类是子类的泛化。&lt;/p&gt;
+&lt;p&gt;在一切需要使用父类对象的时候，使用子类对象也一定是合法的——因为子类对象在逻辑上同时也是父类的对象。&lt;/p&gt;
+&lt;p&gt;父类有的特征（成员），子类一定有（但不能直接访问父类的 &lt;code&gt;private&lt;/code&gt; 成员）；子类有的特征（成员），父类通常没有。&lt;/p&gt;
+&lt;p&gt;不要被直觉误导，自然语言的表述是不准确的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“鸟会飞”指的是“大部分鸟会飞”，而不是“所有鸟都会飞”。&lt;/li&gt;
+&lt;li&gt;如果我们要写一个 &lt;code&gt;Bird&lt;/code&gt; 类，那么我们不能将 &lt;code&gt;fly()&lt;/code&gt; 定义为 &lt;code&gt;Bird&lt;/code&gt; 类中的纯虚函数，因为 &lt;code&gt;fly()&lt;/code&gt; 不是所有鸟类共有的特征。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;继承其实远比我们想的复杂：有些事情，可以对基类做，但是不能对派生类做，但 public inheritance 的语义是“所有对基类能做的操作，一定能对派生类做”。这就很麻烦了。&lt;/p&gt;</description></item></channel></rss>
